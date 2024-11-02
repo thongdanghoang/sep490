@@ -11,8 +11,9 @@ import jakarta.validation.constraints.Min;
  */
 public record Page(
         @Min(1)
+        @Max(100)
         int pageSize,
-        @Min(0) @Max(100)
+        @Min(0)
         int pageNumber
 ) {
     public static Page of(int pageSize, int pageNumber) {
