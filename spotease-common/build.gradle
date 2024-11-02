@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'java-library'
+    id 'maven-publish'
 }
 
 group = 'spotease'
@@ -22,11 +24,15 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.projectlombok:lombok:1.18.34'
-    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.34'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.34'
+
+    implementation group: 'jakarta.validation', name: 'jakarta.validation-api', version: '3.1.0'
 
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.17.0'
     implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.12.0'
-    implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+     implementation group: 'commons-io', name: 'commons-io', version: '2.17.0'
+     implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.27.1'
+     implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
 }

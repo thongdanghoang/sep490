@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class AbstractBaseDTO {
+public abstract class AbstractBaseDTO {
     protected UUID id;
-    protected int version;
+    protected Integer version;
 
     protected AbstractBaseDTO() {
         // Abstract class should not be instantiated

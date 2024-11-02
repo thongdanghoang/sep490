@@ -1,13 +1,18 @@
 package spotease.common.api.value_objects;
 
+import jakarta.validation.constraints.NotNull;
 import spotease.common.api.enums.DateBoundary;
 
 import java.time.LocalDate;
 
 public record DateRange(
+        @NotNull
         LocalDate from,
+        @NotNull
         LocalDate to,
+        @NotNull
         DateBoundary fromBoundary,
+        @NotNull
         DateBoundary toBoundary
 ) {
 
