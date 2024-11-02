@@ -1,1 +1,4 @@
 .idea
+*.iml
+miniodata/*
+#TODO: should have we store share bucket in git repo?

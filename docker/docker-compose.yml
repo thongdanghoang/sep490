@@ -1,0 +1,54 @@
+services:
+  database:
+    image: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: spoteaseDB
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - spotease-data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - spotease-network
+
+  redis:
+    image: redis:7.4.1-alpine
+    container_name: redis
+    ports:
+      - 6379:6379
+    networks:
+    - spotease-network
+
+  mail:
+    image: mailhog/mailhog
+    container_name: mailhog
+    #profiles:
+    #  - dev
+    ports:
+      - 1025:1025
+      - 8025:8025
+
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+    volumes:
+      - ../miniodata:/data
+    command: server /data --console-address ":9001"
+
+
+networks:
+    spotease-network:
+volumes:
+  spotease-data:
+
+#docker-compose --profile dev up -d
