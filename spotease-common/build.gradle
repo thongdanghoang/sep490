@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'spotease'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 
 java {
     toolchain {
@@ -32,7 +32,14 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.17.0'
     implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.12.0'
-     implementation group: 'commons-io', name: 'commons-io', version: '2.17.0'
-     implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.27.1'
-     implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.27.1'
+    implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.17.0'
+
+    api group: 'org.apache.commons', name: 'commons-lang3', version: '3.17.0'
+    api group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+    api group: 'org.apache.commons', name: 'commons-text', version: '1.12.0'
+    api group: 'org.apache.commons', name: 'commons-compress', version: '1.27.1'
+    api group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    api group: 'commons-io', name: 'commons-io', version: '2.17.0'
 }
