@@ -1,0 +1,54 @@
+version: "3.8"
+services:
+  database:
+    image: postgres:16.4
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: spot_ease
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "spot_ease" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "127.0.0.1:5432:5432"
+
+  redis:
+    image: redis:7.4.1-alpine
+    container_name: redis
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "127.0.0.1:6379:6379"
+
+  mail:
+    image: mailhog/mailhog
+    container_name: mailhog
+    profiles:
+      - dev
+    ports:
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:8025:8025"
+
+  minio:
+    image: minio:RELEASE.2024-10-29T16-01-48Z.fips
+    container_name: minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    healthcheck:
+      test: [ "CMD", "mc", "ready", "local" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
