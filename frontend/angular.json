@@ -39,7 +39,17 @@
               }
             ],
             "styles": [
-              "src/styles/styles.scss"
+              "src/styles/styles.scss",
+              {
+                "input": "src/styles/theme-aura-dark-cyan.scss",
+                "bundleName": "theme-aura-dark-cyan",
+                "inject": false
+              },
+              {
+                "input": "src/styles/theme-aura-light-cyan.scss",
+                "bundleName": "theme-aura-light-cyan",
+                "inject": false
+              }
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

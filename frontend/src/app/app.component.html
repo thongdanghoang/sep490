@@ -1,3 +1,15 @@
-<div class="card flex justify-content-center">
-  <p-button label="Check" icon="pi pi-check"></p-button>
+<div class="container mx-auto h-dvh">
+  <div class="flex flex-row justify-content-end gap-2.5 border-1 border-300 border-round p-3 surface-100 shadow-2">
+    <p-inputSwitch
+      [ngModel]="isDarkMode"
+      (ngModelChange)="toggleLightDark()"
+    />
+    <div class="text-xl mb-3">
+      @if (isDarkMode) {
+        🌚
+      } @else {
+        🌞
+      }
+    </div>
+  </div>
 </div>
