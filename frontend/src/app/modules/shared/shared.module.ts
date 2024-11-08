@@ -18,7 +18,7 @@ const primeNgModules = [
   InputTextModule,
   PasswordModule,
   RippleModule,
-  InputSwitchModule
+  InputSwitchModule,
 ];
 
 const coreModules = [

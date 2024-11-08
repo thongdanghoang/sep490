@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ToolboxComponent } from './components/toolbox/toolbox.component';
-
+import {NgModule} from '@angular/core';
+import {ToolboxComponent} from './components/toolbox/toolbox.component';
+import {DevRoutingModule} from './dev-routing.module';
+import {SharedModule} from '../shared/shared.module';
 
 
 @NgModule({
@@ -9,7 +9,9 @@ import { ToolboxComponent } from './components/toolbox/toolbox.component';
     ToolboxComponent
   ],
   imports: [
-    CommonModule
+    DevRoutingModule,
+    SharedModule
   ]
 })
-export class DevModule { }
+export class DevModule {
+}
