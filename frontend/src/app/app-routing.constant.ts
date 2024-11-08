@@ -6,6 +6,4 @@ export class AppRoutingConstants {
 
   public static readonly FORBIDDEN = 'forbidden';
   public static readonly UNAUTHORIZED = 'unauthorized';
-  public static readonly NOT_FOUND = 'not-found';
-
 }

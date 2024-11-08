@@ -1,43 +1,15 @@
-import {CommonModule, DatePipe} from '@angular/common';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {RouterModule} from '@angular/router';
-import {AutoFocusModule} from 'primeng/autofocus';
-import {ButtonModule} from 'primeng/button';
-import {FloatLabelModule} from 'primeng/floatlabel';
-import {InputSwitchModule} from 'primeng/inputswitch';
-import {InputTextModule} from 'primeng/inputtext';
-import {PasswordModule} from 'primeng/password';
-import {RippleModule} from 'primeng/ripple';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {CoreModule} from './modules/core/core.module';
 import {AuthInterceptor, AuthModule, LogLevel} from 'angular-auth-oidc-client';
-import { ForbiddenComponent } from './components/forbidden/forbidden.component';
-import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-
-const primeNgModules = [
-  AutoFocusModule,
-  ButtonModule,
-  FloatLabelModule,
-  InputTextModule,
-  PasswordModule,
-  RippleModule,
-  InputSwitchModule
-];
-
-const coreModules = [
-  CommonModule,
-  HttpClientModule,
-  RouterModule,
-  FormsModule,
-  ReactiveFormsModule,
-  DatePipe
-];
+import {ForbiddenComponent} from './components/forbidden/forbidden.component';
+import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
+import {NotFoundComponent} from './components/not-found/not-found.component';
+import {SharedModule} from './modules/shared/shared.module';
 
 const oidcClientConfig = AuthModule.forRoot({
   config: {
@@ -45,7 +17,7 @@ const oidcClientConfig = AuthModule.forRoot({
     redirectUrl: window.location.origin,
     postLogoutRedirectUri: window.location.origin,
     clientId: 'oidc-client',
-    scope: 'openid', // 'openid profile ' + your scopes
+    scope: 'openid',
     responseType: 'code',
     silentRenew: false,
     useRefreshToken: false,
@@ -62,12 +34,11 @@ const oidcClientConfig = AuthModule.forRoot({
     NotFoundComponent
   ],
   imports: [
-    ...primeNgModules,
-    ...coreModules,
+    AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
     CoreModule,
+    SharedModule,
     oidcClientConfig
   ],
   providers: [

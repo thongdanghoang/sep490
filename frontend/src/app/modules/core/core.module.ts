@@ -1,6 +1,7 @@
 import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
+import {NgModule, Optional, SkipSelf} from '@angular/core';
 import {ThemeService} from './services/theme.service';
+import {throwIfAlreadyLoaded} from './module-import-guard';
 
 
 @NgModule({
@@ -10,4 +11,8 @@ import {ThemeService} from './services/theme.service';
   ],
   providers: [ThemeService]
 })
-export class CoreModule { }
+export class CoreModule {
+  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
+    throwIfAlreadyLoaded(parentModule, 'CoreModule');
+  }
+}
