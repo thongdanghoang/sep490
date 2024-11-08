@@ -10,6 +10,8 @@ import {ForbiddenComponent} from './components/forbidden/forbidden.component';
 import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {SharedModule} from './modules/shared/shared.module';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 const oidcClientConfig = AuthModule.forRoot({
   config: {
@@ -31,7 +33,9 @@ const oidcClientConfig = AuthModule.forRoot({
     AppComponent,
     ForbiddenComponent,
     UnauthorizedComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     AppRoutingModule,

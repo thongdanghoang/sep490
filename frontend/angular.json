@@ -6,15 +6,32 @@
     "frontend": {
       "projectType": "application",
       "schematics": {
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
         "@schematics/angular:component": {
-          "style": "scss",
+          "skipTests": true,
           "standalone": false
         },
         "@schematics/angular:directive": {
+          "skipTests": true,
           "standalone": false
         },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
         "@schematics/angular:pipe": {
+          "skipTests": true,
           "standalone": false
+        },
+        "@schematics/angular:resolver": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
         }
       },
       "root": "",
@@ -31,7 +48,6 @@
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -39,14 +55,16 @@
               }
             ],
             "styles": [
-              "src/styles/styles.scss",
+              "src/styles/styles.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css",
               {
-                "input": "src/styles/theme-aura-dark-cyan.scss",
+                "input": "src/styles/theme-aura-dark-cyan.css",
                 "bundleName": "theme-aura-dark-cyan",
                 "inject": false
               },
               {
-                "input": "src/styles/theme-aura-light-cyan.scss",
+                "input": "src/styles/theme-aura-light-cyan.css",
                 "bundleName": "theme-aura-light-cyan",
                 "inject": false
               }
@@ -105,7 +123,6 @@
               "zone.js/testing"
             ],
             "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -113,15 +130,12 @@
               }
             ],
             "styles": [
-              "src/styles/styles.scss"
+              "src/styles/styles.css"
             ],
             "scripts": []
           }
         }
       }
     }
-  },
-  "cli": {
-    "analytics": "4ce18f68-686e-4d62-a39b-54da1810d2b1"
   }
 }
