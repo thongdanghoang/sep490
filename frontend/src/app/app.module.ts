@@ -1,5 +1,5 @@
 import {CommonModule, DatePipe} from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
@@ -15,6 +15,10 @@ import {RippleModule} from 'primeng/ripple';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {CoreModule} from './modules/core/core.module';
+import {AuthInterceptor, AuthModule, LogLevel} from 'angular-auth-oidc-client';
+import { ForbiddenComponent } from './components/forbidden/forbidden.component';
+import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const primeNgModules = [
   AutoFocusModule,
@@ -35,9 +39,27 @@ const coreModules = [
   DatePipe
 ];
 
+const oidcClientConfig = AuthModule.forRoot({
+  config: {
+    authority: 'http://localhost:8080',
+    redirectUrl: window.location.origin,
+    postLogoutRedirectUri: window.location.origin,
+    clientId: 'oidc-client',
+    scope: 'openid', // 'openid profile ' + your scopes
+    responseType: 'code',
+    silentRenew: false,
+    useRefreshToken: false,
+    logLevel: LogLevel.Debug,
+    secureRoutes: ['http://localhost:8081'],
+  }
+});
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ForbiddenComponent,
+    UnauthorizedComponent,
+    NotFoundComponent
   ],
   imports: [
     ...primeNgModules,
@@ -45,9 +67,12 @@ const coreModules = [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    CoreModule
+    CoreModule,
+    oidcClientConfig
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
