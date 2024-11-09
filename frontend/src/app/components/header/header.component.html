@@ -1,4 +1,25 @@
-<header class="flex justify-end gap-2.5">
+<p-tabMenu [model]="items">
+  <ng-template pTemplate="item" let-item>
+    <ng-container *ngIf="item.route; else elseBlock">
+      <a [routerLink]="item.route" class="p-menuitem-link">
+        <span [class]="item.icon"></span>
+        <span class="ml-2">
+                        {{ item.label }}
+                    </span>
+      </a>
+    </ng-container>
+    <ng-template #elseBlock>
+      <a [href]="item.url" class="p-menuitem-link">
+        <span [class]="item.icon"></span>
+        <span class="ml-2">
+                        {{ item.label }}
+                    </span>
+      </a>
+    </ng-template>
+  </ng-template>
+</p-tabMenu>
+
+<div class="flex gap-2.5">
   @if (authenticated | async) {
     <p-button label="Logout" [outlined]="true" (onClick)="logout()"/>
   } @else {
@@ -10,4 +31,4 @@
   } @else {
     <p-button icon="pi pi-sun" [rounded]="true" [text]="true" (onClick)="toggleLightDark()"/>
   }
-</header>
+</div>
