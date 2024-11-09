@@ -1,6 +1,13 @@
-<header class="flex justify-end">
-  <p-inputSwitch
-    [ngModel]="isDarkMode"
-    (ngModelChange)="toggleLightDark()"
-  />
+<header class="flex justify-end gap-2.5">
+  @if (authenticated | async) {
+    <p-button label="Logout" [outlined]="true" (onClick)="logout()"/>
+  } @else {
+    <p-button label="Sign in" [text]="true" (onClick)="login()"/>
+    <p-button label="Sign up" [outlined]="true"/>
+  }
+  @if (isDarkMode) {
+    <p-button icon="pi pi-moon" [rounded]="true" [text]="true" (onClick)="toggleLightDark()"/>
+  } @else {
+    <p-button icon="pi pi-sun" [rounded]="true" [text]="true" (onClick)="toggleLightDark()"/>
+  }
 </header>

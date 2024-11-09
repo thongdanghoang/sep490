@@ -55,9 +55,9 @@
               }
             ],
             "styles": [
-              "src/styles/styles.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
+              "src/styles/styles.css",
               {
                 "input": "src/styles/theme-aura-dark-cyan.css",
                 "bundleName": "theme-aura-dark-cyan",

@@ -44,7 +44,7 @@ import java.util.UUID;
 
 @Configuration
 public class SecurityConfig {
-    
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
@@ -111,6 +111,7 @@ public class SecurityConfig {
                         .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
                         .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                         .redirectUri("http://localhost:4200")
+                        .postLogoutRedirectUri("http://localhost:4200")
                         .scope(OidcScopes.OPENID)
                         .build();
         return new InMemoryRegisteredClientRepository(registeredClient);

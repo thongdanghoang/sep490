@@ -20,6 +20,7 @@
     "@angular/router": "^18.2.0",
     "@types/uuid": "^10.0.0",
     "angular-auth-oidc-client": "^18.0.2",
+    "jwt-decode": "^4.0.0",
     "primeicons": "^7.0.0",
     "primeng": "^17.18.10",
     "rxjs": "~7.8.0",
