@@ -36,11 +36,9 @@ export class ApplicationService extends SubscriptionAwareComponent {
   postLogin(): void {
     this.registerSubscriptions([
       this.oidcSecurityService.getPayloadFromAccessToken().subscribe((data: UserData): void => {
-        console.log('userDataSubject', data);
         this.userDataSubject.next(data);
       }),
       this.oidcSecurityService.getUserData().subscribe((userInfo: UserInfoData): void => {
-        console.log('userInfoSubject', userInfo);
         this.userInfoSubject.next(userInfo);
       })
     ]);

@@ -17,15 +17,22 @@ export class ThemeService {
   constructor(@Inject(DOCUMENT) private readonly document: Document) {
   }
 
-  switchTheme(theme: Theme): void {
+  selectTheme(theme: Theme): void {
+    const appliedTheme = this.setAppTheme(theme);
+    if (appliedTheme) {
+      localStorage.setItem(this.themeNameConfigKey, theme);
+    }
+  }
+
+  setAppTheme(theme: Theme): Theme | null {
     if (!this.supportedThemes.includes(theme)) {
       theme = this.defaultTheme;
     }
     let themeLink = this.document.getElementById(this.appThemeElementId) as HTMLLinkElement;
     if (themeLink) {
       themeLink.href = theme + '.css';
-      localStorage.setItem(this.themeNameConfigKey, theme);
     }
+    return theme;
   }
 
   useSystemTheme(): void {
@@ -33,11 +40,13 @@ export class ThemeService {
   }
 
   getLocalStorageTheme(): Theme | null {
-    return localStorage.getItem(this.themeNameConfigKey) as Theme;
+    const theme = localStorage.getItem(this.themeNameConfigKey);
+    return this.supportedThemes.find(t => t === theme) || null
   }
 
   isDarkMode(): boolean {
     let themeLink = this.document.getElementById(this.appThemeElementId) as HTMLLinkElement;
-    return themeLink.href.includes('dark');
+    const currentTheme = this.getLocalStorageTheme();
+    return currentTheme === Theme.AURA_DARK_CYAN;
   }
 }

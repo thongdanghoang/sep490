@@ -25,9 +25,6 @@ export class HeaderComponent extends SubscriptionAwareComponent implements OnIni
   ) {
     super();
     this.authenticated = this.applicationService.isAuthenticated();
-    this.applicationService.userDataSubject.subscribe((data) => {
-      console.log('userDataSubject', data);
-    });
   }
 
   ngOnInit() {
@@ -35,11 +32,13 @@ export class HeaderComponent extends SubscriptionAwareComponent implements OnIni
       {
         label: 'Enterprise',
         icon: 'pi pi-building',
-        command: () => {
-          void this.router.navigate([AppRoutingConstants.ENTERPRISE_PATH]);
-        }
+        route: AppRoutingConstants.ENTERPRISE_PATH
       },
-      {label: 'DevTools', icon: 'pi pi-code', route: `${AppRoutingConstants.DEV_PATH}`},
+      {
+        label: 'DevTools',
+        icon: 'pi pi-code',
+        route: AppRoutingConstants.DEV_PATH
+      },
     ];
   }
 
@@ -54,19 +53,11 @@ export class HeaderComponent extends SubscriptionAwareComponent implements OnIni
   protected toggleLightDark(): void {
     if (this.themeService.isDarkMode()
     ) {
-      this.themeService.switchTheme(Theme.AURA_LIGHT_CYAN);
+      this.themeService.selectTheme(Theme.AURA_LIGHT_CYAN);
       this.isDarkMode = false;
       return;
     }
-    this.themeService.switchTheme(Theme.AURA_DARK_CYAN);
+    this.themeService.selectTheme(Theme.AURA_DARK_CYAN);
     this.isDarkMode = true;
-  }
-
-  protected toDev(): void {
-    void this.router.navigate([AppRoutingConstants.DEV_PATH]);
-  }
-
-  protected toEnterprise(): void {
-    void this.router.navigate([AppRoutingConstants.ENTERPRISE_PATH]);
   }
 }

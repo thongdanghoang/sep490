@@ -25,10 +25,8 @@ import {HomeComponent} from './components/home/home.component';
 function initAuth(oidcSecurityService: OidcSecurityService): () => Promise<LoginResponse> {
   return () =>
     new Promise<LoginResponse>(resolve => {
-      setTimeout((): void => {
-        oidcSecurityService.checkAuth().subscribe(data => {
-          resolve(data);
-        });
+      oidcSecurityService.checkAuth().subscribe(data => {
+        resolve(data);
       });
     });
 }

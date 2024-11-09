@@ -16,10 +16,17 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     const localStorageTheme = this.themeService.getLocalStorageTheme();
     if (localStorageTheme) {
-      this.themeService.switchTheme(localStorageTheme);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      this.themeService.setAppTheme(localStorageTheme);
+    } else if (window.matchMedia?.('(prefers-color-scheme: dark)')?.matches) {
       // detect system dark mode
-      this.themeService.switchTheme(Theme.AURA_DARK_CYAN);
+      this.themeService.setAppTheme(Theme.AURA_DARK_CYAN);
+      // Listen for system theme changes
+      window.matchMedia('(prefers-color-scheme: dark)')
+        .addEventListener('change', (e) => {
+          this.themeService.setAppTheme(
+            e.matches ? Theme.AURA_DARK_CYAN : Theme.AURA_LIGHT_CYAN
+          );
+        });
     }
   }
 

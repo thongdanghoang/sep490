@@ -8,7 +8,6 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -40,16 +39,25 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 import java.util.UUID;
 
 @Configuration
 public class SecurityConfig {
 
+    private static final String CLIENT_URL = "http://localhost:4200";
+    private static final String USERNAME = "dano";
+    private static final String PASSWORD = "dano";
+
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.applyPermitDefaultValues();
-        corsConfig.addAllowedMethod(HttpMethod.PUT);
+        corsConfig.setAllowedOrigins(List.of(CLIENT_URL));
+        corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        corsConfig.setAllowCredentials(true);
+        corsConfig.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
@@ -90,8 +98,9 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails userDetails = User.withUsername("bill")
-                .password(passwordEncoder().encode("password"))
+        // TODO : setup UserDetailsService, UserDetails, PasswordEncoder, ...
+        UserDetails userDetails = User.withUsername(USERNAME)
+                .password(passwordEncoder().encode(PASSWORD))
                 .roles("USER")
                 .build();
         return new InMemoryUserDetailsManager(userDetails);
@@ -110,8 +119,8 @@ public class SecurityConfig {
                         .clientId("oidc-client")
                         .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
                         .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                        .redirectUri("http://localhost:4200")
-                        .postLogoutRedirectUri("http://localhost:4200")
+                        .redirectUri(CLIENT_URL)
+                        .postLogoutRedirectUri(CLIENT_URL)
                         .scope(OidcScopes.OPENID)
                         .build();
         return new InMemoryRegisteredClientRepository(registeredClient);

@@ -6,7 +6,7 @@ import {PopupService} from './popup.service';
 @Injectable()
 export class MarkerService {
 
-  capitals: string = '/assets/data/usa-capitals.geojson';
+  private readonly CAPITALS_PATH: string = '/assets/data/usa-capitals.geojson';
 
 
   constructor(
@@ -16,12 +16,12 @@ export class MarkerService {
   }
 
   makeCapitalMarkers(map: L.Map): void {
-    this.http.get(this.capitals).subscribe((res: any) => {
+    this.http.get(this.CAPITALS_PATH).subscribe((res: any) => {
       for (const c of res.features) {
         const lon = c.geometry.coordinates[0];
         const lat = c.geometry.coordinates[1];
         const marker = L.marker([lat, lon]);
-        marker.bindPopup(this.popupService.makeCapitalPopup(c.properties))
+        marker.bindPopup(this.popupService.makeCapitalPopup(c.properties) as string)
         marker.addTo(map);
       }
     });

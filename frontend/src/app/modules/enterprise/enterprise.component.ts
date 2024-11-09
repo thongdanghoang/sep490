@@ -2,6 +2,7 @@ import {AfterViewInit, Component} from '@angular/core';
 import * as L from 'leaflet';
 import {MarkerService} from './services/marker.service';
 import {RegionService} from './services/region.service';
+import * as geojson from 'geojson';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -26,7 +27,7 @@ L.Marker.prototype.options.icon = iconDefault;
 export class EnterpriseComponent implements AfterViewInit {
 
   private map!: L.Map;
-  private states: any;
+  private states!: geojson.GeoJsonObject | geojson.GeoJsonObject[] | null;
 
   constructor(
     private readonly markerService: MarkerService,
@@ -38,7 +39,8 @@ export class EnterpriseComponent implements AfterViewInit {
     this.initMap();
     this.markerService.makeCapitalMarkers(this.map);
     this.map.on('click', (e) => {
-      const marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(this.map);
+      const marker = L.marker([e.latlng.lat, e.latlng.lng]);
+      marker.addTo(this.map);
     });
     this.shapeService.getStateShapes().subscribe(states => {
       this.states = states;
@@ -47,15 +49,19 @@ export class EnterpriseComponent implements AfterViewInit {
   }
 
   private initMap(): void {
-    this.map = L.map('map', {
-      center: [39.8282, -98.5795],
-      zoom: 3
-    });
+    if (document.getElementById('map')) {
+      this.map = L.map('map', {
+        center: [10.841394, 106.810052],
+        zoom: 20
+      });
+    } else {
+      throw new Error('Map element not found, should set id="map" to the map element');
+    }
 
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
       minZoom: 3,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      attribution: ''
     });
 
     tiles.addTo(this.map);
@@ -82,7 +88,7 @@ export class EnterpriseComponent implements AfterViewInit {
     stateLayer.bringToBack();
   }
 
-  private highlightFeature(e: any) {
+  private highlightFeature(e: L.LeafletMouseEvent) {
     const layer = e.target;
 
     layer.setStyle({
@@ -94,7 +100,7 @@ export class EnterpriseComponent implements AfterViewInit {
     });
   }
 
-  private resetFeature(e: any) {
+  private resetFeature(e: L.LeafletMouseEvent) {
     const layer = e.target;
 
     layer.setStyle({
