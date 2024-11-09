@@ -10,15 +10,19 @@ import {InputSwitchModule} from 'primeng/inputswitch';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MenubarModule} from 'primeng/menubar';
+import {TabMenuModule} from 'primeng/tabmenu';
 
 const primeNgModules = [
   AutoFocusModule,
   ButtonModule,
   FloatLabelModule,
   InputTextModule,
+  InputSwitchModule,
+  MenubarModule,
+  TabMenuModule,
   PasswordModule,
   RippleModule,
-  InputSwitchModule,
 ];
 
 const coreModules = [

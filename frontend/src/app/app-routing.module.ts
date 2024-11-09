@@ -18,6 +18,11 @@ const routes: Routes = [
     canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
+    path: AppRoutingConstants.ENTERPRISE_PATH,
+    loadChildren: () => import('./modules/enterprise/enterprise.module').then(m => m.EnterpriseModule),
+    canActivate: [AutoLoginPartialRoutesGuard]
+  },
+  {
     path: AppRoutingConstants.FORBIDDEN,
     component: ForbiddenComponent,
   },

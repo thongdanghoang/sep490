@@ -9,8 +9,8 @@ import {SharedModule} from '../shared/shared.module';
     ToolboxComponent
   ],
   imports: [
-    DevRoutingModule,
-    SharedModule
+    SharedModule,
+    DevRoutingModule
   ]
 })
 export class DevModule {
