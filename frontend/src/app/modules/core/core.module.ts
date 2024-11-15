@@ -1,8 +1,10 @@
-import {CommonModule} from '@angular/common';
 import {NgModule, Optional, SkipSelf} from '@angular/core';
-import {ThemeService} from './services/theme.service';
 import {throwIfAlreadyLoaded} from './module-import-guard';
+import {CommonModule} from '@angular/common';
+import {ThemeService} from './services/theme.service';
 import {ApplicationService} from './services/application.service';
+import {MessageService} from 'primeng/api';
+import {DialogService} from 'primeng/dynamicdialog';
 
 
 @NgModule({
@@ -10,7 +12,7 @@ import {ApplicationService} from './services/application.service';
   imports: [
     CommonModule
   ],
-  providers: [ApplicationService, ThemeService]
+  providers: [ApplicationService, ThemeService, MessageService, DialogService]
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

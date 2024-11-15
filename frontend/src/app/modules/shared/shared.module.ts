@@ -12,15 +12,23 @@ import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MenubarModule} from 'primeng/menubar';
 import {TabMenuModule} from 'primeng/tabmenu';
+import {DynamicDialogModule} from 'primeng/dynamicdialog';
+import {DialogModule} from 'primeng/dialog';
+import {ToastModule} from 'primeng/toast';
+import {ModalProvider} from './services/modal-provider';
+import {ConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog.component';
 
 const primeNgModules = [
   AutoFocusModule,
   ButtonModule,
+  DialogModule,
+  DynamicDialogModule,
   FloatLabelModule,
   InputTextModule,
   InputSwitchModule,
   MenubarModule,
   TabMenuModule,
+  ToastModule,
   PasswordModule,
   RippleModule,
 ];
@@ -35,7 +43,9 @@ const coreModules = [
 ];
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ConfirmDialogComponent
+  ],
   imports: [
     ...coreModules,
     ...primeNgModules
@@ -43,7 +53,8 @@ const coreModules = [
   exports: [
     ...coreModules,
     ...primeNgModules
-  ]
+  ],
+  providers: [ModalProvider]
 })
 export class SharedModule {
 }

@@ -1,4 +1,8 @@
 <div class="flex flex-col gap-8">
+  <div class="card flex justify-content-center gap-2">
+    <p-button (onClick)="confirm()" label="Save" [outlined]="true" />
+    <p-button (onClick)="confirmDelete()" label="Delete" severity="danger" [outlined]="true" />
+  </div>
   <div class="card flex justify-center gap-2">
     <p-button icon="pi pi-check"/>
     <p-button label="Submit" icon="pi pi-check"/>
