@@ -16,7 +16,7 @@ import {DynamicDialogModule} from 'primeng/dynamicdialog';
 import {DialogModule} from 'primeng/dialog';
 import {ToastModule} from 'primeng/toast';
 import {ModalProvider} from './services/modal-provider';
-import {ConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog.component';
+import {ConfirmDialogComponent} from './components/dialog/confirm-dialog/confirm-dialog.component';
 
 const primeNgModules = [
   AutoFocusModule,
@@ -44,7 +44,7 @@ const coreModules = [
 
 @NgModule({
   declarations: [
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
   ],
   imports: [
     ...coreModules,

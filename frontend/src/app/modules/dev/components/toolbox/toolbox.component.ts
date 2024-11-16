@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, Injector} from '@angular/core';
 import {ModalProvider} from '../../../shared/services/modal-provider';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-toolbox',
@@ -8,7 +9,12 @@ import {ModalProvider} from '../../../shared/services/modal-provider';
 })
 export class ToolboxComponent {
 
-  constructor(private readonly modalProvider: ModalProvider) {
+  private readonly modalProvider;
+  private readonly messageService;
+
+  constructor(private readonly injector: Injector) {
+    this.modalProvider = this.injector.get(ModalProvider);
+    this.messageService = this.injector.get(MessageService);
   }
 
   confirm(): void {
@@ -20,13 +26,13 @@ export class ToolboxComponent {
       acceptLabel: 'Accept',
       rejectIcon: "none",
       rejectButtonStyleClass: "p-button-text",
-      rejectLabel: 'Reject',
-      acceptToastDetail: 'You have accepted',
-      acceptToastSeverity: 'info',
-      acceptToastSummary: 'Confirmed',
-      rejectToastDetail: 'You have rejected',
-      rejectToastSeverity: 'error',
-      rejectToastSummary: 'Rejected'
+      rejectLabel: 'Reject'
+    }).subscribe((result: boolean) => {
+      if (result) {
+        this.messageService.add({severity: 'success', summary: 'Confirmed', detail: 'You have accepted'});
+      } else {
+        this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
+      }
     });
   }
 
@@ -40,13 +46,13 @@ export class ToolboxComponent {
       acceptIcon: "none",
       acceptLabel: 'Yes',
       rejectIcon: "none",
-      rejectLabel: 'No',
-      acceptToastDetail: 'Record deleted',
-      acceptToastSeverity: 'info',
-      acceptToastSummary: 'Confirmed',
-      rejectToastDetail: 'You have rejected',
-      rejectToastSeverity: 'error',
-      rejectToastSummary: 'Rejected'
-    })
+      rejectLabel: 'No'
+    }).subscribe((result: boolean) => {
+      if (result) {
+        this.messageService.add({severity: 'success', summary: 'Confirmed', detail: 'Record deleted'});
+      } else {
+        this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
+      }
+    });
   }
 }
