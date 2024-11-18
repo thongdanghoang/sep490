@@ -28,9 +28,21 @@ export class ThemeService {
     if (!this.supportedThemes.includes(theme)) {
       theme = this.defaultTheme;
     }
-    let themeLink = this.document.getElementById(this.appThemeElementId) as HTMLLinkElement;
-    if (themeLink) {
+    const themeElement = this.document.getElementById(this.appThemeElementId);
+    if (!themeElement) {
+      console.error(`Theme element with id '${this.appThemeElementId}' not found`);
+      return null;
+    }
+    const themeLink = themeElement as HTMLLinkElement;
+    if (!(themeLink instanceof HTMLLinkElement)) {
+      console.error(`Element with id '${this.appThemeElementId}' is not a link element`);
+      return null;
+    }
+    try {
       themeLink.href = theme + '.css';
+    } catch (error) {
+      console.error('Failed to set theme:', error);
+      return null;
     }
     return theme;
   }
@@ -41,11 +53,10 @@ export class ThemeService {
 
   getLocalStorageTheme(): Theme | null {
     const theme = localStorage.getItem(this.themeNameConfigKey);
-    return this.supportedThemes.find(t => t === theme) || null
+    return this.supportedThemes.find(t => t === theme) ?? null
   }
 
   isDarkMode(): boolean {
-    let themeLink = this.document.getElementById(this.appThemeElementId) as HTMLLinkElement;
     const currentTheme = this.getLocalStorageTheme();
     return currentTheme === Theme.AURA_DARK_CYAN;
   }

@@ -33,13 +33,12 @@ const primeNgModules = [
   RippleModule,
 ];
 
-const coreModules = [
+const commons = [
   CommonModule,
   RouterModule,
   HttpClientModule,
   FormsModule,
-  ReactiveFormsModule,
-  DatePipe
+  ReactiveFormsModule
 ];
 
 @NgModule({
@@ -47,14 +46,14 @@ const coreModules = [
     ConfirmDialogComponent,
   ],
   imports: [
-    ...coreModules,
+    ...commons,
     ...primeNgModules
   ],
   exports: [
-    ...coreModules,
+    ...commons,
     ...primeNgModules
   ],
-  providers: [ModalProvider]
+  providers: [DatePipe, ModalProvider]
 })
 export class SharedModule {
 }

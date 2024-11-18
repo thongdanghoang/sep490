@@ -1,4 +1,4 @@
-import {Directive, Injector, OnInit} from '@angular/core';
+import {Directive, OnInit} from '@angular/core';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {AbstractControl, FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
@@ -33,17 +33,12 @@ export abstract class AbstractFormComponent<T> extends SubscriptionAwareComponen
    */
   protected submitted: boolean = false;
 
-  protected httpClient: HttpClient;
-  protected formBuilder: FormBuilder;
-  protected notificationService: MessageService;
-  protected modalProvider: ModalProvider;
-
-  protected constructor(injector: Injector) {
+  protected constructor(
+    protected httpClient: HttpClient,
+    protected formBuilder: FormBuilder,
+    protected notificationService: MessageService,
+    protected modalProvider: ModalProvider) {
     super();
-    this.httpClient = injector.get(HttpClient);
-    this.formBuilder = injector.get(FormBuilder);
-    this.notificationService = injector.get(MessageService);
-    this.modalProvider = injector.get(ModalProvider);
   }
 
   ngOnInit(): void {
@@ -189,14 +184,14 @@ export abstract class AbstractFormComponent<T> extends SubscriptionAwareComponen
           let businessError = {
             [result.i18nKey]: {}
           };
-          result.args.forEach((arg: BusinessErrorParam) => {
-            const errorParam = {[arg.key]: arg.value};
-            businessError = {
-              [result.i18nKey]: {
-                ...errorParam
-              }
-            };
-          });
+          if (result.args && result.args.length > 0) {
+            result.args.forEach((arg: BusinessErrorParam) => {
+              businessError[result.i18nKey] = {
+                ...businessError[result.i18nKey],
+                [arg.key]: arg.value
+              };
+            });
+          }
           formControl.setErrors(businessError);
           formControl.markAsTouched();
           formControl.markAsDirty();

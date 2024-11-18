@@ -5,7 +5,7 @@ export interface SearchPageDto {
 
 export interface SortDto {
   colId: string;
-  sort: string;
+  sort: 'ASC' | 'DESC';
 }
 
 export interface SearchCriteriaDto<C> {
@@ -19,19 +19,13 @@ export interface SearchResultDto<R> {
   total: number;
 }
 
-export interface KeyValue {
-  [key: string]: any;
+export interface KeyValue<T = any> {
+  [key: string]: T;
 }
 
 export interface DateRange<D = Date | string> {
   from: D;
   to: D;
-}
-
-export interface DropdownItem<V> {
-  display: string;
-  value: V;
-  disabled?: boolean;
 }
 
 export interface BusinessErrorParam {
@@ -46,13 +40,16 @@ export interface BusinessErrorResponse {
   args: BusinessErrorParam[];
 }
 
-export interface AutoCompleteDto<T> {
-  value: T;
-  label: string;
-  disabled?: boolean;
-}
-
 export interface AutoCompleteSearchDto<T> {
   value: T;
   searchText: string;
 }
+
+export interface SelectableItem<V> {
+  label: string;
+  value: V;
+  disabled?: boolean;
+}
+
+export type AutoCompleteDto<V> = SelectableItem<V>;
+export type DropdownItem<V> = SelectableItem<V>;

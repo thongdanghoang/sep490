@@ -2,6 +2,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {Confirmation} from 'primeng/api';
 import {Nullable} from 'primeng/ts-helpers';
+import {DomSanitizer} from '@angular/platform-browser';
 
 /**
  * Type of the confirm event.
@@ -29,12 +30,13 @@ export class ConfirmDialogComponent {
   @Output() onHide: EventEmitter<ConfirmEventType> = new EventEmitter<ConfirmEventType>();
 
   constructor(private readonly configs: DynamicDialogConfig,
+              protected readonly sanitizer: DomSanitizer,
               private readonly ref: DynamicDialogRef) {
     this.confirmationOptions = this.configs.data;
   }
 
-  accept() {
-    if (this.confirmationOptions && this.confirmationOptions.acceptEvent) {
+  accept(): void {
+    if (this.confirmationOptions?.acceptEvent) {
       this.confirmationOptions.acceptEvent.emit();
     }
 
@@ -43,7 +45,7 @@ export class ConfirmDialogComponent {
   }
 
   reject() {
-    if (this.confirmationOptions && this.confirmationOptions.rejectEvent) {
+    if (this.confirmationOptions?.rejectEvent) {
       this.confirmationOptions.rejectEvent.emit(ConfirmEventType.REJECT);
     }
 
@@ -52,11 +54,11 @@ export class ConfirmDialogComponent {
   }
 
   get acceptButtonLabel(): string {
-    return this.option('acceptLabel') || "TranslationKeys.ACCEPT";
+    return this.option('acceptLabel') ?? "TranslationKeys.ACCEPT";
   }
 
   get rejectButtonLabel(): string {
-    return this.option('rejectLabel') || "TranslationKeys.REJECT";
+    return this.option('rejectLabel') ?? "TranslationKeys.REJECT";
   }
 
   option(name: string): any {

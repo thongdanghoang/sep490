@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Theme, ThemeService} from './modules/core/services/theme.service';
 
 @Component({
@@ -6,7 +6,9 @@ import {Theme, ThemeService} from './modules/core/services/theme.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+  private systemThemeMediaQuery?: MediaQueryList;
+
   constructor(
     private readonly themeService: ThemeService
   ) {
@@ -21,13 +23,21 @@ export class AppComponent implements OnInit {
       // detect system dark mode
       this.themeService.setAppTheme(Theme.AURA_DARK_CYAN);
       // Listen for system theme changes
-      window.matchMedia('(prefers-color-scheme: dark)')
-        .addEventListener('change', (e) => {
-          this.themeService.setAppTheme(
-            e.matches ? Theme.AURA_DARK_CYAN : Theme.AURA_LIGHT_CYAN
-          );
-        });
+      this.systemThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      this.systemThemeMediaQuery.addEventListener('change', (e) => {
+        this.themeService.setAppTheme(
+          e.matches ? Theme.AURA_DARK_CYAN : Theme.AURA_LIGHT_CYAN
+        );
+      });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.systemThemeMediaQuery?.removeEventListener('change', (e): void => {
+      this.themeService.setAppTheme(
+        e.matches ? Theme.AURA_DARK_CYAN : Theme.AURA_LIGHT_CYAN
+      );
+    });
   }
 
 }

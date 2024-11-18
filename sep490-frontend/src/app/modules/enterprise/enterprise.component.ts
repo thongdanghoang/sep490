@@ -31,7 +31,7 @@ export class EnterpriseComponent implements AfterViewInit {
 
   constructor(
     private readonly markerService: MarkerService,
-    private shapeService: RegionService
+    private readonly shapeService: RegionService
   ) {
   }
 

@@ -1,4 +1,4 @@
-import {Component, Injector} from '@angular/core';
+import {Component} from '@angular/core';
 import {ModalProvider} from '../../../shared/services/modal-provider';
 import {MessageService} from 'primeng/api';
 
@@ -9,12 +9,10 @@ import {MessageService} from 'primeng/api';
 })
 export class ToolboxComponent {
 
-  private readonly modalProvider;
-  private readonly messageService;
-
-  constructor(private readonly injector: Injector) {
-    this.modalProvider = this.injector.get(ModalProvider);
-    this.messageService = this.injector.get(MessageService);
+  constructor(
+    private readonly modalProvider: ModalProvider,
+    private readonly messageService: MessageService
+  ) {
   }
 
   confirm(): void {

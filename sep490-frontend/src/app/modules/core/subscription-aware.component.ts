@@ -3,21 +3,21 @@ import {Subscription} from 'rxjs';
 
 @Directive()
 export abstract class SubscriptionAwareComponent implements OnDestroy {
-  private subscriptions: Subscription[] = [];
+  private readonly subscriptions: Subscription[] = [];
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
-  protected registerSubscription(subscription: Subscription): void {
+  protected registerSubscription(subscription: Subscription | null | undefined): void {
     if (subscription) {
       this.subscriptions.push(subscription);
     }
   }
 
-  protected registerSubscriptions(subscriptions: Subscription[]): void {
+  protected registerSubscriptions(subscriptions: (Subscription | null | undefined)[]): void {
     if (subscriptions) {
-      this.subscriptions = this.subscriptions.concat(subscriptions);
+      this.subscriptions.push(...subscriptions.filter((s): s is Subscription => !!s));
     }
   }
 

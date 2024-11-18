@@ -24,9 +24,11 @@ export class ModalProvider extends SubscriptionAwareComponent {
   }
 
   showError(): void {
+    // TODO: Implement error dialog
   }
 
   showDirtyCheckConfirm(): void {
+    // TODO: Implement dirty check confirmation
   }
 
   override ngOnDestroy(): void {

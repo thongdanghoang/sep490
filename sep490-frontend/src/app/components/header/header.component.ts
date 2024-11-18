@@ -15,7 +15,6 @@ import {MenuItem} from 'primeng/api';
 export class HeaderComponent extends SubscriptionAwareComponent implements OnInit {
 
   protected items: MenuItem[] | undefined;
-  protected isDarkMode: boolean = false;
   protected readonly authenticated: Observable<boolean>;
 
   constructor(
@@ -42,6 +41,10 @@ export class HeaderComponent extends SubscriptionAwareComponent implements OnIni
     ];
   }
 
+  protected get isDarkMode(): boolean {
+    return this.themeService.isDarkMode();
+  }
+
   protected login(): void {
     this.applicationService.login();
   }
@@ -54,10 +57,8 @@ export class HeaderComponent extends SubscriptionAwareComponent implements OnIni
     if (this.themeService.isDarkMode()
     ) {
       this.themeService.selectTheme(Theme.AURA_LIGHT_CYAN);
-      this.isDarkMode = false;
       return;
     }
     this.themeService.selectTheme(Theme.AURA_DARK_CYAN);
-    this.isDarkMode = true;
   }
 }

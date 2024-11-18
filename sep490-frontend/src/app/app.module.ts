@@ -21,6 +21,7 @@ import {FooterComponent} from './components/footer/footer.component';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AppRoutingConstants} from './app-routing.constant';
 import {HomeComponent} from './components/home/home.component';
+import {environment} from '../environments/environment';
 
 function initAuth(oidcSecurityService: OidcSecurityService): () => Promise<LoginResponse> {
   return () =>
@@ -52,13 +53,13 @@ function initAuth(oidcSecurityService: OidcSecurityService): () => Promise<Login
         forbiddenRoute: AppRoutingConstants.FORBIDDEN,
         unauthorizedRoute: AppRoutingConstants.UNAUTHORIZED,
         autoUserInfo: false,
-        authority: 'http://localhost:8080',
+        authority: environment.oidcAuthority,
         redirectUrl: window.location.origin,
         postLogoutRedirectUri: window.location.origin,
-        clientId: 'oidc-client',
+        clientId: environment.oidcClientId,
         scope: "openid",
         responseType: 'code',
-        logLevel: LogLevel.Debug,
+        logLevel: environment.production ? LogLevel.Warn : LogLevel.Debug,
         secureRoutes: [],
       }
     })
