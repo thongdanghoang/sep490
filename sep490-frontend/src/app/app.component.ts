@@ -9,11 +9,7 @@ import {Theme, ThemeService} from './modules/core/services/theme.service';
 export class AppComponent implements OnInit, OnDestroy {
   private systemThemeMediaQuery?: MediaQueryList;
 
-  constructor(
-    private readonly themeService: ThemeService
-  ) {
-
-  }
+  constructor(private readonly themeService: ThemeService) {}
 
   ngOnInit(): void {
     const localStorageTheme = this.themeService.getLocalStorageTheme();
@@ -23,8 +19,10 @@ export class AppComponent implements OnInit, OnDestroy {
       // detect system dark mode
       this.themeService.setAppTheme(Theme.AURA_DARK_CYAN);
       // Listen for system theme changes
-      this.systemThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      this.systemThemeMediaQuery.addEventListener('change', (e) => {
+      this.systemThemeMediaQuery = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      );
+      this.systemThemeMediaQuery.addEventListener('change', e => {
         this.themeService.setAppTheme(
           e.matches ? Theme.AURA_DARK_CYAN : Theme.AURA_LIGHT_CYAN
         );
@@ -39,5 +37,4 @@ export class AppComponent implements OnInit, OnDestroy {
       );
     });
   }
-
 }

@@ -1,28 +1,30 @@
 <div class="overflow-y-auto flex-grow flex items-center gap-3">
-  @if (option('icon')) {
-    <i class="text-2xl" [class]="option('icon')"></i>
-  }
-  <span class="p-confirm-dialog-message" [innerHTML]="option('message')"></span>
+    @if (option("icon")) {
+        <i class="text-2xl" [class]="option('icon')"></i>
+    }
+    <span
+        class="p-confirm-dialog-message"
+        [innerHTML]="option('message')"
+    ></span>
 </div>
 <!-- Footer -->
 <div class="flex justify-end gap-2">
-  <button
-    type="button"
-    pRipple
-    pButton
-    [label]="rejectButtonLabel"
-    (click)="reject()"
-    [ngClass]="'p-confirm-dialog-reject'"
-    [class]="option('rejectButtonStyleClass')"
-  ></button>
-  <button
-    type="button"
-    pRipple
-    pButton
-    [label]="acceptButtonLabel"
-    (click)="accept()"
-    [ngClass]="'p-confirm-dialog-accept'"
-    [class]="option('acceptButtonStyleClass')"
-  >
-  </button>
+    <button
+        type="button"
+        pRipple
+        pButton
+        [label]="rejectButtonLabel"
+        (click)="reject()"
+        [ngClass]="'p-confirm-dialog-reject'"
+        [class]="option('rejectButtonStyleClass')"
+    ></button>
+    <button
+        type="button"
+        pRipple
+        pButton
+        [label]="acceptButtonLabel"
+        (click)="accept()"
+        [ngClass]="'p-confirm-dialog-accept'"
+        [class]="option('acceptButtonStyleClass')"
+    ></button>
 </div>

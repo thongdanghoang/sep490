@@ -3,9 +3,7 @@ import {SafeHtml} from '@angular/platform-browser';
 
 @Injectable()
 export class PopupService {
-
-  constructor() {
-  }
+  constructor() {}
 
   makeCapitalPopup(data: any): SafeHtml {
     if (!data?.name || !data?.state || !data?.population) {

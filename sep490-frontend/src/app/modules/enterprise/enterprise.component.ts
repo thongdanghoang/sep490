@@ -25,20 +25,18 @@ L.Marker.prototype.options.icon = iconDefault;
   styleUrl: './enterprise.component.css'
 })
 export class EnterpriseComponent implements AfterViewInit {
-
   private map!: L.Map;
   private states!: geojson.GeoJsonObject | geojson.GeoJsonObject[] | null;
 
   constructor(
     private readonly markerService: MarkerService,
     private readonly shapeService: RegionService
-  ) {
-  }
+  ) {}
 
   ngAfterViewInit(): void {
     this.initMap();
     this.markerService.makeCapitalMarkers(this.map);
-    this.map.on('click', (e) => {
+    this.map.on('click', e => {
       const marker = L.marker([e.latlng.lat, e.latlng.lng]);
       marker.addTo(this.map);
     });
@@ -55,40 +53,45 @@ export class EnterpriseComponent implements AfterViewInit {
         zoom: 20
       });
     } else {
-      throw new Error('Map element not found, should set id="map" to the map element');
+      throw new Error(
+        'Map element not found, should set id="map" to the map element'
+      );
     }
 
-    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      minZoom: 3,
-      attribution: ''
-    });
+    const tiles = L.tileLayer(
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      {
+        maxZoom: 18,
+        minZoom: 3,
+        attribution: ''
+      }
+    );
 
     tiles.addTo(this.map);
   }
 
-  private initStatesLayer() {
+  private initStatesLayer(): void {
     const stateLayer = L.geoJSON(this.states, {
-      style: (feature) => ({
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      style: feature => ({
         weight: 3,
         opacity: 0.5,
         color: '#008f68',
         fillOpacity: 0.8,
         fillColor: '#6DB65B'
       }),
-      onEachFeature: (feature, layer) => (
+      onEachFeature: (feature, layer) =>
         layer.on({
-          mouseover: (e) => (this.highlightFeature(e)),
-          mouseout: (e) => (this.resetFeature(e)),
+          mouseover: e => this.highlightFeature(e),
+          mouseout: e => this.resetFeature(e)
         })
-      )
     });
 
     this.map.addLayer(stateLayer);
     stateLayer.bringToBack();
   }
 
-  private highlightFeature(e: L.LeafletMouseEvent) {
+  private highlightFeature(e: L.LeafletMouseEvent): void {
     const layer = e.target;
 
     layer.setStyle({
@@ -100,7 +103,7 @@ export class EnterpriseComponent implements AfterViewInit {
     });
   }
 
-  private resetFeature(e: L.LeafletMouseEvent) {
+  private resetFeature(e: L.LeafletMouseEvent): void {
     const layer = e.target;
 
     layer.setStyle({

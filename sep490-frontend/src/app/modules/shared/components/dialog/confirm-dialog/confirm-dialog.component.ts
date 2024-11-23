@@ -19,7 +19,6 @@ export enum ConfirmEventType {
   styleUrl: './confirm-dialog.component.css'
 })
 export class ConfirmDialogComponent {
-
   confirmationOptions: Nullable<Confirmation>;
 
   /**
@@ -27,11 +26,14 @@ export class ConfirmDialogComponent {
    * @param {ConfirmEventType} enum - Custom confirm event.
    * @group Emits
    */
-  @Output() onHide: EventEmitter<ConfirmEventType> = new EventEmitter<ConfirmEventType>();
+  @Output() readonly hideChanged: EventEmitter<ConfirmEventType> =
+    new EventEmitter<ConfirmEventType>();
 
-  constructor(private readonly configs: DynamicDialogConfig,
-              protected readonly sanitizer: DomSanitizer,
-              private readonly ref: DynamicDialogRef) {
+  constructor(
+    private readonly configs: DynamicDialogConfig,
+    protected readonly sanitizer: DomSanitizer,
+    private readonly ref: DynamicDialogRef
+  ) {
     this.confirmationOptions = this.configs.data;
   }
 
@@ -44,7 +46,7 @@ export class ConfirmDialogComponent {
     this.ref.close(true);
   }
 
-  reject() {
+  reject(): void {
     if (this.confirmationOptions?.rejectEvent) {
       this.confirmationOptions.rejectEvent.emit(ConfirmEventType.REJECT);
     }
@@ -54,23 +56,23 @@ export class ConfirmDialogComponent {
   }
 
   get acceptButtonLabel(): string {
-    return this.option('acceptLabel') ?? "TranslationKeys.ACCEPT";
+    return this.option('acceptLabel') ?? 'TranslationKeys.ACCEPT';
   }
 
   get rejectButtonLabel(): string {
-    return this.option('rejectLabel') ?? "TranslationKeys.REJECT";
+    return this.option('rejectLabel') ?? 'TranslationKeys.REJECT';
   }
 
   option(name: string): any {
-    const source: { [key: string]: any } = this.confirmationOptions || this;
-    if (source.hasOwnProperty(name)) {
+    const source: {[key: string]: any} = this.confirmationOptions || this;
+    if (Object.prototype.hasOwnProperty.call(source, name)) {
       return source[name];
     }
     return undefined;
   }
 
-  private hide(type?: ConfirmEventType) {
-    this.onHide.emit(type);
+  private hide(type?: ConfirmEventType): void {
+    this.hideChanged.emit(type);
     this.confirmationOptions = null;
   }
 }

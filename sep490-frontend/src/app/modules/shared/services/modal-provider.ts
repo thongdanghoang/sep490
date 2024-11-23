@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {Confirmation} from 'primeng/api';
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {SubscriptionAwareComponent} from '../../core/subscription-aware.component';
@@ -6,8 +6,10 @@ import {ConfirmDialogComponent} from '../components/dialog/confirm-dialog/confir
 import {Observable} from 'rxjs';
 
 @Injectable()
-export class ModalProvider extends SubscriptionAwareComponent {
-
+export class ModalProvider
+  extends SubscriptionAwareComponent
+  implements OnDestroy
+{
   ref: DynamicDialogRef | undefined;
 
   constructor(private readonly dialogService: DialogService) {
@@ -18,7 +20,7 @@ export class ModalProvider extends SubscriptionAwareComponent {
     this.ref = this.dialogService.open(ConfirmDialogComponent, {
       header: params.header,
       modal: true,
-      data: params,
+      data: params
     });
     return this.ref.onClose;
   }
