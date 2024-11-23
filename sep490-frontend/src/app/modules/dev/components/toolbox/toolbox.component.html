@@ -1,0 +1,120 @@
+<div class="flex flex-col gap-8">
+  <div class="card flex justify-content-center gap-2">
+    <p-button (onClick)="confirm()" label="Save" [outlined]="true" />
+    <p-button (onClick)="confirmDelete()" label="Delete" severity="danger" [outlined]="true" />
+  </div>
+  <div class="card flex justify-center gap-2">
+    <p-button icon="pi pi-check"/>
+    <p-button label="Submit" icon="pi pi-check"/>
+    <p-button label="Submit" icon="pi pi-check" iconPos="right"/>
+  </div>
+  <div class="card flex flex-wrap gap-3 justify-center items-center">
+    Severity
+    <p-button label="Primary"/>
+    <p-button label="Secondary" severity="secondary"/>
+    <p-button label="Success" severity="success"/>
+    <p-button label="Info" severity="info"/>
+    <p-button label="Warning" severity="warning"/>
+    <p-button label="Help" severity="help"/>
+    <p-button label="Danger" severity="danger"/>
+    <p-button label="Contrast" severity="contrast"/>
+    <p-button label="Submit" [disabled]="true"/>
+  </div>
+  <div class="card flex flex-wrap gap-3 justify-center items-center">
+    Raised
+    <p-button label="Primary" [raised]="true"/>
+    <p-button label="Secondary" [raised]="true" severity="secondary"/>
+    <p-button label="Success" [raised]="true" severity="success"/>
+    <p-button label="Info" [raised]="true" severity="info"/>
+    <p-button label="Warning" [raised]="true" severity="warning"/>
+    <p-button label="Help" [raised]="true" severity="help"/>
+    <p-button label="Danger" [raised]="true" severity="danger"/>
+    <p-button label="Contrast" [raised]="true" severity="contrast"/>
+  </div>
+  <div class="card flex flex-wrap gap-3 justify-center items-center">
+    Text
+    <p-button label="Primary" [text]="true"/>
+    <p-button label="Secondary" [text]="true" severity="secondary"/>
+    <p-button label="Success" [text]="true" severity="success"/>
+    <p-button label="Info" [text]="true" severity="info"/>
+    <p-button label="Warning" [text]="true" severity="warning"/>
+    <p-button label="Help" [text]="true" severity="help"/>
+    <p-button label="Danger" [text]="true" severity="danger"/>
+    <p-button label="Plain" [text]="true" [plain]="true"/>
+  </div>
+  <div class="card flex flex-wrap gap-3 justify-center items-center">
+    Outlined
+    <p-button label="Primary" [outlined]="true"/>
+    <p-button label="Secondary" [outlined]="true" severity="secondary"/>
+    <p-button label="Success" [outlined]="true" severity="success"/>
+    <p-button label="Info" [outlined]="true" severity="info"/>
+    <p-button label="Warning" [outlined]="true" severity="warning"/>
+    <p-button label="Help" [outlined]="true" severity="help"/>
+    <p-button label="Danger" [outlined]="true" severity="danger"/>
+    <p-button label="Contrast" [outlined]="true" severity="contrast"/>
+  </div>
+  <div class="card">
+    <div class="flex justify-center flex-wrap gap-3 mb-4">
+      <p-button icon="pi pi-check"/>
+      <p-button icon="pi pi-bookmark" severity="secondary"/>
+      <p-button icon="pi pi-search" severity="success"/>
+      <p-button icon="pi pi-user" severity="info"/>
+      <p-button icon="pi pi-bell" severity="warning"/>
+      <p-button icon="pi pi-heart" severity="help"/>
+      <p-button icon="pi pi-times" severity="danger"/>
+    </div>
+    <div class="flex justify-center flex-wrap gap-3 mb-4">
+      <p-button icon="pi pi-check" [rounded]="true"/>
+      <p-button icon="pi pi-bookmark" [rounded]="true" severity="secondary"/>
+      <p-button icon="pi pi-search" [rounded]="true" severity="success"/>
+      <p-button icon="pi pi-user" [rounded]="true" severity="info"/>
+      <p-button icon="pi pi-bell" [rounded]="true" severity="warning"/>
+      <p-button icon="pi pi-heart" [rounded]="true" severity="help"/>
+      <p-button icon="pi pi-times" [rounded]="true" severity="danger"/>
+    </div>
+    <div class="flex justify-center flex-wrap gap-3 mb-4">
+      <p-button icon="pi pi-check" [rounded]="true" [outlined]="true"/>
+      <p-button icon="pi pi-bookmark" [rounded]="true" severity="secondary" [outlined]="true"/>
+      <p-button icon="pi pi-search" [rounded]="true" severity="success" [outlined]="true"/>
+      <p-button icon="pi pi-user" [rounded]="true" severity="info" [outlined]="true"/>
+      <p-button icon="pi pi-bell" [rounded]="true" severity="warning" [outlined]="true"/>
+      <p-button icon="pi pi-heart" [rounded]="true" severity="help" [outlined]="true"/>
+      <p-button icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true"/>
+    </div>
+    <div class="flex justify-center flex-wrap gap-3 mb-4">
+      <p-button icon="pi pi-check" [rounded]="true" [text]="true" [raised]="true"/>
+      <p-button icon="pi pi-bookmark" [rounded]="true" [text]="true" [raised]="true" severity="secondary"/>
+      <p-button icon="pi pi-search" [rounded]="true" [text]="true" [raised]="true" severity="success"/>
+      <p-button icon="pi pi-user" [rounded]="true" [text]="true" [raised]="true" severity="info"/>
+      <p-button icon="pi pi-bell" [rounded]="true" [text]="true" [raised]="true" severity="warning"/>
+      <p-button icon="pi pi-heart" [rounded]="true" [text]="true" [raised]="true" severity="help"/>
+      <p-button icon="pi pi-times" [rounded]="true" [text]="true" [raised]="true" severity="danger"/>
+    </div>
+    <div class="flex justify-center flex-wrap gap-3 mb-4">
+      <p-button icon="pi pi-check" [rounded]="true" [text]="true"/>
+      <p-button icon="pi pi-bookmark" [rounded]="true" [text]="true" severity="secondary"/>
+      <p-button icon="pi pi-search" [rounded]="true" [text]="true" severity="success"/>
+      <p-button icon="pi pi-user" [rounded]="true" [text]="true" severity="info"/>
+      <p-button icon="pi pi-bell" [rounded]="true" [text]="true" severity="warning"/>
+      <p-button icon="pi pi-heart" [rounded]="true" [text]="true" severity="help"/>
+      <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger"/>
+    </div>
+  </div>
+  <div class="card flex flex-wrap gap-3 justify-center items-center">
+    Icon
+    <i class="pi pi-check"></i>
+    <i class="pi pi-times"></i>
+    <span class="pi pi-search"></span>
+    <span class="pi pi-user"></span>
+    <i class="pi pi-check" style="font-size: 1rem"></i>
+    <i class="pi pi-times" style="font-size: 1.5rem"></i>
+    <i class="pi pi-search" style="font-size: 2rem"></i>
+    <i class="pi pi-user" style="font-size: 2.5rem"></i>
+    <i class="pi pi-check" style="color: slateblue"></i>
+    <i class="pi pi-times" style="color: green"></i>
+    <i class="pi pi-search" style="color: var(--primary-color)"></i>
+    <i class="pi pi-user" style="color: #708090"></i>
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <i class="pi pi-spin pi-cog" style="font-size: 2rem"></i>
+  </div>
+</div>

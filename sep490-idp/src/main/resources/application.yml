@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: sep490-idp
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  flyway:
+    default-schema: ${DB_SCHEMA}
+    output-query-results: ${FLYWAY_OUTPUT_QUERIES:false}
+    fail-on-missing-locations: true
+    create-schemas: false
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: ${HIBERNATE_SQL_LOG_LEVEL:INFO}
+        type:
+          descriptor:
+            sql: ${HIBERNATE_SQL_PARAM_LOG_LEVEL:INFO}
+
+#minio:
+#  url: ${MINIO_ENDPOINT}
+#  access:
+#    name: ${MINIO_ACCESS_KEY}
+#    secret: ${MINIO_SECRET_KEY}
+#  secure: true
+#  bucket: ${MINIO_DEFAULT_BUCKET}
+#  connect-timeout: 10000
+#  read-timeout: 10000
+#  write-timeout: 10000
