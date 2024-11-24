@@ -9,7 +9,8 @@ RUN chown -R idpuser:idpuser /app
 USER idpuser:idpuser
 
 COPY build/libs/*.jar app.jar
-RUN test -f app.jar || (echo "JAR file not found" && exit 1)
+RUN test -f app.jar || (echo "JAR file not found" && exit 1) \
+&& apk add --no-cache wget
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
     CMD ["wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]

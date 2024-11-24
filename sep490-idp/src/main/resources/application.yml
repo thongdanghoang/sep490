@@ -8,7 +8,6 @@ spring:
   flyway:
     default-schema: ${DB_SCHEMA}
     output-query-results: ${FLYWAY_OUTPUT_QUERIES:false}
-    fail-on-missing-locations: true
     create-schemas: false
   jpa:
     hibernate:
