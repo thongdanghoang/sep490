@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  oidcAuthority: 'https://example.com/auth',
-  oidcClientId: 'sep490-frontend',
+  oidcAuthority: 'http://localhost:8080',
+  oidcClientId: 'oidc-client',
 };

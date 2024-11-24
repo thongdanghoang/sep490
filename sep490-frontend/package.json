@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng lint & ng serve",
-    "build": "ng lint & ng build --configuration=production --base-href https://example.com/",
-    "watch": "ng lint & ng build --watch --configuration development",
+    "start": "ng lint && ng serve",
+    "build": "ng lint && ng build --configuration=production --base-href http://localhost:4200/",
+    "watch": "ng lint && ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
   },

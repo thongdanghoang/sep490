@@ -14,7 +14,7 @@ jobs:
         module: [ 'sep490-common', 'sep490-idp' ]
     steps:
       - name: Extract version from branch name
-        run: echo "VERSION=${GITHUB_REF#refs/heads/release/}" >> $GITHUB_ENV
+        run: echo "VERSION=${GITHUB_REF#refs/heads/release/}" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
@@ -33,7 +33,9 @@ jobs:
       - name: Build with Gradle
         timeout-minutes: 15
         run: |
-          ./gradlew build --scan
+          ./gradlew build \
+          --no-daemon \
+          -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g"
         working-directory: ${{ matrix.module }}
 
       - name: Login to Docker Hub
@@ -60,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Extract version from branch name
-        run: echo "VERSION=${GITHUB_REF#refs/heads/release/}" >> $GITHUB_ENV
+        run: echo "VERSION=${GITHUB_REF#refs/heads/release/}" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
       - name: Use Node.js
         uses: actions/setup-node@v4
