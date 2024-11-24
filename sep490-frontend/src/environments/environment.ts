@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  oidcAuthority: '',
-  oidcClientId: '',
+  oidcAuthority: 'https://example.com/auth',
+  oidcClientId: 'sep490-frontend',
 };

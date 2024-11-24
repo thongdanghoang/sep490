@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng lint & ng serve",
-    "build": "ng lint & ng build",
+    "build": "ng lint & ng build --configuration=production --base-href https://example.com/",
     "watch": "ng lint & ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
