@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build:
-    name: Build Modules
+    name: Build Java Modules
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -43,7 +43,7 @@ jobs:
         working-directory: ${{ matrix.module }}
 
   build-frontend:
-    name: Check Build
+    name: Build Frontend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
