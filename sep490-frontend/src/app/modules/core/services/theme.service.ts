@@ -6,7 +6,6 @@ export enum Theme {
   AURA_LIGHT_CYAN = 'theme-aura-light-cyan'
 }
 
-
 @Injectable()
 export class ThemeService {
   readonly defaultTheme = Theme.AURA_LIGHT_CYAN;
@@ -14,8 +13,7 @@ export class ThemeService {
   readonly appThemeElementId = 'app-theme';
   readonly themeNameConfigKey = 'theme';
 
-  constructor(@Inject(DOCUMENT) private readonly document: Document) {
-  }
+  constructor(@Inject(DOCUMENT) private readonly document: Document) {}
 
   selectTheme(theme: Theme): void {
     const appliedTheme = this.setAppTheme(theme);
@@ -30,16 +28,20 @@ export class ThemeService {
     }
     const themeElement = this.document.getElementById(this.appThemeElementId);
     if (!themeElement) {
-      console.error(`Theme element with id '${this.appThemeElementId}' not found`);
+      console.error(
+        `Theme element with id '${this.appThemeElementId}' not found`
+      );
       return null;
     }
     const themeLink = themeElement as HTMLLinkElement;
     if (!(themeLink instanceof HTMLLinkElement)) {
-      console.error(`Element with id '${this.appThemeElementId}' is not a link element`);
+      console.error(
+        `Element with id '${this.appThemeElementId}' is not a link element`
+      );
       return null;
     }
     try {
-      themeLink.href = theme + '.css';
+      themeLink.href = `${theme}.css`;
     } catch (error) {
       console.error('Failed to set theme:', error);
       return null;
@@ -53,7 +55,7 @@ export class ThemeService {
 
   getLocalStorageTheme(): Theme | null {
     const theme = localStorage.getItem(this.themeNameConfigKey);
-    return this.supportedThemes.find(t => t === theme) ?? null
+    return this.supportedThemes.find(t => t === theme) ?? null;
   }
 
   isDarkMode(): boolean {

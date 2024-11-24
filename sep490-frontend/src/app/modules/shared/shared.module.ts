@@ -30,7 +30,7 @@ const primeNgModules = [
   TabMenuModule,
   ToastModule,
   PasswordModule,
-  RippleModule,
+  RippleModule
 ];
 
 const commons = [
@@ -42,18 +42,9 @@ const commons = [
 ];
 
 @NgModule({
-  declarations: [
-    ConfirmDialogComponent,
-  ],
-  imports: [
-    ...commons,
-    ...primeNgModules
-  ],
-  exports: [
-    ...commons,
-    ...primeNgModules
-  ],
+  declarations: [ConfirmDialogComponent],
+  imports: [...commons, ...primeNgModules],
+  exports: [...commons, ...primeNgModules],
   providers: [DatePipe, ModalProvider]
 })
-export class SharedModule {
-}
+export class SharedModule {}
