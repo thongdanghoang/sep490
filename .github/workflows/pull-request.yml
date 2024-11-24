@@ -9,6 +9,10 @@ on:
       - reopened
       - edited
 
+permissions:
+  contents: read
+  statuses: write
+
 jobs:
   build:
     name: Build Modules
