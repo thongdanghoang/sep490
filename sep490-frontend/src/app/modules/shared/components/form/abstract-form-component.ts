@@ -1,6 +1,11 @@
 import {Directive, OnInit} from '@angular/core';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
-import {AbstractControl, FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup
+} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {MessageService} from 'primeng/api';
 import {ModalProvider} from '../../services/modal-provider';
@@ -8,8 +13,10 @@ import {of, take} from 'rxjs';
 import {BusinessErrorParam} from '../../models/models';
 
 @Directive()
-export abstract class AbstractFormComponent<T> extends SubscriptionAwareComponent implements OnInit {
-
+export abstract class AbstractFormComponent<T>
+  extends SubscriptionAwareComponent
+  implements OnInit
+{
   /**
    * the root form group of the form.
    */
@@ -18,7 +25,7 @@ export abstract class AbstractFormComponent<T> extends SubscriptionAwareComponen
   /**
    * form controls of the form.
    */
-  formControls!: { [key: string]: AbstractControl };
+  formControls!: {[key: string]: AbstractControl};
 
   /**
    * Flag in order to prevent double submit issue when the form is submitted. It is set to true when the submit() method is invoked and
@@ -37,7 +44,8 @@ export abstract class AbstractFormComponent<T> extends SubscriptionAwareComponen
     protected httpClient: HttpClient,
     protected formBuilder: FormBuilder,
     protected notificationService: MessageService,
-    protected modalProvider: ModalProvider) {
+    protected modalProvider: ModalProvider
+  ) {
     super();
   }
 
@@ -46,29 +54,13 @@ export abstract class AbstractFormComponent<T> extends SubscriptionAwareComponen
     this.formGroup = this.formBuilder.group(this.formControls);
     this.initializeData();
     this.updateFormControlsState(this.formGroup, [
-      (ctr: AbstractControl): void => this.registerSubscription(ctr.valueChanges.pipe(take(1)).subscribe((): void => ctr.markAsTouched()))
+      (ctr: AbstractControl): void =>
+        this.registerSubscription(
+          ctr.valueChanges
+            .pipe(take(1))
+            .subscribe((): void => ctr.markAsTouched())
+        )
     ]);
-  }
-
-  /**
-   * Initialize list of controls for the form.
-   */
-  protected abstract initializeFormControls(): { [key: string]: AbstractControl };
-
-  /**
-   * Initialize the default value for the target entity.
-   */
-  protected abstract initializeData(): void;
-
-  protected updateFormControlsState(formGroup: FormGroup, functions: ((formControl: AbstractControl) => void)[]): void {
-    for (const control in formGroup.controls) {
-      if (formGroup.controls[control]) {
-        functions.forEach(fn => fn(formGroup.controls[control]));
-        if (formGroup.get(control) instanceof FormGroup || formGroup.get(control) instanceof FormArray) {
-          this.updateFormControlsState(formGroup.get(control) as FormGroup, functions);
-        }
-      }
-    }
   }
 
   submit(): void {
@@ -103,23 +95,59 @@ export abstract class AbstractFormComponent<T> extends SubscriptionAwareComponen
   }
 
   /**
+   * Initialize list of controls for the form.
+   */
+  protected abstract initializeFormControls(): {
+    [key: string]: AbstractControl;
+  };
+
+  /**
+   * Initialize the default value for the target entity.
+   */
+  protected abstract initializeData(): void;
+
+  protected updateFormControlsState(
+    formGroup: FormGroup,
+    functions: ((formControl: AbstractControl) => void)[]
+  ): void {
+    for (const control in formGroup.controls) {
+      if (formGroup.controls[control]) {
+        functions.forEach(fn => fn(formGroup.controls[control]));
+        if (
+          formGroup.get(control) instanceof FormGroup ||
+          formGroup.get(control) instanceof FormArray
+        ) {
+          this.updateFormControlsState(
+            formGroup.get(control) as FormGroup,
+            functions
+          );
+        }
+      }
+    }
+  }
+
+  /**
    * The actual submit logic of the child class.
    * This is only called when no validation errors found.
    */
   protected submitForm(data: T | null = null): void {
     if (this.submitFormDataUrl()) {
       this.disableSubmitBtn();
-      this.httpClient.request(this.submitFormMethod(), this.submitFormDataUrl(), {body: data || this.getSubmitFormData()}).subscribe({
-        next: r => {
-          this.showSaveSuccessNotification(r);
-          this.enableSubmitBtn();
-          this.onSubmitFormDataSuccess(r);
-        },
-        error: error => {
-          this.displayFormResultErrors(error.error);
-          this.onSubmitFormRequestError(error);
-        }
-      });
+      this.httpClient
+        .request(this.submitFormMethod(), this.submitFormDataUrl(), {
+          body: data || this.getSubmitFormData()
+        })
+        .subscribe({
+          next: r => {
+            this.showSaveSuccessNotification(r);
+            this.enableSubmitBtn();
+            this.onSubmitFormDataSuccess(r);
+          },
+          error: error => {
+            this.displayFormResultErrors(error.error);
+            this.onSubmitFormRequestError(error);
+          }
+        });
     } else {
       this.enableSubmitBtn();
       this.onSubmitFormDataSuccess(this.getSubmitFormData());
@@ -133,14 +161,18 @@ export abstract class AbstractFormComponent<T> extends SubscriptionAwareComponen
   /**
    * Perform additional processing before submit the form.
    */
-  protected prepareDataBeforeSubmit(): void {
-  }
+  protected prepareDataBeforeSubmit(): void {}
 
   protected enableSubmitBtn(): void {
     this.disableSubmitButton = false;
   }
 
-  protected onSubmitFormRequestError(_error: any): void {
+  /**
+   * Hook when having errors
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected onSubmitFormRequestError(error: any): void {
+    // Override by subclass
   }
 
   /**
@@ -167,7 +199,8 @@ export abstract class AbstractFormComponent<T> extends SubscriptionAwareComponen
     return this.formGroup.value;
   }
 
-  protected showSaveSuccessNotification(_result: any): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected showSaveSuccessNotification(result: any): void {
     this.notificationService.add({
       severity: 'success',
       summary: 'common.success',
@@ -181,7 +214,7 @@ export abstract class AbstractFormComponent<T> extends SubscriptionAwareComponen
       if (result?.field) {
         const formControl = this.formControls[result.field];
         if (formControl) {
-          let businessError = {
+          const businessError = {
             [result.i18nKey]: {}
           };
           if (result.args && result.args.length > 0) {
@@ -208,7 +241,5 @@ export abstract class AbstractFormComponent<T> extends SubscriptionAwareComponen
 
   protected abstract onSubmitFormDataSuccess(result: any): void;
 
-  private showGenericErrorNotification(): void {
-  }
-
+  private showGenericErrorNotification(): void {}
 }

@@ -6,12 +6,9 @@ import {ApplicationService} from './services/application.service';
 import {MessageService} from 'primeng/api';
 import {DialogService} from 'primeng/dynamicdialog';
 
-
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   providers: [ApplicationService, ThemeService, MessageService, DialogService]
 })
 export class CoreModule {

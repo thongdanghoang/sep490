@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Theme, ThemeService} from '../../modules/core/services/theme.service';
 import {ApplicationService} from '../../modules/core/services/application.service';
 import {SubscriptionAwareComponent} from '../../modules/core/subscription-aware.component';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
 import {AppRoutingConstants} from '../../app-routing.constant';
 import {MenuItem} from 'primeng/api';
@@ -12,8 +12,10 @@ import {MenuItem} from 'primeng/api';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent extends SubscriptionAwareComponent implements OnInit {
-
+export class HeaderComponent
+  extends SubscriptionAwareComponent
+  implements OnInit
+{
   protected items: MenuItem[] | undefined;
   protected readonly authenticated: Observable<boolean>;
 
@@ -26,7 +28,7 @@ export class HeaderComponent extends SubscriptionAwareComponent implements OnIni
     this.authenticated = this.applicationService.isAuthenticated();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.items = [
       {
         label: 'Enterprise',
@@ -37,7 +39,7 @@ export class HeaderComponent extends SubscriptionAwareComponent implements OnIni
         label: 'DevTools',
         icon: 'pi pi-code',
         route: AppRoutingConstants.DEV_PATH
-      },
+      }
     ];
   }
 
@@ -54,8 +56,7 @@ export class HeaderComponent extends SubscriptionAwareComponent implements OnIni
   }
 
   protected toggleLightDark(): void {
-    if (this.themeService.isDarkMode()
-    ) {
+    if (this.themeService.isDarkMode()) {
       this.themeService.selectTheme(Theme.AURA_LIGHT_CYAN);
       return;
     }

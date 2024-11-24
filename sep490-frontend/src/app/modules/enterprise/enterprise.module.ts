@@ -7,16 +7,9 @@ import {MarkerService} from './services/marker.service';
 import {PopupService} from './services/popup.service';
 import {RegionService} from './services/region.service';
 
-
 @NgModule({
-  declarations: [
-    EnterpriseComponent
-  ],
-  imports: [
-    SharedModule,
-    EnterpriseRoutingModule
-  ],
+  declarations: [EnterpriseComponent],
+  imports: [SharedModule, EnterpriseRoutingModule],
   providers: [MarkerService, PopupService, RegionService]
 })
-export class EnterpriseModule {
-}
+export class EnterpriseModule {}
