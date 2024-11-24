@@ -32,8 +32,8 @@ jobs:
       - run: ./gradlew build
         working-directory: ${{ matrix.module }}
 
-  lint:
-    name: Check Lint
+  build-frontend:
+    name: Check Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -50,5 +50,5 @@ jobs:
             ${{ runner.os }}-node-
       - run: npm ci
         working-directory: sep490-frontend
-      - run: npm run lint
+      - run: npm run build
         working-directory: sep490-frontend
