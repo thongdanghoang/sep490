@@ -22,19 +22,23 @@ export class AppComponent implements OnInit, OnDestroy {
       this.systemThemeMediaQuery = window.matchMedia(
         '(prefers-color-scheme: dark)'
       );
-      this.systemThemeMediaQuery.addEventListener('change', e => {
-        this.themeService.setAppTheme(
-          e.matches ? Theme.AURA_DARK_CYAN : Theme.AURA_LIGHT_CYAN
-        );
-      });
+      this.systemThemeMediaQuery.addEventListener(
+        'change',
+        this.handleThemeChange
+      );
     }
   }
 
   ngOnDestroy(): void {
-    this.systemThemeMediaQuery?.removeEventListener('change', (e): void => {
-      this.themeService.setAppTheme(
-        e.matches ? Theme.AURA_DARK_CYAN : Theme.AURA_LIGHT_CYAN
-      );
-    });
+    this.systemThemeMediaQuery?.removeEventListener(
+      'change',
+      this.handleThemeChange
+    );
   }
+
+  private readonly handleThemeChange = (e: MediaQueryListEvent): void => {
+    this.themeService.setAppTheme(
+      e.matches ? Theme.AURA_DARK_CYAN : Theme.AURA_LIGHT_CYAN
+    );
+  };
 }

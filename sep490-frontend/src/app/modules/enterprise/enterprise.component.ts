@@ -63,7 +63,8 @@ export class EnterpriseComponent implements AfterViewInit {
       {
         maxZoom: 18,
         minZoom: 3,
-        attribution: ''
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }
     );
 

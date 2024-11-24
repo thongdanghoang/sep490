@@ -26,7 +26,7 @@ export class ConfirmDialogComponent {
    * @param {ConfirmEventType} enum - Custom confirm event.
    * @group Emits
    */
-  @Output() readonly hideChanged: EventEmitter<ConfirmEventType> =
+  @Output() readonly hide: EventEmitter<ConfirmEventType> =
     new EventEmitter<ConfirmEventType>();
 
   constructor(
@@ -42,7 +42,7 @@ export class ConfirmDialogComponent {
       this.confirmationOptions.acceptEvent.emit();
     }
 
-    this.hide(ConfirmEventType.ACCEPT);
+    this.hideByConfirmEventType(ConfirmEventType.ACCEPT);
     this.ref.close(true);
   }
 
@@ -51,7 +51,7 @@ export class ConfirmDialogComponent {
       this.confirmationOptions.rejectEvent.emit(ConfirmEventType.REJECT);
     }
 
-    this.hide(ConfirmEventType.REJECT);
+    this.hideByConfirmEventType(ConfirmEventType.REJECT);
     this.ref.close(false);
   }
 
@@ -65,14 +65,14 @@ export class ConfirmDialogComponent {
 
   option(name: string): any {
     const source: {[key: string]: any} = this.confirmationOptions || this;
-    if (Object.prototype.hasOwnProperty.call(source, name)) {
+    if (Object.hasOwn(source, name)) {
       return source[name];
     }
     return undefined;
   }
 
-  private hide(type?: ConfirmEventType): void {
-    this.hideChanged.emit(type);
+  private hideByConfirmEventType(type?: ConfirmEventType): void {
+    this.hide.emit(type);
     this.confirmationOptions = null;
   }
 }
