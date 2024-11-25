@@ -1,4 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Theme, ThemeService} from './modules/core/services/theme.service';
 
 @Component({
@@ -9,9 +10,13 @@ import {Theme, ThemeService} from './modules/core/services/theme.service';
 export class AppComponent implements OnInit, OnDestroy {
   private systemThemeMediaQuery?: MediaQueryList;
 
-  constructor(private readonly themeService: ThemeService) {}
+  constructor(
+    private readonly themeService: ThemeService,
+    private readonly translate: TranslateService
+  ) {}
 
   ngOnInit(): void {
+    this.translate.setDefaultLang('vi');
     const localStorageTheme = this.themeService.getLocalStorageTheme();
     if (localStorageTheme) {
       this.themeService.setAppTheme(localStorageTheme);

@@ -1,6 +1,8 @@
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {CoreModule} from './modules/core/core.module';
@@ -18,7 +20,7 @@ import {NotFoundComponent} from './components/not-found/not-found.component';
 import {SharedModule} from './modules/shared/shared.module';
 import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import {AppRoutingConstants} from './app-routing.constant';
 import {HomeComponent} from './components/home/home.component';
 import {environment} from '../environments/environment';
@@ -40,6 +42,10 @@ function initAuth(
         resolve(data);
       });
     });
+}
+
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
@@ -73,6 +79,13 @@ function initAuth(
         logLevel: environment.production ? LogLevel.Warn : LogLevel.Debug,
         historyCleanupOff: true,
         secureRoutes: []
+      }
+    }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
       }
     })
   ],
