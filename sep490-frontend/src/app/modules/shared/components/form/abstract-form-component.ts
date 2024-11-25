@@ -1,4 +1,4 @@
-import {Directive, OnInit} from '@angular/core';
+import {Directive, Injector, OnInit} from '@angular/core';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {
   AbstractControl,
@@ -40,13 +40,17 @@ export abstract class AbstractFormComponent<T>
    */
   protected submitted: boolean = false;
 
-  protected constructor(
-    protected httpClient: HttpClient,
-    protected formBuilder: FormBuilder,
-    protected notificationService: MessageService,
-    protected modalProvider: ModalProvider
-  ) {
+  protected httpClient: HttpClient;
+  protected formBuilder: FormBuilder;
+  protected notificationService: MessageService;
+  protected modalProvider: ModalProvider;
+
+  protected constructor(injector: Injector) {
     super();
+    this.httpClient = injector.get(HttpClient);
+    this.formBuilder = injector.get(FormBuilder);
+    this.notificationService = injector.get(MessageService);
+    this.modalProvider = injector.get(ModalProvider);
   }
 
   ngOnInit(): void {
@@ -135,7 +139,7 @@ export abstract class AbstractFormComponent<T>
       this.disableSubmitBtn();
       this.httpClient
         .request(this.submitFormMethod(), this.submitFormDataUrl(), {
-          body: data || this.getSubmitFormData()
+          body: data ?? this.getSubmitFormData()
         })
         .subscribe({
           next: r => {

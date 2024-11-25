@@ -17,6 +17,10 @@ import {TabMenuModule} from 'primeng/tabmenu';
 import {ToastModule} from 'primeng/toast';
 import {ConfirmDialogComponent} from './components/dialog/confirm-dialog/confirm-dialog.component';
 import {ModalProvider} from './services/modal-provider';
+import {TranslateModule} from '@ngx-translate/core';
+import {ErrorMessagesDirective} from './directives/error-messages.directive';
+import {ErrorDirective} from './directives/error.directive';
+import {TranslateParamsPipe} from './pipes/translate-params.pipe';
 
 const primeNgModules = [
   AutoFocusModule,
@@ -38,13 +42,26 @@ const commons = [
   RouterModule,
   HttpClientModule,
   FormsModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
+  TranslateModule
 ];
 
 @NgModule({
-  declarations: [ConfirmDialogComponent],
+  declarations: [
+    ConfirmDialogComponent,
+    ErrorMessagesDirective,
+    ErrorDirective,
+    TranslateParamsPipe
+  ],
   imports: [...commons, ...primeNgModules],
-  exports: [...commons, ...primeNgModules],
+  exports: [
+    ...commons,
+    ...primeNgModules,
+    ConfirmDialogComponent,
+    ErrorMessagesDirective,
+    ErrorDirective,
+    TranslateParamsPipe
+  ],
   providers: [DatePipe, ModalProvider]
 })
 export class SharedModule {}
