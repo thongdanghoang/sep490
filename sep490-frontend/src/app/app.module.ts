@@ -1,4 +1,4 @@
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
@@ -43,6 +43,10 @@ function initAuth(
     });
 }
 
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,6 +77,13 @@ function initAuth(
         logLevel: environment.production ? LogLevel.Warn : LogLevel.Debug,
         historyCleanupOff: true,
         secureRoutes: []
+      }
+    }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
       }
     })
   ],
