@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  oidcAuthority: '',
-  oidcClientId: '',
+  oidcAuthority: 'http://localhost:8080',
+  oidcClientId: 'oidc-client',
 };

@@ -7,8 +7,8 @@ import {CoreModule} from './modules/core/core.module';
 import {
   AuthInterceptor,
   AuthModule,
-  LoginResponse,
   LogLevel,
+  LoginResponse,
   OidcSecurityService,
   OpenIdConfigLoader
 } from 'angular-auth-oidc-client';
@@ -23,7 +23,17 @@ import {AppRoutingConstants} from './app-routing.constant';
 import {HomeComponent} from './components/home/home.component';
 import {environment} from '../environments/environment';
 
-function initAuth(oidcSecurityService: OidcSecurityService): () => Promise<LoginResponse> {
+enum OidcScopes {
+  OPENID = 'openid',
+  PROFILE = 'profile',
+  EMAIL = 'email',
+  PHONE = 'phone',
+  ADDRESS = 'address'
+}
+
+function initAuth(
+  oidcSecurityService: OidcSecurityService
+): () => Promise<LoginResponse> {
   return () =>
     new Promise<LoginResponse>(resolve => {
       oidcSecurityService.checkAuth().subscribe(data => {
@@ -50,28 +60,32 @@ function initAuth(oidcSecurityService: OidcSecurityService): () => Promise<Login
     SharedModule,
     AuthModule.forRoot({
       config: {
-        forbiddenRoute: AppRoutingConstants.FORBIDDEN,
-        unauthorizedRoute: AppRoutingConstants.UNAUTHORIZED,
-        autoUserInfo: false,
         authority: environment.oidcAuthority,
         redirectUrl: window.location.origin,
-        postLogoutRedirectUri: window.location.origin,
         clientId: environment.oidcClientId,
-        scope: "openid",
         responseType: 'code',
+        scope: `${OidcScopes.OPENID} ${OidcScopes.EMAIL}`,
+        postLogoutRedirectUri: window.location.origin,
+        forbiddenRoute: AppRoutingConstants.FORBIDDEN,
+        unauthorizedRoute: AppRoutingConstants.UNAUTHORIZED,
+        autoUserInfo: true,
+        renewUserInfoAfterTokenRenew: true,
         logLevel: environment.production ? LogLevel.Warn : LogLevel.Debug,
-        secureRoutes: [],
+        historyCleanupOff: true,
+        secureRoutes: []
       }
     })
   ],
   providers: [
     OpenIdConfigLoader,
-    {provide: APP_INITIALIZER, useFactory: initAuth, deps: [OidcSecurityService], multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initAuth,
+      deps: [OidcSecurityService],
+      multi: true
+    },
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ],
-  bootstrap:
-    [AppComponent]
+  bootstrap: [AppComponent]
 })
-
-export class AppModule {
-}
+export class AppModule {}

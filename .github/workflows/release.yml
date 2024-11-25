@@ -1,0 +1,103 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - "release/*"
+
+jobs:
+  release-java-modules:
+    name: Release Java Modules
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [ 'sep490-common', 'sep490-idp' ]
+    steps:
+      - name: Extract version from branch name
+        run: echo "VERSION=${GITHUB_REF#refs/heads/release/}" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Build with Gradle
+        timeout-minutes: 15
+        run: |
+          ./gradlew build \
+          --no-daemon \
+          -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g"
+        working-directory: ${{ matrix.module }}
+
+      - name: Login to Docker Hub
+        if: matrix.module != 'sep490-common'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        if: matrix.module != 'sep490-common'
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push module
+        if: matrix.module != 'sep490-common'
+        uses: docker/build-push-action@v5
+        with:
+          context: ./${{ matrix.module }}
+          file: ./${{ matrix.module }}/Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.module }}:${{ env.VERSION }}
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.module }}:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.module }}:buildcache,mode=max
+
+  release-frontend:
+    name: Release Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract version from branch name
+        run: echo "VERSION=${GITHUB_REF#refs/heads/release/}" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - name: Cache npm
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+        timeout-minutes: 5
+        working-directory: sep490-frontend
+      - run: npm run build
+        timeout-minutes: 5
+        working-directory: sep490-frontend
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./sep490-frontend
+          file: ./sep490-frontend/Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sep490-frontend:${{ env.VERSION }}
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/sep490-frontend:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/sep490-frontend:buildcache,mode=max
