@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
 import {AutoFocusModule} from 'primeng/autofocus';
 import {ButtonModule} from 'primeng/button';
 import {FloatLabelModule} from 'primeng/floatlabel';
@@ -17,6 +18,9 @@ import {DialogModule} from 'primeng/dialog';
 import {ToastModule} from 'primeng/toast';
 import {ModalProvider} from './services/modal-provider';
 import {ConfirmDialogComponent} from './components/dialog/confirm-dialog/confirm-dialog.component';
+import {ErrorMessagesDirective} from './directives/error-messages.directive';
+import {ErrorDirective} from './directives/error.directive';
+import {TranslateParamsPipe} from './pipes/translate-params.pipe';
 
 const primeNgModules = [
   AutoFocusModule,
@@ -38,13 +42,26 @@ const commons = [
   RouterModule,
   HttpClientModule,
   FormsModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
+  TranslateModule
 ];
 
 @NgModule({
-  declarations: [ConfirmDialogComponent],
+  declarations: [
+    ConfirmDialogComponent,
+    ErrorMessagesDirective,
+    ErrorDirective,
+    TranslateParamsPipe
+  ],
   imports: [...commons, ...primeNgModules],
-  exports: [...commons, ...primeNgModules],
+  exports: [
+    ...commons,
+    ...primeNgModules,
+    ConfirmDialogComponent,
+    ErrorMessagesDirective,
+    ErrorDirective,
+    TranslateParamsPipe
+  ],
   providers: [DatePipe, ModalProvider]
 })
 export class SharedModule {}
