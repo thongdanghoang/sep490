@@ -39,6 +39,12 @@ dependencies:
   url_launcher: ^6.3.1
   flutter_localization:
   shared_preferences:
+  http:
+  get_it:
+  go_router: ^13.2.1
+  intl: any
+  loading_animation_widget: ^1.2.1
+  carousel_slider: ^4.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

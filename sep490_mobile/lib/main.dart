@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:openid_client/openid_client.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sep490_mobile/utils/theme/theme_mode.dart';
 import 'package:sep490_mobile/utils/l10n/app_localizations.dart';
 import 'package:sep490_mobile/utils/openid_io.dart' if (dart.library.html) 'package:sep490_mobile/utils/openid_browser.dart';
 
@@ -26,11 +26,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   client = await getClient();
   credential = await getRedirectResult(client, scopes: scopes);
-  runApp(const MyApp());
+
+  final themeModeManager = ThemeModeManager();
+  await themeModeManager.loadThemeMode();
+
+  runApp(MyApp(themeModeManager: themeModeManager));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final ThemeModeManager themeModeManager;
+
+  const MyApp({super.key, required this.themeModeManager});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -38,9 +44,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final FlutterLocalization _localization = FlutterLocalization.instance;
-  final ValueNotifier<ThemeMode> _themeModeNotifier = ValueNotifier(ThemeMode.system);
-  bool _isLoadingTheme = true;
-  bool _isLoadingLocalizatioin = true;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -50,7 +54,9 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _initializeApp() async {
     await _initializeLocalization();
-    await _loadThemeMode();
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Future<void> _initializeLocalization() async {
@@ -65,32 +71,15 @@ class _MyAppState extends State<MyApp> {
       initLanguageCode: AppLocale.defaultLocale,
     );
     _localization.onTranslatedLanguage = _onTranslatedLanguage;
-    setState(() {
-      _isLoadingLocalizatioin = false;
-    });
   }
 
   void _onTranslatedLanguage(Locale? locale) {
     setState(() {});
   }
 
-  Future<void> _loadThemeMode() async {
-    final prefs = await SharedPreferences.getInstance();
-    final themeModeIndex = prefs.getInt('themeMode') ?? ThemeMode.system.index;
-    _themeModeNotifier.value = ThemeMode.values[themeModeIndex];
-    setState(() {
-      _isLoadingTheme = false;
-    });
-  }
-
-  Future<void> _saveThemeMode(ThemeMode themeMode) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('themeMode', themeMode.index);
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (_isLoadingTheme || _isLoadingLocalizatioin) {
+    if (_isLoading) {
       return const MaterialApp(
         home: Scaffold(
           body: Center(
@@ -101,7 +90,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     return ValueListenableBuilder<ThemeMode>(
-      valueListenable: _themeModeNotifier,
+      valueListenable: widget.themeModeManager.themeModeNotifier,
       builder: (context, themeMode, child) {
         return MaterialApp(
           supportedLocales: _localization.supportedLocales,
@@ -109,10 +98,7 @@ class _MyAppState extends State<MyApp> {
           theme: ThemeData.light(),
           darkTheme: ThemeData.dark(),
           themeMode: themeMode,
-          home: MyHomePage(
-            themeModeNotifier: _themeModeNotifier,
-            onThemeModeChanged: _saveThemeMode,
-          ),
+          home: MyHomePage(themeModeManager: widget.themeModeManager),
         );
       },
     );
@@ -120,14 +106,9 @@ class _MyAppState extends State<MyApp> {
 }
 
 class MyHomePage extends StatefulWidget {
-  final ValueNotifier<ThemeMode> themeModeNotifier;
-  final Future<void> Function(ThemeMode) onThemeModeChanged;
+  final ThemeModeManager themeModeManager;
 
-  const MyHomePage({
-    super.key,
-    required this.themeModeNotifier,
-    required this.onThemeModeChanged,
-  });
+  const MyHomePage({super.key, required this.themeModeManager});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -159,16 +140,15 @@ class _MyHomePageState extends State<MyHomePage> {
           // Light/Dark Mode Toggle Button
           IconButton(
             icon: Icon(
-              widget.themeModeNotifier.value == ThemeMode.dark
+              widget.themeModeManager.currentThemeMode == ThemeMode.dark
                   ? Icons.dark_mode
                   : Icons.light_mode,
             ),
             onPressed: () async {
-              final newMode = widget.themeModeNotifier.value == ThemeMode.dark
+              final newMode = widget.themeModeManager.currentThemeMode == ThemeMode.dark
                   ? ThemeMode.light
                   : ThemeMode.dark;
-              widget.themeModeNotifier.value = newMode;
-              await widget.onThemeModeChanged(newMode);
+              await widget.themeModeManager.saveThemeMode(newMode);
             },
           ),
         ],

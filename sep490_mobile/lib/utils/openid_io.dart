@@ -27,6 +27,9 @@ Future<Credential> authenticate(Client client,
   if (Platform.isAndroid || Platform.isIOS) {
     closeInAppWebView();
   }
+  var token= await c.getTokenResponse();
+
+  print(token);
 
   return c;
 }
