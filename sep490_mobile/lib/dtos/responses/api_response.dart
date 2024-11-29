@@ -1,4 +1,21 @@
-import 'package:sep490_mobile/extensions//custon_string.dart';
+import 'package:sep490_mobile/extensions//custom_string.dart';
+
+/// A generic class that represents the standard API response structure.
+///
+/// The [status] field typically contains values like "success" or "error".
+/// The [message] field contains a human-readable message about the response.
+/// The [data] field contains the actual response payload.
+///
+/// Example:
+/// ```dart
+/// final response = ApiResponse.fromJson({
+///   'status': 'success',
+///   'message': 'Data retrieved successfully',
+///   'data': {'id': 1, 'name': 'John'}
+/// });
+/// ```
+///
+/// Throws [FormatException] if required fields are missing or invalid.
 class ApiResponse {
   final String message;
   final String status;
@@ -18,4 +35,3 @@ class ApiResponse {
     );
   }
 }
-
