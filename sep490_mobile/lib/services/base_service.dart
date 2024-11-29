@@ -6,7 +6,7 @@ import 'package:sep490_mobile/repositories/token_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
-import 'package:sep490_mobile/extensions/custon_string.dart';
+import 'package:sep490_mobile/extensions/custom_string.dart';
 class BaseService {
   final TokenRepository tokenRepository = TokenRepository();
   final AuthRepository authRepository = AuthRepository();

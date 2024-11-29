@@ -1,4 +1,5 @@
 class AppRoutes {
+  AppRoutes._();
   static const login = 'login';
   static const register = 'register';
   static const detailProduct = 'detail_product';
