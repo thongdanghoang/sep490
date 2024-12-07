@@ -11,26 +11,15 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
-import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
-import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
@@ -48,12 +37,12 @@ import java.util.UUID;
 
 @Configuration
 public class SecurityConfig {
-
+    
     private static final String CLIENT_URL = "http://localhost:4200";
     private static final String USERNAME = "dano";
     private static final String PASSWORD = "dano";
-
-
+    
+    
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
@@ -66,7 +55,7 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
     }
-
+    
     @Bean
     @Order(1)
     public SecurityFilterChain asFilterChain(HttpSecurity http)
@@ -74,64 +63,38 @@ public class SecurityConfig {
         // reference: https://docs.spring.io/spring-authorization-server/reference/guides/how-to-userinfo.html
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-                .oidc(Customizer.withDefaults());
+            .oidc(Customizer.withDefaults());
         http
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .exceptionHandling(exceptions -> exceptions
-                        .defaultAuthenticationEntryPointFor(
-                                new LoginUrlAuthenticationEntryPoint("/login"),
-                                new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
-                        )
-                );
+                                           .defaultAuthenticationEntryPointFor(
+                                                   new LoginUrlAuthenticationEntryPoint("/login"),
+                                                   new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
+                                                                              )
+                                  );
         return http.build();
     }
-
+    
     @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
             throws Exception {
-
+        
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         http.formLogin(Customizer.withDefaults());
         http.authorizeHttpRequests(
                 c -> c.anyRequest().authenticated()
-        );
-
+                                  );
+        
         return http.build();
     }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        // TODO : setup UserDetailsService, UserDetails, PasswordEncoder, ...
-        UserDetails userDetails = User.withUsername(USERNAME)
-                .password(passwordEncoder().encode(PASSWORD))
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(userDetails);
-    }
-
+    
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        // return new BCryptPasswordEncoder();
+        return NoOpPasswordEncoder.getInstance();
     }
-
-    @Bean
-    public RegisteredClientRepository registeredClientRepository() {
-        RegisteredClient registeredClient =
-                RegisteredClient
-                        .withId(UUID.randomUUID().toString())
-                        .clientId("oidc-client")
-                        .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
-                        .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                        .redirectUri(CLIENT_URL)
-                        .postLogoutRedirectUri(CLIENT_URL)
-                        .scope(OidcScopes.OPENID)
-                        .scope(OidcScopes.EMAIL)
-                        .clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
-                        .build();
-        return new InMemoryRegisteredClientRepository(registeredClient);
-    }
-
+    
     @Bean
     public JWKSource<SecurityContext> jwkSource()
             throws NoSuchAlgorithmException {
@@ -150,16 +113,16 @@ public class SecurityConfig {
         JWKSet jwkSet = new JWKSet(rsaKey);
         return new ImmutableJWKSet<>(jwkSet);
     }
-
+    
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
         return context -> {
             // TODO: implement OidcUserInfoService
             if (OidcParameterNames.ID_TOKEN.equals(context.getTokenType().getValue())) {
                 var userInfo = OidcUserInfo.builder()
-                        .subject(UUID.randomUUID().toString())
-                        .email(USERNAME + "@elca.vn")
-                        .emailVerified(true)
+                                           .subject(UUID.randomUUID().toString())
+                                           .email(USERNAME + "@elca.vn")
+                                           .emailVerified(true)
 //                        .phoneNumber("+1 (604) 555-1234;ext=5678")
 //                        .phoneNumberVerified(false)
 //                        .claim("address", Collections.singletonMap("formatted", "Champ de Mars\n5 Av. Anatole France\n75007 Paris\nFrance"))
@@ -177,13 +140,13 @@ public class SecurityConfig {
 //                        .zoneinfo("Europe/Paris")
 //                        .locale("en-US")
 //                        .updatedAt("1970-01-01T00:00:00Z")
-                        .build()
-                        .getClaims();
+                                           .build()
+                                           .getClaims();
                 context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(userInfo));
             }
         };
     }
-
+    
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder().build();
