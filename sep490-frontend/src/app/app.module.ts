@@ -1,9 +1,7 @@
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {CoreModule} from './modules/core/core.module';
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {
   AuthInterceptor,
   AuthModule,
@@ -12,16 +10,19 @@ import {
   OidcSecurityService,
   OpenIdConfigLoader
 } from 'angular-auth-oidc-client';
-import {ForbiddenComponent} from './components/forbidden/forbidden.component';
-import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
-import {NotFoundComponent} from './components/not-found/not-found.component';
-import {SharedModule} from './modules/shared/shared.module';
-import {HeaderComponent} from './components/header/header.component';
-import {FooterComponent} from './components/footer/footer.component';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import {AppRoutingConstants} from './app-routing.constant';
-import {HomeComponent} from './components/home/home.component';
+import {providePrimeNG} from 'primeng/config';
 import {environment} from '../environments/environment';
+import {AppRoutingConstants} from './app-routing.constant';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {FooterComponent} from './components/footer/footer.component';
+import {ForbiddenComponent} from './components/forbidden/forbidden.component';
+import {HeaderComponent} from './components/header/header.component';
+import {HomeComponent} from './components/home/home.component';
+import {NotFoundComponent} from './components/not-found/not-found.component';
+import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
+import {CoreModule} from './modules/core/core.module';
+import {SharedModule} from './modules/shared/shared.module';
 
 enum OidcScopes {
   OPENID = 'openid',
@@ -55,7 +56,6 @@ function initAuth(
   imports: [
     AppRoutingModule,
     BrowserModule,
-    BrowserAnimationsModule,
     CoreModule,
     SharedModule,
     AuthModule.forRoot({
@@ -64,7 +64,7 @@ function initAuth(
         redirectUrl: window.location.origin,
         clientId: environment.oidcClientId,
         responseType: 'code',
-        scope: `${OidcScopes.OPENID} ${OidcScopes.EMAIL}`,
+        scope: `${OidcScopes.OPENID} ${OidcScopes.EMAIL} ${OidcScopes.PHONE}`,
         postLogoutRedirectUri: window.location.origin,
         forbiddenRoute: AppRoutingConstants.FORBIDDEN,
         unauthorizedRoute: AppRoutingConstants.UNAUTHORIZED,
@@ -77,6 +77,10 @@ function initAuth(
     })
   ],
   providers: [
+    provideAnimationsAsync(),
+    providePrimeNG({
+      ripple: true
+    }),
     OpenIdConfigLoader,
     {
       provide: APP_INITIALIZER,
