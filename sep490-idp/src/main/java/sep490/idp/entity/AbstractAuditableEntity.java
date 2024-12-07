@@ -1,4 +1,4 @@
-package sep490.idp.common;
+package sep490.idp.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

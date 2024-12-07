@@ -1,65 +1,128 @@
-import {DOCUMENT} from '@angular/common';
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
+import {definePreset} from '@primeng/themes';
+import Material from '@primeng/themes/material';
+import {PrimeNG, ThemeType} from 'primeng/config';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 
-export enum Theme {
-  AURA_DARK_CYAN = 'theme-aura-dark-cyan',
-  AURA_LIGHT_CYAN = 'theme-aura-light-cyan'
-}
+const MyPreset = definePreset(Material, {
+  semantic: {
+    primary: {
+      50: '#f2f6f5',
+      100: '#c2d3d0',
+      200: '#92b1aa',
+      300: '#628e85',
+      400: '#316c5f',
+      500: '#01493a',
+      600: '#013e31',
+      700: '#013329',
+      800: '#012820',
+      900: '#001d17',
+      950: '#00120f'
+    },
+    colorScheme: {
+      light: {
+        surface: {
+          0: '#ffffff',
+          50: '{neutral.50}',
+          100: '{neutral.100}',
+          200: '{neutral.200}',
+          300: '{neutral.300}',
+          400: '{neutral.400}',
+          500: '{neutral.500}',
+          600: '{neutral.600}',
+          700: '{neutral.700}',
+          800: '{neutral.800}',
+          900: '{neutral.900}',
+          950: '{neutral.950}'
+        }
+      },
+      dark: {
+        surface: {
+          0: '#ffffff',
+          50: '{neutral.50}',
+          100: '{neutral.100}',
+          200: '{neutral.200}',
+          300: '{neutral.300}',
+          400: '{neutral.400}',
+          500: '{neutral.500}',
+          600: '{neutral.600}',
+          700: '{neutral.700}',
+          800: '{neutral.800}',
+          900: '{neutral.900}',
+          950: '{neutral.950}'
+        }
+      }
+    }
+  }
+});
 
 @Injectable()
 export class ThemeService {
-  readonly defaultTheme = Theme.AURA_LIGHT_CYAN;
-  readonly supportedThemes: Theme[] = Object.values(Theme);
-  readonly appThemeElementId = 'app-theme';
-  readonly themeNameConfigKey = 'theme';
+  readonly LOCAL_STORAGE_KEY = 'prefers-color-scheme';
+  readonly TOKEN = 'my-app-dark';
+  readonly DARK_MODE = 'dark';
+  readonly LIGHT_MODE = 'light';
+  readonly SYSTEM_COLOR_SCHEME_QUERY = '(prefers-color-scheme: dark)';
+  systemPreferredColorThemeChanged: BehaviorSubject<boolean>;
+  systemPreferredColorTheme: ThemeType;
+  userPreferredColorTheme: ThemeType;
 
-  constructor(@Inject(DOCUMENT) private readonly document: Document) {}
+  constructor(private readonly config: PrimeNG) {
+    const themeOptions = {
+      prefix: 'p',
+      darkModeSelector: 'system',
+      cssLayer: {
+        name: 'primeng',
+        order: 'tailwind-base, primeng, tailwind-utilities'
+      }
+    };
+    this.systemPreferredColorTheme = {
+      preset: MyPreset,
+      options: themeOptions
+    };
+    this.userPreferredColorTheme = {
+      preset: MyPreset,
+      options: {...themeOptions, darkModeSelector: `.${this.TOKEN}`}
+    };
+    this.systemPreferredColorThemeChanged = new BehaviorSubject<boolean>(
+      window.matchMedia(this.SYSTEM_COLOR_SCHEME_QUERY).matches
+    );
+  }
 
-  selectTheme(theme: Theme): void {
-    const appliedTheme = this.setAppTheme(theme);
-    if (appliedTheme) {
-      localStorage.setItem(this.themeNameConfigKey, theme);
+  initTheme(): void {
+    if (this.isThemeConfigured()) {
+      this.config.theme.set(this.userPreferredColorTheme);
+      if (localStorage.getItem(this.LOCAL_STORAGE_KEY) === this.DARK_MODE) {
+        document.querySelector('html')?.classList.add(this.TOKEN);
+      }
+      return;
+    }
+    this.config.theme.set(this.systemPreferredColorTheme);
+    if (window.matchMedia(this.SYSTEM_COLOR_SCHEME_QUERY).matches) {
+      document.querySelector('html')?.classList.toggle(this.TOKEN);
     }
   }
 
-  setAppTheme(theme: Theme): Theme | null {
-    if (!this.supportedThemes.includes(theme)) {
-      theme = this.defaultTheme;
-    }
-    const themeElement = this.document.getElementById(this.appThemeElementId);
-    if (!themeElement) {
-      console.error(
-        `Theme element with id '${this.appThemeElementId}' not found`
+  isDarkMode(): Observable<boolean> {
+    if (this.isThemeConfigured()) {
+      return of(
+        localStorage.getItem(this.LOCAL_STORAGE_KEY) === this.DARK_MODE
       );
-      return null;
     }
-    const themeLink = themeElement as HTMLLinkElement;
-    if (!(themeLink instanceof HTMLLinkElement)) {
-      console.error(
-        `Element with id '${this.appThemeElementId}' is not a link element`
-      );
-      return null;
-    }
-    try {
-      themeLink.href = `${theme}.css`;
-    } catch (error) {
-      console.error('Failed to set theme:', error);
-      return null;
-    }
-    return theme;
+    return this.systemPreferredColorThemeChanged;
   }
 
-  useSystemTheme(): void {
-    localStorage.removeItem(this.themeNameConfigKey);
+  toggleLightDark(): void {
+    this.config.theme.set(this.userPreferredColorTheme);
+    if (document.querySelector('html')?.classList.contains(this.TOKEN)) {
+      localStorage.setItem(this.LOCAL_STORAGE_KEY, this.LIGHT_MODE);
+    } else {
+      localStorage.setItem(this.LOCAL_STORAGE_KEY, this.DARK_MODE);
+    }
+    document.querySelector('html')?.classList.toggle(this.TOKEN);
   }
 
-  getLocalStorageTheme(): Theme | null {
-    const theme = localStorage.getItem(this.themeNameConfigKey);
-    return this.supportedThemes.find(t => t === theme) ?? null;
-  }
-
-  isDarkMode(): boolean {
-    const currentTheme = this.getLocalStorageTheme();
-    return currentTheme === Theme.AURA_DARK_CYAN;
+  private isThemeConfigured(): boolean {
+    return !!localStorage.getItem(this.LOCAL_STORAGE_KEY);
   }
 }

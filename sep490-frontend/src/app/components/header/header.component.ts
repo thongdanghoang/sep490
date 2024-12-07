@@ -1,50 +1,23 @@
-import {Component, OnInit} from '@angular/core';
-import {Theme, ThemeService} from '../../modules/core/services/theme.service';
-import {ApplicationService} from '../../modules/core/services/application.service';
-import {SubscriptionAwareComponent} from '../../modules/core/subscription-aware.component';
+import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Router} from '@angular/router';
-import {AppRoutingConstants} from '../../app-routing.constant';
-import {MenuItem} from 'primeng/api';
+import {ApplicationService} from '../../modules/core/services/application.service';
+import {ThemeService} from '../../modules/core/services/theme.service';
+import {SubscriptionAwareComponent} from '../../modules/core/subscription-aware.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent
-  extends SubscriptionAwareComponent
-  implements OnInit
-{
-  protected items: MenuItem[] | undefined;
+export class HeaderComponent extends SubscriptionAwareComponent {
   protected readonly authenticated: Observable<boolean>;
 
   constructor(
     private readonly applicationService: ApplicationService,
-    private readonly themeService: ThemeService,
-    private readonly router: Router
+    private readonly themeService: ThemeService
   ) {
     super();
     this.authenticated = this.applicationService.isAuthenticated();
-  }
-
-  ngOnInit(): void {
-    this.items = [
-      {
-        label: 'Enterprise',
-        icon: 'pi pi-building',
-        route: AppRoutingConstants.ENTERPRISE_PATH
-      },
-      {
-        label: 'DevTools',
-        icon: 'pi pi-code',
-        route: AppRoutingConstants.DEV_PATH
-      }
-    ];
-  }
-
-  protected get isDarkMode(): boolean {
-    return this.themeService.isDarkMode();
   }
 
   protected login(): void {
@@ -55,11 +28,11 @@ export class HeaderComponent
     this.applicationService.logout();
   }
 
+  protected get isDarkMode(): Observable<boolean> {
+    return this.themeService.isDarkMode();
+  }
+
   protected toggleLightDark(): void {
-    if (this.themeService.isDarkMode()) {
-      this.themeService.selectTheme(Theme.AURA_LIGHT_CYAN);
-      return;
-    }
-    this.themeService.selectTheme(Theme.AURA_DARK_CYAN);
+    this.themeService.toggleLightDark();
   }
 }

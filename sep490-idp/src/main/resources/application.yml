@@ -1,4 +1,26 @@
 spring:
+  security:
+    user:
+      name: ${TEST_USER_NAME:dano}
+      password: ${TEST_USER_PASSWORD:dano}
+    oauth2:
+      authorizationserver:
+        client:
+          oidc-client:
+            registration:
+              client-id: ${OIDC_CLIENT_ID}
+              client-authentication-methods:
+                - "none"
+              authorization-grant-types:
+                - "authorization_code"
+              redirect-uris: ${OIDC_REDIRECT_URI}
+              post-logout-redirect-uris: ${OIDC_POST_LOGOUT_REDIRECT_URI}
+              scopes:
+                - openid
+                - email
+                - phone
+            require-authorization-consent: true
+            require-proof-key: true
   application:
     name: sep490-idp
   datasource:
@@ -28,14 +50,3 @@ logging:
         type:
           descriptor:
             sql: ${HIBERNATE_SQL_PARAM_LOG_LEVEL:INFO}
-
-#minio:
-#  url: ${MINIO_ENDPOINT}
-#  access:
-#    name: ${MINIO_ACCESS_KEY}
-#    secret: ${MINIO_SECRET_KEY}
-#  secure: true
-#  bucket: ${MINIO_DEFAULT_BUCKET}
-#  connect-timeout: 10000
-#  read-timeout: 10000
-#  write-timeout: 10000

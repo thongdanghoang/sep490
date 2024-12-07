@@ -61,20 +61,8 @@
               }
             ],
             "styles": [
-              "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/primeicons/primeicons.css",
               "node_modules/leaflet/dist/leaflet.css",
-              "src/styles/styles.css",
-              {
-                "input": "src/styles/theme-aura-dark-cyan.css",
-                "bundleName": "theme-aura-dark-cyan",
-                "inject": false
-              },
-              {
-                "input": "src/styles/theme-aura-light-cyan.css",
-                "bundleName": "theme-aura-light-cyan",
-                "inject": false
-              }
+              "src/styles/styles.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -163,6 +151,7 @@
   "cli": {
     "schematicCollections": [
       "@angular-eslint/schematics"
-    ]
+    ],
+    "analytics": false
   }
 }
