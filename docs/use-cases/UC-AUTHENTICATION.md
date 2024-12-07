@@ -98,7 +98,7 @@ flowchart TD
 
 **Precondition**: None
 
-**User Interface**: [Figma]()
+**User Interface**: [Figma](TODO)
 
 **Translations**:
 
@@ -150,8 +150,8 @@ VI:
       },
       "error": {
         "badCredentials": "Tên người dùng hoặc mật khẩu không hợp lệ.",
-        "rateLimited": "Quá nhiều lần đăng nhập. Vui lòng thử lại sau.",
-        "recaptchaRequired": "Vui lòng hoàn thành thử thách reCAPTCHA."
+        "rateLimited": "Bạn đã vượt quá số lần đăng nhập. Vui lòng thử lại sau",
+        "recaptchaRequired": "Xin vui lòng xác minh reCAPTCHA để tiếp tục."
       }
     }
   }
@@ -179,7 +179,7 @@ VI:
 
 **Precondition**: Non-existent user profile
 
-**User Interface**: [Figma]()
+**User Interface**: [Figma](TODO)
 
 **Translations**:
 
@@ -231,7 +231,7 @@ VI:
         "confirmPassword": "Xác nhận mật khẩu",
         "email": "Email",
         "companyName": "Tên công ty",
-        "hotline": "Số điện thoại"
+        "hotline": "Hotline"
       },
       "btn": {
         "register": "Đăng ký",
@@ -240,9 +240,9 @@ VI:
       "error": {
         "emailExists": "Email đã tồn tại.",
         "usernameExists": "Tên người dùng đã tồn tại.",
-        "passwordMismatch": "Mật khẩu xác nhận không khớp.",
+        "passwordMismatch": "Mật khẩu không trùng khớp.",
         "passwordWeak": "Mật khẩu phải chứa ít nhất 8 ký tự, một chữ cái viết hoa, một chữ cái viết thường, một số và một kýtự đặc biệt.",
-        "recaptchaRequired": "Vui lòng hoàn thành thử thách reCAPTCHA."
+        "recaptchaRequired": "Xin vui lòng xác minh reCAPTCHA để tiếp tục."
       }
     }
   },
@@ -255,9 +255,15 @@ VI:
 
 ### Business rules
 
+**Validations**:
+
+- Email validate can be used Angular default or Jakarta Validation.
+- Username validate: 6-32 characters, no special characters.
+- Password validate: 8-32 characters, at least 1 uppercase, 1 lowercase, 1 number, 1 special character.
+
 | ID              | Name                                                                   | Description                                                                   |
 |-----------------|------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| **AUTH_REG_01** | **SCENARIO: Happy path <br> Profile created successfully**             | Redirect user to login page                                                   |
+| **AUTH_REG_01** | **SCENARIO: Happy path <br> Profile created successfully**             | Redirect user to login page.                                                  |
 | **AUTH_REG_02** | **SCENARIO: Username exists**                                          | Show error message below username field                                       |
 | **AUTH_REG_03** | **SCENARIO: Email exists**                                             | Show error message below email field                                          |
 | **AUTH_REG_04** | **SCENARIO: Password mismatch**                                        | Show error message below confirm password                                     |
@@ -273,7 +279,7 @@ VI:
 
 **Precondition**: User profile exists
 
-**User Interface**: [Figma]()
+**User Interface**: [Figma](TODO)
 
 **Translations**:
 
@@ -330,9 +336,9 @@ VI:
         "otpExpired": "OTP hết hạn hoặc không hợp lệ.",
         "passwordSame": "Mật khẩu phải khác với mật khẩu trước.",
         "passwordWeak": "Mật khẩu phải chứa ít nhất 8 ký tự, một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt.",
-        "otpExceedLimit": "Bạn đã vượt quá số lần gửi OTP cho hôm nay.",
+        "otpExceedLimit": "Bạn đã đạt giới hạn số lần gửi OTP hôm nay.",
         "otpInvalid": "OTP không hợp lệ.",
-        "otpInvalidExceed": "Bạn đã vượt quá số lần kiểm tra OTP cho mã OTP này. Vui lòng yêu cầu mã mới."
+        "otpInvalidExceed": "Bạn đã vượt quá số lần xác minh cho mã OTP này. Vui lòng yêu cầu mã mới."
       }
     }
   }
@@ -341,15 +347,20 @@ VI:
 
 ### Business rules
 
-| ID                | Name                                                    | Description                                                                 |
-|-------------------|---------------------------------------------------------|-----------------------------------------------------------------------------|
-| **AUTH_RESET_01** | **SCENARIO: Happy path <br> Password reset successful** | Redirect user to login page                                                 |
-| **AUTH_RESET_02** | **SCENARIO: User not found**                            | Show error message below username or email field                            |
-| **AUTH_RESET_03** | **SCENARIO: OTP expired or invalid**                    | Show error message below OTP field                                          |
-| **AUTH_RESET_04** | **SCENARIO: Password was the same as previous**         | Show error message below password field                                     |
-| **AUTH_RESET_05** | **SCENARIO: Password too weak**                         | Show error message below password field                                     |
-| **AUTH_RESET_06** | **SCENARIO: OTP send exceed limit in a day**            | Show error message below OTP field. Each user only send 3 OTPs per day      |
-| **AUTH_RESET_07** | **SCENARIO: OTP invalid too much**                      | Show error message below OTP field. Each user only try 3 times for each OTP |
+**Validations**:
+
+- Password can not be the same as the previous password.
+- Password validate: 8-32 characters, at least 1 uppercase, 1 lowercase, 1 number, 1 special character.
+
+| ID                | Name                                                    | Description                                                                     |
+|-------------------|---------------------------------------------------------|---------------------------------------------------------------------------------|
+| **AUTH_RESET_01** | **SCENARIO: Happy path <br> Password reset successful** | Redirect user to login page                                                     |
+| **AUTH_RESET_02** | **SCENARIO: User not found**                            | Show error message below username or email field                                |
+| **AUTH_RESET_03** | **SCENARIO: OTP expired or invalid**                    | Show error message below OTP field. Each OTP have expire time is 24h.           |
+| **AUTH_RESET_04** | **SCENARIO: Password was the same as previous**         | Show error message below password field                                         |
+| **AUTH_RESET_05** | **SCENARIO: Password too weak**                         | Show error message below password field                                         |
+| **AUTH_RESET_06** | **SCENARIO: OTP send exceed limit in a day**            | Show error message below OTP field. Each user can only send 3 OTPs per day      |
+| **AUTH_RESET_07** | **SCENARIO: OTP invalid too much**                      | Show error message below OTP field. Each user can only try 3 times for each OTP |
 
 ### **4.4 User Story: Browser Logout**
 
@@ -363,7 +374,7 @@ User clicks the logout button from the application dashboard.
 User is logged in and has an active session.
 
 **User Interface**:  
-[Figma]() - Logout button located in the application header or dropdown menu.
+[Figma](TODO) - Logout button located in the application header or dropdown menu.
 
 **Translations**:
 
