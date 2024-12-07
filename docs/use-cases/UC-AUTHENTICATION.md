@@ -14,6 +14,8 @@
     1. User Story: Browser Login
     2. User Story: Registration
     3. User Story: Reset Credentials
+    4. User Story: Browser Logout
+    5. User story: OIDC client login with `openid` scope included subscription plan in the token
 
 # 2. Objective
 
@@ -160,7 +162,7 @@ VI:
 
 | ID                | Name                                              | Description                                                                       |
 |-------------------|---------------------------------------------------|-----------------------------------------------------------------------------------|
-| **AUTH_LOGIN_01** | **SCENARIO: User is in valid session**            | Direct user to the application dashboard                                          |
+| **AUTH_LOGIN_01** | **SCENARIO: User is in valid session**            | Direct user to the application dashboard.                                         |
 | **AUTH_LOGIN_02** | **SCENARIO: Invalid session**                     | Prompt user to log page                                                           |
 | **AUTH_LOGIN_03** | **SCENARIO: Invalid credentials**                 | Prompt user to re-enter credentials                                               |
 | **AUTH_LOGIN_04** | **SCENARIO: Rate limit exceeded**                 | Block user from logging in                                                        |
@@ -348,3 +350,104 @@ VI:
 | **AUTH_RESET_05** | **SCENARIO: Password too weak**                         | Show error message below password field                                     |
 | **AUTH_RESET_06** | **SCENARIO: OTP send exceed limit in a day**            | Show error message below OTP field. Each user only send 3 OTPs per day      |
 | **AUTH_RESET_07** | **SCENARIO: OTP invalid too much**                      | Show error message below OTP field. Each user only try 3 times for each OTP |
+
+### **4.4 User Story: Browser Logout**
+
+**Objective**:  
+**As a** user, **I want to** securely log out from my account on the browser to end my session.
+
+**Context**:  
+User clicks the logout button from the application dashboard.
+
+**Precondition**:  
+User is logged in and has an active session.
+
+**User Interface**:  
+[Figma]() - Logout button located in the application header or dropdown menu.
+
+**Translations**:
+
+EN:
+
+```json
+{
+  "IDP": {
+    "logout": {
+      "title": "Logout",
+      "confirmMessage": "Are you sure you want to log out?",
+      "btn": {
+        "logout": "Log out",
+        "cancel": "Cancel"
+      },
+      "successMessage": "You have been logged out successfully."
+    }
+  }
+}
+```
+
+VI:
+
+```json
+{
+  "IDP": {
+    "logout": {
+      "title": "Đăng xuất",
+      "confirmMessage": "Bạn có chắc chắn muốn đăng xuất không?",
+      "btn": {
+        "logout": "Đăng xuất",
+        "cancel": "Hủy bỏ"
+      },
+      "successMessage": "Bạn đã đăng xuất thành công."
+    }
+  }
+}
+```
+
+**Business Rules**:
+
+| ID                 | Name                               | Description                                                   |
+|--------------------|------------------------------------|---------------------------------------------------------------|
+| **AUTH_LOGOUT_01** | **SCENARIO: User clicks logout**   | Revoke session ID cookie and clear browser storage.           |
+| **AUTH_LOGOUT_02** | **SCENARIO: User confirms logout** | Redirect user to the login page with a confirmation message.  |
+| **AUTH_LOGOUT_03** | **SCENARIO: User cancels logout**  | Return user to the application dashboard without logging out. |
+| **AUTH_LOGOUT_04** | **SCENARIO: Logout error**         | Show an error message if the logout process fails.            |
+
+---
+
+### **4.5 User Story: OIDC Client Login with `openid` Scope Including Subscription Plan**
+
+**Objective**:  
+**As an** OIDC client application, **I want to** log in the user and retrieve a token containing the `openid` scope and their
+subscription plan to personalize the application experience.
+
+**Context**:  
+An OIDC client requests an access token and ID token from the identity provider, including user subscription information.
+
+**Precondition**:  
+The user has an active subscription linked to their account.
+
+**User Interface**:  
+No direct UI; this flow occurs programmatically between the client application and the identity provider.
+
+**Business Rules**:
+
+| ID                | Name                                                | Description                                                                               |
+|-------------------|-----------------------------------------------------|-------------------------------------------------------------------------------------------|
+| **OIDC_LOGIN_01** | **SCENARIO: Token request includes `openid` scope** | Return an ID token and access token with user claims, including `subscription` attribute. |
+| **OIDC_LOGIN_02** | **SCENARIO: User lacks a subscription plan**        | Return tokens without `subscription` or with default subscription plan information.       |
+| **OIDC_LOGIN_03** | **SCENARIO: Invalid `openid` scope**                | Reject the request with an error indicating unsupported scope.                            |
+| **OIDC_LOGIN_04** | **SCENARIO: Subscription plan expired**             | Return tokens without `subscription` or with default subscription plan information.       |
+
+**Example Token Payload**:
+
+```json
+{
+  "sub": "user123",
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "subscription": "premium",
+  "iat": 1700000000,
+  "exp": 1700086400,
+  "scope": "openid"
+}
+```
