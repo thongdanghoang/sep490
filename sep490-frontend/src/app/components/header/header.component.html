@@ -4,3 +4,21 @@
     <p-button label="Sign in" [text]="true" (onClick)="login()" />
     <p-button label="Sign up" [outlined]="true" />
 }
+
+@if (isDarkMode | async) {
+    <p-button
+        icon="pi pi-moon"
+        [rounded]="true"
+        [text]="true"
+        (onClick)="toggleLightDark()"
+        aria-label="Switch to light mode"
+    />
+} @else {
+    <p-button
+        icon="pi pi-sun"
+        [rounded]="true"
+        [text]="true"
+        (onClick)="toggleLightDark()"
+        aria-label="Switch to dark mode"
+    />
+}
