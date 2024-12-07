@@ -16,7 +16,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Listen for system theme changes
     this.systemThemeMediaQuery = window.matchMedia(
-      '(prefers-color-scheme: dark)'
+      this.themeService.SYSTEM_COLOR_SCHEME_QUERY
     );
     this.systemThemeMediaQuery.addEventListener(
       'change',

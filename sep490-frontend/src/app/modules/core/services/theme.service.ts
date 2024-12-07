@@ -60,6 +60,9 @@ const MyPreset = definePreset(Material, {
 export class ThemeService {
   readonly LOCAL_STORAGE_KEY = 'prefers-color-scheme';
   readonly TOKEN = 'my-app-dark';
+  readonly DARK_MODE = 'dark';
+  readonly LIGHT_MODE = 'light';
+  readonly SYSTEM_COLOR_SCHEME_QUERY = '(prefers-color-scheme: dark)';
   systemPreferredColorThemeChanged: BehaviorSubject<boolean>;
   systemPreferredColorTheme: ThemeType;
   userPreferredColorTheme: ThemeType;
@@ -82,27 +85,29 @@ export class ThemeService {
       options: {...themeOptions, darkModeSelector: `.${this.TOKEN}`}
     };
     this.systemPreferredColorThemeChanged = new BehaviorSubject<boolean>(
-      window.matchMedia('(prefers-color-scheme: dark)').matches
+      window.matchMedia(this.SYSTEM_COLOR_SCHEME_QUERY).matches
     );
   }
 
   initTheme(): void {
     if (this.isThemeConfigured()) {
       this.config.theme.set(this.userPreferredColorTheme);
-      if (localStorage.getItem('prefers-color-scheme') === 'dark') {
-        document.querySelector('html')?.classList.add('my-app-dark');
+      if (localStorage.getItem(this.LOCAL_STORAGE_KEY) === this.DARK_MODE) {
+        document.querySelector('html')?.classList.add(this.TOKEN);
       }
       return;
     }
     this.config.theme.set(this.systemPreferredColorTheme);
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (window.matchMedia(this.SYSTEM_COLOR_SCHEME_QUERY).matches) {
       document.querySelector('html')?.classList.toggle(this.TOKEN);
     }
   }
 
   isDarkMode(): Observable<boolean> {
     if (this.isThemeConfigured()) {
-      return of(localStorage.getItem(this.LOCAL_STORAGE_KEY) === 'dark');
+      return of(
+        localStorage.getItem(this.LOCAL_STORAGE_KEY) === this.DARK_MODE
+      );
     }
     return this.systemPreferredColorThemeChanged;
   }
@@ -110,9 +115,9 @@ export class ThemeService {
   toggleLightDark(): void {
     this.config.theme.set(this.userPreferredColorTheme);
     if (document.querySelector('html')?.classList.contains(this.TOKEN)) {
-      localStorage.setItem(this.LOCAL_STORAGE_KEY, 'light');
+      localStorage.setItem(this.LOCAL_STORAGE_KEY, this.LIGHT_MODE);
     } else {
-      localStorage.setItem(this.LOCAL_STORAGE_KEY, 'dark');
+      localStorage.setItem(this.LOCAL_STORAGE_KEY, this.DARK_MODE);
     }
     document.querySelector('html')?.classList.toggle(this.TOKEN);
   }

@@ -38,15 +38,10 @@ import java.util.UUID;
 @Configuration
 public class SecurityConfig {
     
-    private static final String CLIENT_URL = "http://localhost:4200";
-    private static final String USERNAME = "dano";
-    private static final String PASSWORD = "dano";
-    
-    
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(List.of(CLIENT_URL));
+        corsConfig.setAllowedOrigins(List.of("http://localhost:4200"));
         corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         corsConfig.setAllowCredentials(true);
@@ -121,10 +116,10 @@ public class SecurityConfig {
             if (OidcParameterNames.ID_TOKEN.equals(context.getTokenType().getValue())) {
                 var userInfo = OidcUserInfo.builder()
                                            .subject(UUID.randomUUID().toString())
-                                           .email(USERNAME + "@elca.vn")
+                                           .email("dano@elca.vn")
                                            .emailVerified(true)
-//                        .phoneNumber("+1 (604) 555-1234;ext=5678")
-//                        .phoneNumberVerified(false)
+                                           .phoneNumber("+1 (604) 555-1234;ext=5678")
+                                           .phoneNumberVerified(false)
 //                        .claim("address", Collections.singletonMap("formatted", "Champ de Mars\n5 Av. Anatole France\n75007 Paris\nFrance"))
 //                        .name("First Last")
 //                        .givenName("First")
