@@ -11,9 +11,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -30,13 +27,14 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import sep490.idp.service.impl.CustomAuthenticationFailureHandler;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -45,6 +43,8 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 import java.util.UUID;
+
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
 public class SecurityConfig {
@@ -88,26 +88,27 @@ public class SecurityConfig {
 
     @Bean
     @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
-            throws Exception {
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-        http.formLogin(Customizer.withDefaults());
+
         http.authorizeHttpRequests(
-                c -> c.anyRequest().authenticated()
-        );
+            c -> c.requestMatchers(antMatcher("/signup"), antMatcher("/login")).permitAll()
+                .anyRequest().authenticated());
+
+        http.formLogin(form -> form.loginPage("/login")
+            .usernameParameter("email")
+            .passwordParameter("password")
+            .defaultSuccessUrl("/success", true)
+            .failureHandler(authenticationFailureHandler())
+            .permitAll());
 
         return http.build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        // TODO : setup UserDetailsService, UserDetails, PasswordEncoder, ...
-        UserDetails userDetails = User.withUsername(USERNAME)
-                .password(passwordEncoder().encode(PASSWORD))
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(userDetails);
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
     }
 
     @Bean
