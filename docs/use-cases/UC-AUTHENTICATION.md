@@ -193,8 +193,8 @@ EN:
         "password": "Password",
         "confirmPassword": "Confirm password",
         "email": "Email",
-        "firstName": "First name",
-        "lastName": "Last name"
+        "companyName": "Company name",
+        "hotline": "Hotline"
       },
       "btn": {
         "register": "Register",
@@ -228,8 +228,8 @@ VI:
         "password": "Mật khẩu",
         "confirmPassword": "Xác nhận mật khẩu",
         "email": "Email",
-        "firstName": "Tên",
-        "lastName": "Họ"
+        "companyName": "Tên công ty",
+        "hotline": "Số điện thoại"
       },
       "btn": {
         "register": "Đăng ký",
