@@ -98,7 +98,7 @@ flowchart TD
 
 **Precondition**: None
 
-**User Interface**: [Figma](TODO)
+**User Interface**: [Figma](https://www.figma.com/design/orj26nfd0gARt2SHJ8Ajox/Green-Building?node-id=2669-9848)
 
 **Translations**:
 
@@ -179,7 +179,7 @@ VI:
 
 **Precondition**: Non-existent user profile
 
-**User Interface**: [Figma](TODO)
+**User Interface**: [Figma](https://www.figma.com/design/orj26nfd0gARt2SHJ8Ajox/Green-Building?node-id=2669-9848)
 
 **Translations**:
 
@@ -279,7 +279,7 @@ VI:
 
 **Precondition**: User profile exists
 
-**User Interface**: [Figma](TODO)
+**User Interface**: [Figma](https://www.figma.com/design/orj26nfd0gARt2SHJ8Ajox/Green-Building?node-id=2669-9848)
 
 **Translations**:
 
@@ -374,7 +374,7 @@ User clicks the logout button from the application dashboard.
 User is logged in and has an active session.
 
 **User Interface**:  
-[Figma](TODO) - Logout button located in the application header or dropdown menu.
+[Figma](https://www.figma.com/design/orj26nfd0gARt2SHJ8Ajox/Green-Building?node-id=2669-9848)
 
 **Translations**:
 
