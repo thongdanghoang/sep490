@@ -1,4 +1,4 @@
-package sep490.idp;
+package sep490.idp.config;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -93,15 +93,17 @@ public class SecurityConfig {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         http.authorizeHttpRequests(
-            c -> c.requestMatchers(antMatcher("/signup"), antMatcher("/login")).permitAll()
-                .anyRequest().authenticated());
+            c -> c
+                    .requestMatchers("/css/**", "/img/**", "/js/**").permitAll()
+                    .requestMatchers(antMatcher("/signup"), antMatcher("/login")).permitAll()
+                    .anyRequest().authenticated());
 
         http.formLogin(form -> form.loginPage("/login")
-            .usernameParameter("email")
-            .passwordParameter("password")
-            .defaultSuccessUrl("/success", true)
-            .failureHandler(authenticationFailureHandler())
-            .permitAll());
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/success", true)
+                .failureHandler(authenticationFailureHandler())
+                .permitAll());
 
         return http.build();
     }
