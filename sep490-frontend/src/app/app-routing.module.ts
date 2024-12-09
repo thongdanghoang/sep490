@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {environment} from '../environments/environment';
 import {AppRoutingConstants} from './app-routing.constant';
 import {ForbiddenComponent} from './components/forbidden/forbidden.component';
 import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
@@ -42,11 +41,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      enableTracing: !environment.production
-    })
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
