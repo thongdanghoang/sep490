@@ -2,6 +2,8 @@ import {HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {
   AuthInterceptor,
   AuthModule,
