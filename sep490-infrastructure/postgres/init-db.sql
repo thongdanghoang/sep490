@@ -1,5 +1,1 @@
-CREATE DATABASE sep490;
-\c sep490;
-
-CREATE SCHEMA idp;
-CREATE SCHEMA restaurants;
+CREATE DATABASE sep490_idp;

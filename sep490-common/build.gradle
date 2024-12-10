@@ -35,6 +35,7 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.27.1'
     implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
     implementation group: 'commons-io', name: 'commons-io', version: '2.17.0'
+    implementation group: 'commons-validator', name: 'commons-validator', version: '1.9.0'
 
     api group: 'org.apache.commons', name: 'commons-lang3', version: '3.17.0'
     api group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
@@ -42,4 +43,5 @@ dependencies {
     api group: 'org.apache.commons', name: 'commons-compress', version: '1.27.1'
     api group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
     api group: 'commons-io', name: 'commons-io', version: '2.17.0'
+    api group: 'commons-validator', name: 'commons-validator', version: '1.9.0'
 }

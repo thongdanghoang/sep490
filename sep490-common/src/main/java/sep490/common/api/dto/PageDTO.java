@@ -9,14 +9,14 @@ import jakarta.validation.constraints.Min;
  * @param pageSize   The number of items per page (1-100)
  * @param pageNumber The zero-based page number
  */
-public record Page(
+public record PageDTO(
         @Min(1)
         @Max(100)
         int pageSize,
         @Min(0)
         int pageNumber
 ) {
-    public static Page of(int pageSize, int pageNumber) {
-        return new Page(pageSize, pageNumber);
+    public static PageDTO of(int pageSize, int pageNumber) {
+        return new PageDTO(pageSize, pageNumber);
     }
 }

@@ -10,13 +10,13 @@ import sep490.common.api.enums.SortDirection;
  * @param field     The name of the field to sort by
  * @param direction The direction (ascending or descending) to sort in
  */
-public record Sort(
+public record SortDTO(
         @NotBlank
         String field,
         @NotNull
         SortDirection direction
 ) {
-    public static Sort of(String field, SortDirection direction) {
-        return new Sort(field, direction);
+    public static SortDTO of(String field, SortDirection direction) {
+        return new SortDTO(field, direction);
     }
 }
