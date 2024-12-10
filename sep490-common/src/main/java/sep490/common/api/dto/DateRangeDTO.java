@@ -5,7 +5,7 @@ import sep490.common.api.enums.DateBoundary;
 
 import java.time.LocalDate;
 
-public record DateRange(
+public record DateRangeDTO(
         @NotNull
         LocalDate from,
         @NotNull
@@ -16,11 +16,11 @@ public record DateRange(
         DateBoundary toBoundary
 ) {
 
-    public static DateRange of(LocalDate from, LocalDate to, DateBoundary fromBoundary, DateBoundary toBoundary) {
-        return new DateRange(from, to, fromBoundary, toBoundary);
+    public static DateRangeDTO of(LocalDate from, LocalDate to, DateBoundary fromBoundary, DateBoundary toBoundary) {
+        return new DateRangeDTO(from, to, fromBoundary, toBoundary);
     }
 
-    public DateRange {
+    public DateRangeDTO {
         if (from.isAfter(to)) {
             throw new IllegalArgumentException("Start date must be before or equal to end date.");
         }
