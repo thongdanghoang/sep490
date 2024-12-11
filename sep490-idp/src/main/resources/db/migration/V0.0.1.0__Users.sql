@@ -9,9 +9,9 @@ CREATE TABLE users
     username           VARCHAR(30) NOT NULL,
     password           VARCHAR(72),
     email              VARCHAR(255),
-    email_verified     BOOLEAN,
+    email_verified     BOOLEAN     NOT NULL DEFAULT FALSE,
     phone              VARCHAR(16),
-    phone_verified     BOOLEAN,
+    phone_verified     BOOLEAN     NOT NULL DEFAULT FALSE,
     first_name         VARCHAR(50),
     last_name          VARCHAR(100)
 );

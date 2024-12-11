@@ -9,21 +9,22 @@ import org.springframework.data.domain.Sort;
 import sep490.common.api.dto.PageDTO;
 import sep490.common.api.dto.SortDTO;
 import sep490.common.api.enums.SortDirection;
+import sep490.common.api.utils.CommonConstant;
 
 import java.util.Objects;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface CommonMapper {
-    default Pageable toPageable(PageDTO searchPageDto, SortDTO sortDto) {
+public class CommonMapper {
+    
+    public static Pageable toPageable(PageDTO searchPageDto, SortDTO sortDto) {
         var pageNumber = 0;
-        var pageSize = 100;
+        var pageSize = CommonConstant.DEFAULT_PAGE_SIZE;
         if (Objects.nonNull(searchPageDto)) {
-            pageNumber = searchPageDto.pageNumber();
-            pageSize = searchPageDto.pageSize();
+            pageNumber = Math.clamp(searchPageDto.pageNumber(), 0, Integer.MAX_VALUE);
+            pageSize = Math.clamp(searchPageDto.pageSize(), 1, CommonConstant.MAX_PAGE_SIZE);
         }
         if (Objects.nonNull(sortDto)
-            && StringUtils.isNotBlank(sortDto.field())
-            && Objects.nonNull(sortDto.direction())) {
+            && StringUtils.isNotBlank(sortDto.field())) {
             var direction = Objects.equals(sortDto.direction(), SortDirection.ASC)
                             ? Sort.Direction.ASC
                             : Sort.Direction.DESC;

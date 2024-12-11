@@ -1,4 +1,4 @@
-package sep490.idp.config;
+package sep490.idp.configs;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -89,7 +89,7 @@ public class SecurityConfig {
         http.formLogin(form -> form.loginPage("/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/success", true)
+                .defaultSuccessUrl("/success", false)
                 .failureHandler(authenticationFailureHandler())
                 .permitAll());
 
