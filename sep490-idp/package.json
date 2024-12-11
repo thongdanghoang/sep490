@@ -1,0 +1,15 @@
+{
+  "name": "sep490-idp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss -i styles.css -o src/main/resources/static/css/main.css",
+    "watch": "tailwindcss --watch -i styles.css -o src/main/resources/static/css/main.css"
+  },
+  "author": "Thong DANG HOANG",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.16"
+  }
+}

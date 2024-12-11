@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.5'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id "com.github.node-gradle.node" version "7.1.0"
 }
 
 group = 'sep490'
@@ -57,7 +58,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+
 	// Dev tools
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -67,6 +70,15 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2'
 	implementation 'org.mapstruct:mapstruct:1.6.2'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+}
+
+tasks.register('npmBuild', NpmTask) {
+	args = ['run', 'build']
+	dependsOn npmInstall
+}
+
+tasks.named('processResources') {
+	dependsOn npmBuild
 }
 
 tasks.named('test') {
