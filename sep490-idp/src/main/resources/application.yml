@@ -19,7 +19,7 @@ spring:
                 - openid
                 - email
                 - phone
-            require-authorization-consent: true
+            require-authorization-consent: false
             require-proof-key: true
   application:
     name: sep490-idp

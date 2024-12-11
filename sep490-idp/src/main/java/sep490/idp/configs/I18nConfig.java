@@ -1,4 +1,4 @@
-package sep490.idp.config;
+package sep490.idp.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

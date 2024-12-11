@@ -1,6 +1,7 @@
 package sep490.idp.security;
 
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,7 @@ public class UserContextData implements UserDetails {
     private final String password;
     private final List<GrantedAuthority> authorities;
     
-    public UserContextData(UserEntity userEntity) {
+    public UserContextData(@NotNull UserEntity userEntity) {
         this.userEntity = userEntity;
         this.username = userEntity.getUsername();
         this.password = userEntity.getPassword();
