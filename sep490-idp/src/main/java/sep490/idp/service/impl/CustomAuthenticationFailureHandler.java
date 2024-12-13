@@ -18,9 +18,9 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
         if (exception.getClass().isAssignableFrom(UsernameNotFoundException.class)
             || exception.getClass().isAssignableFrom(BadCredentialsException.class)) {
-            String errorMessage = "Invalid username or password";
+            String errorKey = "login.error.badCredentials";
 
-            response.sendRedirect("/login?error=" + errorMessage);
+            response.sendRedirect("/login?error=" + errorKey);
         }
 
     }

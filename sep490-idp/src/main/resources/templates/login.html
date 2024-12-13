@@ -3,58 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+    <title th:text="#{login.title}"></title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
-<body class="h-full">
-</body>
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-             alt="Your Company">
-        <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Sign in to your account</h2>
-    </div>
-
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" id="form" role="form" th:action="@{/login}" method="post" th:object="${loginDTO}">
-            <div>
-                <label for="email" class="block text-sm/6 font-medium text-gray-900">Email address</label>
-                <div class="mt-2">
-                    <input th:field="*{email}" type="email" name="email" id="email" autocomplete="email" required
-                           class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6">
+<body>
+<div class="flex items-center justify-center min-h-screen px-4">
+    <div class="flex flex-col lg:flex-row items-center w-full max-w-5xl">
+        <!-- Login Form Section -->
+        <div class="bg-white p-6 rounded w-full lg:w-1/2">
+            <h2 class="text-center text-green-500 text-2xl font-bold mb-6 uppercase" th:text="#{login.title}"></h2>
+            <form id="form" role="form" th:action="@{/login}" method="post" th:object="${loginDTO}">
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-500 font-medium" th:text="#{login.label.usernameOrEmail}"></label>
+                    <input type="email" required
+                           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-green-200 focus:outline-none"
+                           id="email" name="email" th:field="*{email}">
                 </div>
-                <p th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"></p>
-            </div>
-
-            <div>
-                <div class="flex items-center justify-between">
-                    <label for="password" class="block text-sm/6 font-medium text-gray-900">Password</label>
-                    <div class="text-sm">
-                        <a href="#" class="font-semibold text-primary hover:text-primary">Forgot password?</a>
+                <div class="mb-4">
+                    <label for="password" class="block text-gray-500 font-medium" th:text="#{login.label.password}"></label>
+                    <input type="password"
+                           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-green-200 focus:outline-none"
+                           id="password" name="password" th:field="*{password}" required>
+                </div>
+                <div class="flex justify-end items-center mb-4">
+                    <a th:href="@{/forgot-password}" class="text-green-500 hover:underline" th:text="#{login.btn.forgotPassword}"></a>
+                </div>
+                <div>
+                    <button type="submit"
+                            class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 focus:ring focus:ring-green-200 focus:outline-none"
+                            th:text="#{login.btn.login}">
+                        Log in
+                    </button>
+                    <div th:if="${errorKey}" class="mb-4 text-red-500 text-center">
+                        <span th:text="#{${errorKey}}"></span>
                     </div>
                 </div>
-                <div class="mt-2">
-                    <input th:field="*{password}" type="password" name="password" id="password" autocomplete="current-password"
-                           required
-                           class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6">
+                <div class="text-center mt-4">
+                    <a th:href="@{/passkey-login}" class="text-green-500 hover:underline" th:text="#{login.btn.signInByPasskey}"></a>
                 </div>
-                <p th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}"></p>
+            </form>
+            <div class="text-center mt-3">
+                <p class="text-gray-700">
+                    <span th:text="#{login.label.newUser}">Don't have an account?</span>
+                    <a th:href="@{/signup}" class="text-green-500 hover:underline" th:text="#{login.btn.register}"></a>
+                </p>
             </div>
-
-            <div th:if="${errorMessage != null}" class="text-danger" th:text="${errorMessage}"></div>
-
-            <div>
-                <button type="submit"
-                        class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
-                    Sign in
-                </button>
+            <div class="text-center mt-3">
+                <a th:href="@{''(lang=en)}" class="text-green-500 hover:underline" th:text="#{language.english}">English</a> |
+                <a th:href="@{''(lang=vi)}" class="text-green-500 hover:underline" th:text="#{language.vietnamese}">Vietnamese</a>
             </div>
-        </form>
+        </div>
 
-        <p class="mt-10 text-center text-sm/6 text-gray-500">
-            Not a member?
-            <a th:href="@{/signup}" class="font-semibold text-primary hover:text-primary">Sign Up</a>
-        </p>
+        <!-- Login Image Section -->
+        <div class="hidden lg:flex lg:w-1/2 justify-center items-center">
+            <img th:src="@{/img/logo.svg}" alt="City Globe" class="max-w-full h-auto">
+        </div>
     </div>
 </div>
+</body>
 </html>

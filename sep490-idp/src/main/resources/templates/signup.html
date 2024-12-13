@@ -1,45 +1,89 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" class="h-full bg-white">
 <head>
-    <title>Sign Up</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{signup.title}"></title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header text-center">
-                    <h3>Create Your Account</h3>
+<div class="flex items-center justify-center min-h-screen px-4">
+    <div class="flex flex-col lg:flex-row items-center w-full max-w-5xl">
+        <!-- Sign-Up Form Section -->
+        <div class="bg-white p-6 rounded w-full lg:w-1/2">
+            <h2 class="text-center text-green-500 text-2xl font-bold mb-6 uppercase" th:text="#{signup.title}"></h2>
+            <form id="form" role="form" th:action="@{/signup}" method="post" th:object="${signupDTO}">
+                <!-- Email -->
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-500 font-medium" th:text="#{signup.label.email}"></label>
+                    <input type="email" required
+                           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-green-200 focus:outline-none"
+                           id="email" name="email" th:field="*{email}">
+                    <p th:if="${#fields.hasErrors('email')}" class="text-red-500 text-sm mt-1" th:errors="*{email}"></p>
                 </div>
-                <div class="card-body">
-                    <form id="form" role="form" th:action="@{/signup}" method="post" th:object="${signupDTO}">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" required class="form-control" id="email" name="email" th:field="*{email}">
-                            <p th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"></p>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
-                            <p th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}"></p>
-                        </div>
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Confirm Password</label>
-                            <input required type="password" class="form-control" id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}">
-                            <p th:if="${#fields.hasErrors('confirmPassword')}" class="text-danger" th:errors="*{confirmPassword}"></p>
-                        </div>
-                        <div th:if="${errors}" class="alert alert-danger">
-                            <span th:text="${error}"></span>
-                        </div>
-                        <button type="submit" class="btn btn-success w-100" id="submitButton">Sign Up</button>
-                    </form>
+                <!-- Phone -->
+                <div class="mb-4">
+                    <label for="phone" class="block text-gray-500 font-medium" th:text="#{signup.label.phone}"></label>
+                    <input required
+                           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-green-200 focus:outline-none"
+                           id="phone" name="email" th:field="*{phone}">
+                    <p th:if="${#fields.hasErrors('phone')}" class="text-red-500 text-sm mt-1" th:errors="*{phone}"></p>
                 </div>
-                <div class="card-footer text-center">
-                    <p class="mb-0">Already have an account?
-                        <a th:href="@{/login}" class="text-primary">Login</a>
-                    </p>
+                <!-- First Name -->
+                <div class="mb-4">
+                    <label for="firstName" class="block text-gray-500 font-medium" th:text="#{signup.label.firstName}"></label>
+                    <input type="text" required
+                           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-green-200 focus:outline-none"
+                           id="firstName" name="firstName" th:field="*{firstName}">
+                    <p th:if="${#fields.hasErrors('firstName')}" class="text-red-500 text-sm mt-1" th:errors="*{firstName}"></p>
                 </div>
+                <!-- Last Name -->
+                <div class="mb-4">
+                    <label for="lastName" class="block text-gray-500 font-medium" th:text="#{signup.label.lastName}"></label>
+                    <input type="text" required
+                           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-green-200 focus:outline-none"
+                           id="lastName" name="lastName" th:field="*{lastName}">
+                    <p th:if="${#fields.hasErrors('lastName')}" class="text-red-500 text-sm mt-1" th:errors="*{lastName}"></p>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="block text-gray-500 font-medium" th:text="#{signup.label.password}"></label>
+                    <input type="password" required
+                           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-green-200 focus:outline-none"
+                           id="password" name="password" th:field="*{password}">
+                    <p th:if="${#fields.hasErrors('password')}" class="text-red-500 text-sm mt-1" th:errors="*{password}"></p>
+                </div>
+                <div class="mb-4">
+                    <label for="confirmPassword" class="block text-gray-500 font-medium" th:text="#{signup.label.confirmPassword}"></label>
+                    <input type="password" required
+                           class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-green-200 focus:outline-none"
+                           id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}">
+                    <p th:if="${#fields.hasErrors('confirmPassword')}" class="text-red-500 text-sm mt-1" th:errors="*{confirmPassword}"></p>
+                </div>
+                <div th:if="${errors}" class="mb-4 text-red-500 text-center">
+                    <span th:text="${error}"></span>
+                </div>
+                <div>
+                    <button type="submit"
+                            class="w-full mt-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 focus:ring focus:ring-green-200 focus:outline-none"
+                            th:text="#{signup.btn.signup}">
+                    </button>
+                </div>
+            </form>
+            <div class="text-center mt-4">
+                <p class="text-gray-700">
+                    <span th:text="#{signup.label.existingAccount}"></span>
+                    <a th:href="@{/login}" class="text-green-500 hover:underline" th:text="#{signup.btn.login}"></a>
+                </p>
             </div>
+            <div class="text-center mt-3">
+                <a th:href="@{''(lang=en)}" class="text-green-500 hover:underline" th:text="#{language.english}">English</a> |
+                <a th:href="@{''(lang=vi)}" class="text-green-500 hover:underline" th:text="#{language.vietnamese}">Vietnamese</a>
+            </div>
+        </div>
+
+        <!-- Sign-Up Image Section -->
+        <div class="hidden lg:flex lg:w-1/2 justify-center items-center">
+            <img th:src="@{/img/logo.svg}" alt="Sign Up" class="max-w-full h-auto">
         </div>
     </div>
 </div>
