@@ -6,7 +6,6 @@ CREATE TABLE users
     last_modified_by   VARCHAR(255),
     id                 UUID        NOT NULL DEFAULT gen_random_uuid(),
     version            INTEGER     NOT NULL,
-    username           VARCHAR(30) NOT NULL,
     password           VARCHAR(72),
     email              VARCHAR(255),
     email_verified     BOOLEAN     NOT NULL DEFAULT FALSE,
@@ -17,5 +16,4 @@ CREATE TABLE users
 );
 ALTER TABLE users
     ADD CONSTRAINT users_pk PRIMARY KEY (id),
-    ADD CONSTRAINT users_email_unique UNIQUE (email),
-    ADD CONSTRAINT users_username_unique UNIQUE (username);
+    ADD CONSTRAINT users_email_unique UNIQUE (email);

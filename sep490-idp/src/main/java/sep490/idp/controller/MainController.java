@@ -28,7 +28,7 @@ public class MainController {
     public String loginPage(@RequestParam(value = "error", required = false) String error, Model model) {
         model.addAttribute("loginDTO", new LoginDTO());
         if (error != null) {
-            model.addAttribute("errorMessage", error);
+            model.addAttribute("errorKey", error);
         }
         return "login";
     }

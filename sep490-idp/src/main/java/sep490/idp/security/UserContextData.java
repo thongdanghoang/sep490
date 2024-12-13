@@ -12,14 +12,14 @@ import java.util.List;
 
 @Getter
 public class UserContextData implements UserDetails {
-    private final UserEntity userEntity;
+    private transient final UserEntity userEntity;
     private final String username;
     private final String password;
     private final List<GrantedAuthority> authorities;
     
     public UserContextData(@NotNull UserEntity userEntity) {
         this.userEntity = userEntity;
-        this.username = userEntity.getUsername();
+        this.username = userEntity.getEmail();
         this.password = userEntity.getPassword();
         // TODO: [Thong DANG HOANG] implement authorities
         this.authorities = Collections.emptyList();
