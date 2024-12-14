@@ -1,36 +1,31 @@
 package sep490.idp.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import sep490.idp.validation.ToValidated;
+
+import static sep490.common.api.utils.CommonConstant.EMAIL_PATTERN;
 
 @Getter
 @Setter
-public class SignupDTO {
-    // TODO: implement validation
-    @Email(message = "Invalid email format")
-    @NotBlank(message = "Email is required")
+public class SignupDTO implements ToValidated {
+
+    @Pattern(regexp = EMAIL_PATTERN, message = "{validation.email.invalid}")
     private String email;
 
-    @Size(min = 6, message = "Password must be at least 6 characters")
+//    @Pattern(regexp = "", message = "{validation.password.invalid}")
     private String password;
 
-    @NotBlank(message = "Confirm Password is required")
+//    @Pattern(regexp = "", message = "{validation.confirmPassword.invalid}")
     private String confirmPassword;
 
-    @Pattern(regexp = "^\\d+$", message = "Phone must contain only digits")
-    @Size(max = 16, message = "Phone number must not exceed 16 characters")
-    @NotBlank(message = "Phone is required")
+//    @Pattern(regexp = "", message = "{validation.phone.invalid}")
     private String phone;
 
-    @Size(max = 50, message = "First name must not exceed 50 characters")
-    @NotBlank(message = "First name is required")
+//    @Pattern(regexp = "", message = "{validation.firstName.invalid}")
     private String firstName;
 
-    @Size(max = 100, message = "Last name must not exceed 100 characters")
-    @NotBlank(message = "Last name is required")
+//    @Pattern(regexp = "", message = "{validation.lastName.invalid}")
     private String lastName;
 }

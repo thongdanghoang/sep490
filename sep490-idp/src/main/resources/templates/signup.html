@@ -7,8 +7,8 @@
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<div class="flex items-center justify-center min-h-screen px-4">
-    <div class="flex flex-col lg:flex-row items-center w-full max-w-5xl">
+<div class="flex items-center justify-center min-h-screen py-8 px-4">
+    <div class="flex flex-col lg:flex-row items-center w-full h-full max-w-5xl">
         <!-- Sign-Up Form Section -->
         <div class="bg-white p-6 rounded w-full lg:w-1/2">
             <h2 class="text-center text-green-500 text-2xl font-bold mb-6 uppercase" th:text="#{signup.title}"></h2>
@@ -59,8 +59,8 @@
                            id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}">
                     <p th:if="${#fields.hasErrors('confirmPassword')}" class="text-red-500 text-sm mt-1" th:errors="*{confirmPassword}"></p>
                 </div>
-                <div th:if="${errors}" class="mb-4 text-red-500 text-center">
-                    <span th:text="${error}"></span>
+                <div th:if="${errorMsg}" class="mb-4 text-red-500 text-center">
+                    <span th:text="#{${errorMsg}}"></span>
                 </div>
                 <div>
                     <button type="submit"

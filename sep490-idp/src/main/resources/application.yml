@@ -1,8 +1,5 @@
 spring:
   security:
-    user:
-      name: ${TEST_USER_NAME:dano}
-      password: ${TEST_USER_PASSWORD:dano}
     oauth2:
       authorizationserver:
         client:
