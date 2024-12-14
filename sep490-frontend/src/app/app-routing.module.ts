@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {AutoLoginPartialRoutesGuard} from 'angular-auth-oidc-client';
 import {AppRoutingConstants} from './app-routing.constant';
 import {ForbiddenComponent} from './components/forbidden/forbidden.component';
-import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
-import {NotFoundComponent} from './components/not-found/not-found.component';
-import {AutoLoginPartialRoutesGuard} from 'angular-auth-oidc-client';
 import {HomeComponent} from './components/home/home.component';
+import {NotFoundComponent} from './components/not-found/not-found.component';
+import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
 
 const routes: Routes = [
   {
@@ -33,6 +33,14 @@ const routes: Routes = [
   {
     path: AppRoutingConstants.UNAUTHORIZED,
     component: UnauthorizedComponent
+  },
+  {
+    path: 'bookstore',
+    loadChildren: () =>
+      import('./modules/bookstore/bookstore.module').then(
+        m => m.BookstoreModule
+      ),
+    canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
     path: '**',
