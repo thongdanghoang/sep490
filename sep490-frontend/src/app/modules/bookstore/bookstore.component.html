@@ -1,1 +1,125 @@
-<p>bookstore works!</p>
+<img
+    src="assets/images/bookstore.png"
+    class="img-fluid full-width"
+    alt="The more you read the more you know"
+/>
+<!-- Search form -->
+<div class="grid grid-cols-3 p-2.5 bg-quartz">
+    <p-inputgroup class="col-span-2">
+        <p-button label="Search" />
+        <input pInputText />
+        <p-inputgroup-addon class="bg-primary">
+            <p-button icon="pi pi-search" variant="text" />
+        </p-inputgroup-addon>
+    </p-inputgroup>
+    <div class="py-2 flex items-center justify-center text-white text-2xl">
+        <h3>Best <span class="text-primary">deals</span> of the day</h3>
+    </div>
+</div>
+<!-- Nav bar -->
+<div class="flex justify-center bg-balticSea">
+    <a href="/bookstore" class="text-white text-lg px-4 py-2.5">Cookbooks</a>
+    <a href="/bookstore" class="text-white text-lg px-4 py-2.5">Database</a>
+    <a href="/bookstore" class="text-white text-lg px-4 py-2.5">Fairy Tales</a>
+    <a href="/bookstore" class="text-white text-lg px-4 py-2.5"
+        >Science Fiction</a
+    >
+    <a href="/bookstore" class="text-white text-lg px-4 py-2.5"
+        >Home Improvement</a
+    >
+    <a href="/bookstore" class="text-white text-lg px-4 py-2.5">Cars</a>
+    <a href="/bookstore" class="text-white text-lg px-4 py-2.5">Woodwork</a>
+</div>
+<!-- Best sellers -->
+<div class="grid grid-cols-4 gap-6 p-5 *:cursor-pointer bg-whiteSmoke">
+    <div class="col-span-1 flex items-center justify-center">
+        <h3 class="text-2xl text-veniceBlue">Bookstore<br />Best Sellers</h3>
+    </div>
+    <div class="col-span-3">
+        <div class="grid grid-cols-6">
+            @for (
+                bestSellerImage of bestSellersImages;
+                track bestSellersImages
+            ) {
+                <div class="col-span-1 mx-4">
+                    <img
+                        src="{{ bestSellerImage }}"
+                        class="img-fluid"
+                        alt="Best seller"
+                    />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- Quick actions -->
+<div class="grid grid-cols-3 px-4 py-2 gap-4 bg-whiteSmoke">
+    <div class="col-span-1">
+        <img
+            src="assets/images/yourpastorders.76f37cd9.png"
+            class="img-fluid"
+            alt="yourpastorders"
+        />
+    </div>
+    <div class="col-span-1">
+        <img
+            src="assets/images/yourshoppingcart.39c06f61.png"
+            class="img-fluid"
+            alt="yourshoppingcart"
+        />
+    </div>
+    <div class="col-span-1">
+        <img
+            src="assets/images/bestSellers.f95a983a.png"
+            class="img-fluid"
+            alt="bestSellers"
+        />
+    </div>
+</div>
+<!-- Cookbooks -->
+<div class="bg-whiteSmoke px-4 py-2">
+    <div class="bg-white border border-gray-200 p-5">
+        <h3 class="text-2xl text-veniceBlue">
+            {{ "Cookbooks " }}
+            <small class="text-sm text-azure"
+                ><a href="/category/Cookbooks">Browse cookbooks</a></small
+            >
+        </h3>
+        <div class="grid grid-cols-4 gap-7 p-4">
+            <ng-container
+                *ngTemplateOutlet="
+                    cookbookCardTemplate;
+                    context: {
+                        $implicit: {
+                            id: 'zceo3fdn-d93b-11e8-9f8b-f2801f1b9fd1',
+                            cover: 'https://d2z6cj5wcte8g7.cloudfront.net/book-covers/Lamb_grilling_guide.png',
+                            price: 20.99,
+                            category: 'Cookbooks',
+                            name: 'Lamb Grilling Guide',
+                            rating: 4,
+                            author: 'Jake Jakubowski',
+                        },
+                    }
+                "
+            ></ng-container>
+            <ng-template #cookbookCardTemplate let-book>
+                <div class="flex flex-col items-center gap-2.5">
+                    <div class="flex justify-between">
+                        <p-rating [ngModel]="book.rating" readonly="true" />
+                        <span>{{ "$" + book.price }}</span>
+                    </div>
+                    <img
+                        [src]="book.cover"
+                        class="img-fluid"
+                        [alt]="book.name"
+                    />
+                    <div class="text-lg">
+                        {{ book.name }}
+                    </div>
+                    <p-button label="Add to cart" severity="contrast" />
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>
+<!-- Books your friends have bought -->

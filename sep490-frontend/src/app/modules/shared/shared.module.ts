@@ -8,10 +8,15 @@ import {ButtonModule} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
 import {DynamicDialog} from 'primeng/dynamicdialog';
 import {FloatLabelModule} from 'primeng/floatlabel';
+import {IconFieldModule} from 'primeng/iconfield';
+import {InputGroupModule} from 'primeng/inputgroup';
+import {InputGroupAddonModule} from 'primeng/inputgroupaddon';
+import {InputIconModule} from 'primeng/inputicon';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {InputTextModule} from 'primeng/inputtext';
 import {MenubarModule} from 'primeng/menubar';
 import {PasswordModule} from 'primeng/password';
+import {RatingModule} from 'primeng/rating';
 import {RippleModule} from 'primeng/ripple';
 import {TabMenuModule} from 'primeng/tabmenu';
 import {ToastModule} from 'primeng/toast';
@@ -25,11 +30,16 @@ const primeNgModules = [
   DynamicDialog,
   FloatLabelModule,
   InputTextModule,
+  InputIconModule,
+  IconFieldModule,
   InputSwitchModule,
+  InputGroupModule,
+  InputGroupAddonModule,
   MenubarModule,
   TabMenuModule,
   ToastModule,
   PasswordModule,
+  RatingModule,
   RippleModule
 ];
 
