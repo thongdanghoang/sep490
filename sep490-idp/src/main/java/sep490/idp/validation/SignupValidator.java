@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import sep490.idp.dto.SignupDTO;
 import sep490.idp.repository.UserRepository;
 
+import java.util.Optional;
+
 @Component
 @Qualifier("signupValidator")
 @RequiredArgsConstructor
@@ -16,15 +18,15 @@ public class SignupValidator implements Validator<SignupDTO> {
 
 
     @Override
-    public String getValidateFirstMessage(SignupDTO signupDTO) {
+    public Optional<String> getValidateFirstMessage(SignupDTO signupDTO) {
         if (!passwordsMatch(signupDTO)) {
-            return "validation.password.invalid.notmatch";
+            return Optional.of("validation.password.invalid.notmatch");
         }
         if (userRepo.existsByEmail(signupDTO.getEmail())) {
-            return "validation.email.invalid.exist";
+            return Optional.of("validation.email.invalid.exist");
         }
 
-        return null;
+        return Optional.empty();
     }
 
     private boolean passwordsMatch(SignupDTO signupDTO) {

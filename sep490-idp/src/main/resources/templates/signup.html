@@ -26,7 +26,7 @@
                     <label for="phone" class="block text-gray-500 font-medium" th:text="#{signup.label.phone}"></label>
                     <input required
                            class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-green-200 focus:outline-none"
-                           id="phone" name="email" th:field="*{phone}">
+                           id="phone" name="phone" th:field="*{phone}">
                     <p th:if="${#fields.hasErrors('phone')}" class="text-red-500 text-sm mt-1" th:errors="*{phone}"></p>
                 </div>
                 <!-- First Name -->

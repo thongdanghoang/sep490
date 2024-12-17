@@ -1,5 +1,7 @@
 package sep490.idp.validation;
 
+import java.util.Optional;
+
 public interface Validator<T extends ToValidated> {
 
 
@@ -9,5 +11,5 @@ public interface Validator<T extends ToValidated> {
      * @param toValidate the object to be validated
      * @return the first validation message as a string
      */
-    String getValidateFirstMessage(T toValidate);
+    Optional<String> getValidateFirstMessage(T toValidate);
 }

@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import sep490.idp.dto.LoginDTO;
 import sep490.idp.dto.SignupDTO;
+import sep490.idp.dto.SignupResult;
 import sep490.idp.service.UserService;
 
 @Controller
 @RequiredArgsConstructor
 public class MainController {
+
+    public static final String ERROR_MSG = "errorMsg";
 
     private final UserService userService;
 
@@ -44,7 +47,9 @@ public class MainController {
         if (result.hasErrors()) {
             return "signup";
         }
-        return userService.signup(signupDTO, model);
+        SignupResult signupResult = userService.signup(signupDTO, model);
+        model.addAttribute(ERROR_MSG, signupResult.getErrorMessage());
+        return signupResult.getRedirectUrl();
     }
 
     @GetMapping("/success")
