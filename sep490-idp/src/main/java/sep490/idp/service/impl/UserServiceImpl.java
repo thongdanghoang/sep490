@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import sep490.idp.dto.SignupDTO;
+import sep490.idp.dto.SignupResult;
 import sep490.idp.entity.UserEntity;
 import sep490.idp.repository.UserRepository;
 import sep490.idp.service.UserService;
@@ -15,26 +16,36 @@ import sep490.idp.validation.Validator;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    public static final String ERROR_MSG = "errorMsg";
-
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
     @Qualifier("signupValidator")
     private final Validator<SignupDTO> validator;
 
     @Override
-    public String signup(SignupDTO signupDTO, Model model) {
+    public SignupResult signup(SignupDTO signupDTO, Model model) {
+        SignupResult result = validateSignupDTO(signupDTO);
 
-        String errorMsg = validator.getValidateFirstMessage(signupDTO);
-        if (errorMsg != null) {
-            model.addAttribute(ERROR_MSG, errorMsg);
-            return "signup";
+        if (result.isSuccess()) {
+            var user = createUser(signupDTO);
+            userRepo.save(user);
+            result.setSuccess(true);
         }
 
-        var user = createUser(signupDTO);
-        userRepo.save(user);
+        return result;
+    }
 
-        return "redirect:/login";
+    private SignupResult validateSignupDTO(SignupDTO signupDTO) {
+        SignupResult result = new SignupResult();
+        result.setRedirectUrl("redirect:/login");
+        result.setSuccess(true);
+
+        validator.getValidateFirstMessage(signupDTO).ifPresent(msg -> {
+            result.setSuccess(false);
+            result.setErrorMessage(msg);
+            result.setRedirectUrl("signup");
+        });
+
+        return result;
     }
 
 

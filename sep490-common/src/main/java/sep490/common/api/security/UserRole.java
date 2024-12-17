@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import sep490.common.api.BaseEnum;
 
-import java.util.Arrays;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -17,8 +16,8 @@ public enum UserRole implements BaseEnum {
 
     
     public static final class RoleNameConstant {
-        public static final String ENTERPRISE_OWNER = "sep390.EnterpriseOwner";
-        public static final String SYSTEM_ADMIN = "sep390.SystemAdmin";
+        public static final String ENTERPRISE_OWNER = "sep490.EnterpriseOwner";
+        public static final String SYSTEM_ADMIN = "sep490.SystemAdmin";
         
         private RoleNameConstant() {
         }
