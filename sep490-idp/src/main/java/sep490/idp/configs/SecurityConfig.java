@@ -11,6 +11,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
@@ -41,11 +42,11 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 
 @Configuration
 public class SecurityConfig {
-    
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(List.of("http://localhost:4200"));
+        corsConfig.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:8080"));
         corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         corsConfig.setAllowCredentials(true);
@@ -54,7 +55,7 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
     }
-    
+
     @Bean
     @Order(1)
     public SecurityFilterChain asFilterChain(HttpSecurity http)
@@ -63,29 +64,31 @@ public class SecurityConfig {
         // TODO: solve deprecated
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-            .oidc(Customizer.withDefaults());
+                .oidc(Customizer.withDefaults());
         http
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .exceptionHandling(exceptions -> exceptions
-                                           .defaultAuthenticationEntryPointFor(
-                                                   new LoginUrlAuthenticationEntryPoint("/login"),
-                                                   new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
-                                                                              )
-                                  );
+                        .defaultAuthenticationEntryPointFor(
+                                new LoginUrlAuthenticationEntryPoint("/login"),
+                                new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
+                        )
+                );
         return http.build();
     }
-    
+
     @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        http.csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(
-            c -> c
-                    .requestMatchers("/css/**", "/img/**", "/js/**").permitAll()
-                    .requestMatchers(antMatcher("/signup"), antMatcher("/login")).permitAll()
-                    .anyRequest().authenticated());
+                c -> c
+                        .requestMatchers("/css/**", "/img/**", "/js/**").permitAll()
+                        .requestMatchers(antMatcher("/signup"), antMatcher("/login")).permitAll()
+                        .requestMatchers(antMatcher("/passkey/login")).permitAll()
+                        .anyRequest().authenticated());
 
         http.formLogin(form -> form.loginPage("/login")
                 .usernameParameter("email")
@@ -94,9 +97,13 @@ public class SecurityConfig {
                 .failureHandler(authenticationFailureHandler())
                 .permitAll());
 
+        // Passkey Configuration
+        http.webAuthn(passkeys ->
+                passkeys.rpName("SEP490 IDP").rpId("localhost").allowedOrigins("http://localhost:8080"));
+
         return http.build();
     }
-    
+
 
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
@@ -107,7 +114,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
     @Bean
     public JWKSource<SecurityContext> jwkSource()
             throws NoSuchAlgorithmException {
@@ -126,18 +133,18 @@ public class SecurityConfig {
         JWKSet jwkSet = new JWKSet(rsaKey);
         return new ImmutableJWKSet<>(jwkSet);
     }
-    
+
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
         return context -> {
             // TODO: implement OidcUserInfoService
             if (OidcParameterNames.ID_TOKEN.equals(context.getTokenType().getValue())) {
                 var userInfo = OidcUserInfo.builder()
-                                           .subject(UUID.randomUUID().toString())
-                                           .email("dano@elca.vn")
-                                           .emailVerified(true)
-                                           .phoneNumber("+1 (604) 555-1234;ext=5678")
-                                           .phoneNumberVerified(false)
+                        .subject(UUID.randomUUID().toString())
+                        .email("dano@elca.vn")
+                        .emailVerified(true)
+                        .phoneNumber("+1 (604) 555-1234;ext=5678")
+                        .phoneNumberVerified(false)
 //                        .claim("address", Collections.singletonMap("formatted", "Champ de Mars\n5 Av. Anatole France\n75007 Paris\nFrance"))
 //                        .name("First Last")
 //                        .givenName("First")
@@ -153,13 +160,13 @@ public class SecurityConfig {
 //                        .zoneinfo("Europe/Paris")
 //                        .locale("en-US")
 //                        .updatedAt("1970-01-01T00:00:00Z")
-                                           .build()
-                                           .getClaims();
+                        .build()
+                        .getClaims();
                 context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(userInfo));
             }
         };
     }
-    
+
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder().build();
