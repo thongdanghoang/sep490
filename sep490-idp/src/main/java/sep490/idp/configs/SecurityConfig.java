@@ -60,6 +60,7 @@ public class SecurityConfig {
     public SecurityFilterChain asFilterChain(HttpSecurity http)
             throws Exception {
         // reference: https://docs.spring.io/spring-authorization-server/reference/guides/how-to-userinfo.html
+        // TODO: solve deprecated
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
             .oidc(Customizer.withDefaults());
