@@ -2,25 +2,30 @@ package sep490.idp.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import sep490.idp.dto.LoginDTO;
-import sep490.idp.dto.SignupDTO;
-import sep490.idp.dto.SignupResult;
+import org.springframework.web.bind.annotation.*;
+import sep490.idp.dto.*;
+import sep490.idp.repository.UserAuthenticatorRepository;
+import sep490.idp.security.UserContextData;
 import sep490.idp.service.UserService;
+import java.util.UUID;
+
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
+@SessionAttributes("challenge")
 public class MainController {
 
     public static final String ERROR_MSG = "errorMsg";
 
     private final UserService userService;
+    private final UserAuthenticatorRepository authenticatorRepository;
+
 
     @GetMapping("/")
     public String homePage() {
@@ -29,6 +34,7 @@ public class MainController {
 
     @GetMapping("/login")
     public String loginPage(@RequestParam(value = "error", required = false) String error, Model model) {
+        model.addAttribute("challenge", UUID.randomUUID().toString());
         model.addAttribute("loginDTO", new LoginDTO());
         if (error != null) {
             model.addAttribute("errorKey", error);
@@ -54,6 +60,17 @@ public class MainController {
 
     @GetMapping("/success")
     public String success() {
-        return "success";
+        return "redirect:/account";
+    }
+
+    @GetMapping("/account")
+    public String accountPage(@AuthenticationPrincipal UserContextData userContextData, Model model) {
+        model.addAttribute("challenge", UUID.randomUUID().toString());
+        var authenticators = authenticatorRepository.findUserAuthenticatorByUser(userContextData.getUserEntity());
+        model.addAttribute("userId", userContextData.getUserEntity().getId());
+        model.addAttribute("email", userContextData.getUserEntity().getEmail());
+        model.addAttribute("authenticators", authenticators);
+
+        return "account-page";
     }
 }

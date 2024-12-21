@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
     <title th:text="#{login.title}"></title>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
@@ -39,7 +41,7 @@
                     </div>
                 </div>
                 <div class="text-center mt-4">
-                    <a th:href="@{/passkey-login}" class="text-green-500 hover:underline" th:text="#{login.btn.signInByPasskey}"></a>
+                    <button type="button" id="sign-in-by-passkey" class="text-green-500 hover:underline" th:text="#{login.btn.signInByPasskey}"></button>
                 </div>
             </form>
             <div class="text-center mt-3">
@@ -60,5 +62,34 @@
         </div>
     </div>
 </div>
+<script th:inline="javascript">
+    var challenge = /*[[${challenge}]]*/ 'default-challenge';
+    const credentialsRequestOptions = {
+        publicKey: {
+            challenge: Uint8Array.from(challenge, c => c.charCodeAt(0)),
+        }
+    };
+
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+    document.getElementById("sign-in-by-passkey").addEventListener("click", async () => {
+        const credentialsResponse = await navigator.credentials.get(credentialsRequestOptions);
+        fetch("/passkey/login",
+            {
+                method: "POST",
+                body: JSON.stringify(credentialsResponse),
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json;charset=utf-8",
+                    [csrfHeader]: csrfToken
+                },
+                redirect: "follow"
+            })
+            .then(r => document.location.href = r.url)
+            .catch(err => console.error(err))
+            .finally(() => console.log("yep, done"));
+    });
+</script>
 </body>
 </html>

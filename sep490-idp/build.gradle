@@ -43,6 +43,7 @@ dependencies {
 	implementation 'org.springframework.session:spring-session-core'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	implementation 'com.webauthn4j:webauthn4j-core:0.28.3.RELEASE'
 
 	// Database
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
