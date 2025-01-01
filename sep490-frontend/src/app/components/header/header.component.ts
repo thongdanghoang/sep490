@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {ApplicationService} from '../../modules/core/services/application.service';
 import {ThemeService} from '../../modules/core/services/theme.service';
@@ -14,7 +15,8 @@ export class HeaderComponent extends SubscriptionAwareComponent {
 
   constructor(
     private readonly applicationService: ApplicationService,
-    private readonly themeService: ThemeService
+    private readonly themeService: ThemeService,
+    protected readonly router: Router
   ) {
     super();
     this.authenticated = this.applicationService.isAuthenticated();

@@ -78,48 +78,74 @@
 </div>
 <!-- Cookbooks -->
 <div class="bg-whiteSmoke px-4 py-2">
-    <div class="bg-white border border-gray-200 p-5">
+    <div class="flex flex-col gap-5 bg-white border border-gray-200 p-5">
         <h3 class="text-2xl text-veniceBlue">
             {{ "Cookbooks " }}
             <small class="text-sm text-azure"
                 ><a href="/category/Cookbooks">Browse cookbooks</a></small
             >
         </h3>
-        <div class="grid grid-cols-4 gap-7 p-4">
-            <ng-container
-                *ngTemplateOutlet="
-                    cookbookCardTemplate;
-                    context: {
-                        $implicit: {
-                            id: 'zceo3fdn-d93b-11e8-9f8b-f2801f1b9fd1',
-                            cover: 'https://d2z6cj5wcte8g7.cloudfront.net/book-covers/Lamb_grilling_guide.png',
-                            price: 20.99,
-                            category: 'Cookbooks',
-                            name: 'Lamb Grilling Guide',
-                            rating: 4,
-                            author: 'Jake Jakubowski',
-                        },
-                    }
-                "
-            ></ng-container>
-            <ng-template #cookbookCardTemplate let-book>
-                <div class="flex flex-col items-center gap-2.5">
-                    <div class="flex justify-between">
-                        <p-rating [ngModel]="book.rating" readonly="true" />
-                        <span>{{ "$" + book.price }}</span>
+        <p-carousel
+            [value]="cookbooks"
+            [numVisible]="4"
+            [numScroll]="4"
+            [circular]="true"
+            [responsiveOptions]="responsiveOptions"
+            autoplayInterval="3000"
+        >
+            <ng-template let-product #item>
+                <div
+                    class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4"
+                >
+                    <div class="mb-4 flex justify-between px-6">
+                        <p-rating
+                            [(ngModel)]="product.rating"
+                            [readonly]="true"
+                        />
+                        <div class="mt-0">
+                            {{ "$" + product.price }}
+                        </div>
                     </div>
-                    <img
-                        [src]="book.cover"
-                        class="img-fluid"
-                        [alt]="book.name"
-                    />
-                    <div class="text-lg">
-                        {{ book.name }}
+                    <div class="mb-4">
+                        <div class="relative mx-auto">
+                            <img
+                                [src]="product.cover"
+                                [alt]="product.name"
+                                class="w-full rounded-border"
+                            />
+                        </div>
                     </div>
-                    <p-button label="Add to cart" severity="contrast" />
+                    <div class="mb-4 font-medium text-center">
+                        {{ product.name }}
+                    </div>
+                    <div class="flex justify-center items-center">
+                        <p-button
+                            styleClass="ml-2"
+                            severity="contrast"
+                            label="Add to cart"
+                        />
+                    </div>
                 </div>
             </ng-template>
-        </div>
+        </p-carousel>
     </div>
 </div>
 <!-- Books your friends have bought -->
+<div class="bg-whiteSmoke px-4 py-2">
+    <div class="bg-white border border-gray-200 p-5">
+        <h3 class="text-2xl text-veniceBlue">Books your friends have bought</h3>
+    </div>
+</div>
+
+<div class="bg-whiteSmoke px-5 py-2">
+    <div class="bg-white border border-gray-200 p-5">
+        <!--        <img-->
+        <!--            src="assets/images/yourpastorders.76f37cd9.png"-->
+        <!--            class="img-fluid"-->
+        <!--            alt="yourpastorders"-->
+        <!--        />-->
+        <div class="flex flex-col p-5">
+            <div class="flex justify-between items-center"></div>
+        </div>
+    </div>
+</div>

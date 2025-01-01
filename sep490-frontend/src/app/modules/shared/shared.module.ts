@@ -5,6 +5,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {AutoFocusModule} from 'primeng/autofocus';
 import {ButtonModule} from 'primeng/button';
+import {Carousel} from 'primeng/carousel';
 import {DialogModule} from 'primeng/dialog';
 import {DynamicDialog} from 'primeng/dynamicdialog';
 import {FloatLabelModule} from 'primeng/floatlabel';
@@ -26,6 +27,7 @@ import {ModalProvider} from './services/modal-provider';
 const primeNgModules = [
   AutoFocusModule,
   ButtonModule,
+  Carousel,
   DialogModule,
   DynamicDialog,
   FloatLabelModule,

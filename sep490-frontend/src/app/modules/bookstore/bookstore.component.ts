@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Book} from './models/book';
 
 @Component({
@@ -6,7 +6,7 @@ import {Book} from './models/book';
   templateUrl: './bookstore.component.html',
   styleUrl: './bookstore.component.css'
 })
-export class BookstoreComponent {
+export class BookstoreComponent implements OnInit {
   bestSellersImages: string[] = [
     'assets/images/burgers.161c4a44.png',
     'assets/images/italian.92245953.png',
@@ -25,6 +25,100 @@ export class BookstoreComponent {
       name: 'Lamb Grilling Guide',
       rating: 4,
       author: 'Jake Jakubowski'
+    },
+    {
+      id: 'zceo3fdn-d93b-11e8-9f8b-f2801f1b9fd1',
+      cover: 'https://d2z6cj5wcte8g7.cloudfront.net/book-covers/Dairy.png',
+      price: 17.96,
+      category: 'Cookbooks',
+      name: 'Dairy',
+      rating: 1,
+      author: 'Jake Jakubowski'
+    },
+    {
+      id: 'zceo3fdn-d93b-11e8-9f8b-f2801f1b9fd1',
+      cover:
+        'https://d2z6cj5wcte8g7.cloudfront.net/book-covers/Chasing_umami.png',
+      price: 15.98,
+      category: 'Cookbooks',
+      name: 'Chasing Umami',
+      rating: 3,
+      author: 'Jake Jakubowski'
+    },
+    {
+      id: 'zceo3fdn-d93b-11e8-9f8b-f2801f1b9fd1',
+      cover:
+        'https://d2z6cj5wcte8g7.cloudfront.net/book-covers/scream_ice_cream.png',
+      price: 20.99,
+      category: 'Cookbooks',
+      name: 'Scream Ice Cream',
+      rating: 4,
+      author: 'Jake Jakubowski'
+    },
+    {
+      id: 'zceo3fdn-d93b-11e8-9f8b-f2801f1b9fd1',
+      cover:
+        'https://d2z6cj5wcte8g7.cloudfront.net/book-covers/Lamb_grilling_guide.png',
+      price: 20.99,
+      category: 'Cookbooks',
+      name: 'Lamb Grilling Guide',
+      rating: 4,
+      author: 'Jake Jakubowski'
+    },
+    {
+      id: 'zceo3fdn-d93b-11e8-9f8b-f2801f1b9fd1',
+      cover: 'https://d2z6cj5wcte8g7.cloudfront.net/book-covers/Dairy.png',
+      price: 17.96,
+      category: 'Cookbooks',
+      name: 'Dairy',
+      rating: 1,
+      author: 'Jake Jakubowski'
+    },
+    {
+      id: 'zceo3fdn-d93b-11e8-9f8b-f2801f1b9fd1',
+      cover:
+        'https://d2z6cj5wcte8g7.cloudfront.net/book-covers/Chasing_umami.png',
+      price: 15.98,
+      category: 'Cookbooks',
+      name: 'Chasing Umami',
+      rating: 3,
+      author: 'Jake Jakubowski'
+    },
+    {
+      id: 'zceo3fdn-d93b-11e8-9f8b-f2801f1b9fd1',
+      cover:
+        'https://d2z6cj5wcte8g7.cloudfront.net/book-covers/scream_ice_cream.png',
+      price: 20.99,
+      category: 'Cookbooks',
+      name: 'Scream Ice Cream',
+      rating: 4,
+      author: 'Jake Jakubowski'
     }
   ];
+  responsiveOptions: any[] | undefined;
+
+  ngOnInit(): void {
+    this.responsiveOptions = [
+      {
+        breakpoint: '1400px',
+        numVisible: 2,
+        numScroll: 1
+      },
+      {
+        breakpoint: '1199px',
+        numVisible: 3,
+        numScroll: 1
+      },
+      {
+        breakpoint: '767px',
+        numVisible: 2,
+        numScroll: 1
+      },
+      {
+        breakpoint: '575px',
+        numVisible: 1,
+        numScroll: 1
+      }
+    ];
+  }
 }
