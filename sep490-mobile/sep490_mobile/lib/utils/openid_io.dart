@@ -7,7 +7,7 @@ import 'package:sep490_mobile/dtos/responses/login_response.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:openid_client/openid_client_io.dart' as io;
 
-const keycloakUri = 'http://localhost:8080/realms/myrealm';
+const keycloakUri = 'http://localhost:8080';
 const scopes = ['profile'];
 
 Credential? credential;
@@ -39,7 +39,7 @@ Future<LoginResponse?> authenticate() async {
 
   // create an authenticator
   var authenticator = io.Authenticator(client,
-      scopes: scopes, port: 4000, urlLancher: urlLauncher);
+      scopes: scopes, port: 4200, urlLancher: urlLauncher);
 
   // starts the authentication
   var c = await authenticator.authorize().timeout(
