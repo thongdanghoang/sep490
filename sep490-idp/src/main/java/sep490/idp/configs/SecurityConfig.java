@@ -82,22 +82,23 @@ public class SecurityConfig {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         http.authorizeHttpRequests(
-                c -> c
-                        .requestMatchers("/css/**", "/img/**", "/js/**", "/favicon.ico").permitAll()
-                        .requestMatchers(antMatcher("/signup"), antMatcher("/login")).permitAll()
-                        .requestMatchers(antMatcher("/passkey/login")).permitAll()
-                        .anyRequest().authenticated());
+            c -> c
+                .requestMatchers("/css/**", "/img/**", "/js/**", "/favicon.ico").permitAll()
+                .requestMatchers(antMatcher("/signup"), antMatcher("/login")).permitAll()
+                .requestMatchers(antMatcher("/passkey/login")).permitAll()
+                .requestMatchers(antMatcher("/forgot-password"), antMatcher("/enter-otp"), antMatcher("/forgot-reset-password")).permitAll()
+                .anyRequest().authenticated());
 
         http.formLogin(form -> form.loginPage("/login")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/success", false)
-                .failureHandler(authenticationFailureHandler())
-                .permitAll());
+            .usernameParameter("email")
+            .passwordParameter("password")
+            .defaultSuccessUrl("/success", false)
+            .failureHandler(authenticationFailureHandler())
+            .permitAll());
 
         // Passkey Configuration
         http.webAuthn(passkeys ->
-                passkeys.rpName("SEP490 IDP").rpId("localhost").allowedOrigins("http://localhost:8080"));
+            passkeys.rpName("SEP490 IDP").rpId("localhost").allowedOrigins("http://localhost:8080"));
 
         return http.build();
     }
