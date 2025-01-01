@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" class="h-full bg-white">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{enterOtp.title}">Enter OTP</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<div class="flex items-center justify-center min-h-screen px-4">
+    <div class="flex flex-col lg:flex-row items-center w-full max-w-5xl">
+        <!-- Enter OTP Form Section -->
+        <div class="bg-white p-6 rounded w-full lg:w-1/2">
+            <h2 class="text-center text-green-500 text-2xl font-bold mb-6 uppercase" th:text="#{enterOtp.title}">Enter OTP</h2>
+            <form id="enter-otp-form" role="form" th:object="${otpDTO}" th:action="@{/enter-otp}" method="post">
+                <div class="mb-4">
+                    <label for="otp" class="block text-gray-500 font-medium" th:text="#{enterOtp.label.otp}">OTP Code</label>
+                    <input type="text" required
+                            pattern="[0-9]*"
+                            inputmode="numeric"
+                            maxlength="6"
+                            autocomplete="one-time-code"
+                            autofocus
+                            class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-green-200 focus:outline-none"
+                            id="otp" th:field="*{otpCode}" name="otpCode">
+                </div>
+                <div th:if="${errorMessage}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                    <span th:text="${errorMessage}"></span>
+                </div>
+                <div>
+                    <button type="submit"
+                            class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 focus:ring focus:ring-green-200 focus:outline-none"
+                            th:text="#{enterOtp.btn.submit}">
+                    </button>
+                </div>
+            </form>
+            <div class="text-center mt-4">
+                <a th:href="@{/forgot-password}" class="text-green-500 hover:underline" th:text="#{enterOtp.btn.resendOtp}">
+                </a>
+            </div>
+            <div class="text-center mt-3">
+                <a th:href="@{''(lang=en)}" class="text-green-500 hover:underline" th:text="#{language.english}">English</a> |
+                <a th:href="@{''(lang=vi)}" class="text-green-500 hover:underline" th:text="#{language.vietnamese}">Vietnamese</a>
+            </div>
+        </div>
+
+        <!-- Enter OTP Image Section -->
+        <div class="hidden lg:flex lg:w-1/2 justify-center items-center">
+            <img th:src="@{/img/logo.svg}" alt="City Globe" class="max-w-full h-auto">
+        </div>
+    </div>
+</div>
+</body>
+</html>

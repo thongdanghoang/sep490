@@ -18,6 +18,14 @@ spring:
                 - phone
             require-authorization-consent: false
             require-proof-key: true
+  mail:
+    host: ${SMTP_HOST:127.0.0.1}
+    port: ${SMTP_PORT:1025}
+    username:
+    password:
+    properties:
+      mail.smtp.starttls.enable: true
+      mail.smtp.auth: false
   application:
     name: sep490-idp
   datasource:

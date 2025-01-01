@@ -30,6 +30,9 @@
                 <div class="flex justify-end items-center mb-4">
                     <a th:href="@{/forgot-password}" class="text-green-500 hover:underline" th:text="#{login.btn.forgotPassword}"></a>
                 </div>
+                <div th:if="${message}" class="bg-lime-200 border-l-4 border-l-emerald-500 text-l-emerald-700 p-4 rounded shadow-md mb-4 flex items-center space-x-4">
+                    <span th:text="${message}"></span>
+                </div>
                 <div>
                     <button type="submit"
                             class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 focus:ring focus:ring-green-200 focus:outline-none"
