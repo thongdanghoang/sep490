@@ -11,6 +11,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
@@ -57,7 +58,7 @@ public class SecurityConfig {
     
     @Bean
     @Order(1)
-    public SecurityFilterChain asFilterChain(HttpSecurity http)
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
             throws Exception {
         // reference: https://docs.spring.io/spring-authorization-server/reference/guides/how-to-userinfo.html
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
@@ -66,42 +67,50 @@ public class SecurityConfig {
         http
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .exceptionHandling(exceptions -> exceptions
-                                           .defaultAuthenticationEntryPointFor(
-                                                   new LoginUrlAuthenticationEntryPoint("/login"),
-                                                   new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
-                                                                              )
-                                  );
+                        .defaultAuthenticationEntryPointFor(
+                                new LoginUrlAuthenticationEntryPoint("/login"),
+                                new MediaTypeRequestMatcher(MediaType.TEXT_HTML)));
         return http.build();
     }
     
     @Bean
     @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-
-        http.authorizeHttpRequests(
-            c -> c
-                    .requestMatchers("/css/**", "/img/**", "/js/**").permitAll()
-                    .requestMatchers(antMatcher("/signup"), antMatcher("/login")).permitAll()
-                    .anyRequest().authenticated());
-
-        http.formLogin(form -> form.loginPage("/login")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/success", false)
-                .failureHandler(authenticationFailureHandler())
-                .permitAll());
-
+    public SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/api/**")
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .oauth2ResourceServer(resourceServer -> resourceServer.jwt(Customizer.withDefaults()));
         return http.build();
     }
     
-
+    @Bean
+    @Order(3)
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        
+        http
+                .authorizeHttpRequests(
+                        c -> c
+                                .requestMatchers("/css/**", "/img/**", "/js/**").permitAll()
+                                .requestMatchers(antMatcher("/signup"), antMatcher("/login")).permitAll()
+                                .anyRequest().authenticated())
+                .formLogin(form -> form.loginPage("/login")
+                                       .usernameParameter("email")
+                                       .passwordParameter("password")
+                                       .defaultSuccessUrl("/success", false)
+                                       .failureHandler(authenticationFailureHandler())
+                                       .permitAll());
+        
+        return http.build();
+    }
+    
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return new CustomAuthenticationFailureHandler();
     }
-
+    
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
