@@ -20,6 +20,8 @@ import {ModalProvider} from './services/modal-provider';
 import {AvatarModule} from 'primeng/avatar';
 import {MenuModule} from 'primeng/menu';
 import {BadgeModule} from 'primeng/badge';
+import {Select} from 'primeng/select';
+import {DrawerModule} from 'primeng/drawer';
 
 const primeNgModules = [
   AutoFocusModule,
@@ -27,12 +29,14 @@ const primeNgModules = [
   BadgeModule,
   ButtonModule,
   DialogModule,
+  DrawerModule,
   DynamicDialog,
   FloatLabelModule,
   InputTextModule,
   InputSwitchModule,
   MenuModule,
   MenubarModule,
+  Select,
   TabMenuModule,
   ToastModule,
   PasswordModule,
