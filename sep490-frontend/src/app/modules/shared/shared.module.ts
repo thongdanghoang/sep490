@@ -1,4 +1,4 @@
-import {CommonModule, DatePipe} from '@angular/common';
+import {CommonModule, DatePipe, NgOptimizedImage} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -17,15 +17,21 @@ import {TabMenuModule} from 'primeng/tabmenu';
 import {ToastModule} from 'primeng/toast';
 import {ConfirmDialogComponent} from './components/dialog/confirm-dialog/confirm-dialog.component';
 import {ModalProvider} from './services/modal-provider';
+import {AvatarModule} from 'primeng/avatar';
+import {MenuModule} from 'primeng/menu';
+import {BadgeModule} from 'primeng/badge';
 
 const primeNgModules = [
   AutoFocusModule,
+  AvatarModule,
+  BadgeModule,
   ButtonModule,
   DialogModule,
   DynamicDialog,
   FloatLabelModule,
   InputTextModule,
   InputSwitchModule,
+  MenuModule,
   MenubarModule,
   TabMenuModule,
   ToastModule,
@@ -38,7 +44,8 @@ const commons = [
   RouterModule,
   HttpClientModule,
   FormsModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
+  NgOptimizedImage
 ];
 
 @NgModule({

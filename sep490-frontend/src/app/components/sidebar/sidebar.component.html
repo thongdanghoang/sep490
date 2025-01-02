@@ -1,0 +1,35 @@
+<p-menu [model]="items" class="flex *:border-none" styleClass="w-full md:w-60">
+    <ng-template #start>
+        <span class="inline-flex items-center pt-8 px-4">
+            <img
+                ngSrc="assets/images/logo.svg"
+                alt="Logo"
+                width="150"
+                height="68.75"
+                priority
+            />
+        </span>
+    </ng-template>
+    <ng-template #submenuheader let-item>
+        <span class="text-primary font-bold">{{ item.label }}</span>
+    </ng-template>
+    <ng-template #item let-item>
+        <a
+            pRipple
+            [routerLink]="item.route"
+            class="flex items-center p-menu-item-link"
+        >
+            <span [class]="item.icon"></span>
+            <span class="ml-2">{{ item.label }}</span>
+            <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+            <span
+                *ngIf="item.shortcut"
+                class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1"
+                >{{ item.shortcut }}</span
+            >
+        </a>
+    </ng-template>
+    <ng-template #end> </ng-template>
+</p-menu>
+
+<p-menu [model]="settings" class="*:border-none" />
