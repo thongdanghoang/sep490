@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuItem} from 'primeng/api';
+import {AppRoutingConstants} from '../../app-routing.constant';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,42 +16,42 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     this.items = [
       {
-        label: 'Enterprise',
+        label: 'enterprise',
         items: [
           {
             label: 'Dashboard',
             icon: 'pi pi-chart-line',
-            route: '/dashboard'
+            route: `/${AppRoutingConstants.DASHBOARD_PATH}`
           },
           {
             label: 'Coefficient center',
             icon: 'pi pi-percentage',
-            route: '/coefficient-center'
+            route: `/${AppRoutingConstants.EMISSIONS_PATH}`
           },
           {
-            label: 'Carbon inventory management',
+            label: 'Building',
             icon: 'pi pi-building',
-            route: '/carbon-inventory-management'
-          },
-          {
-            label: 'Users',
-            icon: 'pi pi-users',
-            route: '/users'
+            route: `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.BUILDING_PATH}`
           }
         ]
       },
       {
-        label: 'Customer',
+        label: 'Manage',
         items: [
+          {
+            label: 'Users',
+            icon: 'pi pi-users',
+            route: `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.USERS_PATH}`
+          },
           {
             label: 'Subscription',
             icon: 'pi pi-money-bill',
-            route: '/subscription'
+            route: `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.PLAN_PATH}`
           },
           {
             label: 'Payment',
             icon: 'pi pi-wallet',
-            route: '/payment'
+            route: `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.PAYMENT_PATH}`
           }
         ]
       }

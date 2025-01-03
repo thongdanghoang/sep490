@@ -1,4 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {ThemeService} from './modules/core/services/theme.service';
 
 @Component({
@@ -9,8 +10,17 @@ import {ThemeService} from './modules/core/services/theme.service';
 export class AppComponent implements OnInit, OnDestroy {
   private systemThemeMediaQuery?: MediaQueryList;
 
-  constructor(private readonly themeService: ThemeService) {
+  constructor(
+    private readonly themeService: ThemeService,
+    private readonly translate: TranslateService
+  ) {
     this.themeService.initTheme();
+
+    // this language will be used as a fallback when a translation isn't found in the current language
+    this.translate.setDefaultLang('vi');
+
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    this.translate.use('vi');
   }
 
   ngOnInit(): void {

@@ -57,6 +57,7 @@
             optionLabel="mobile"
             placeholder="Select language"
             class="min-w-20"
+            (onChange)="changeLanguage($event.value)"
             size="small"
         />
     } @else {
@@ -66,6 +67,7 @@
             optionLabel="display"
             placeholder="Select language"
             class="min-w-36"
+            (onChange)="changeLanguage($event.value)"
         />
     }
 </div>
