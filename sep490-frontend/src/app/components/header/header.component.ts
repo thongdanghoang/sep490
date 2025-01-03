@@ -24,7 +24,7 @@ export class HeaderComponent
   protected visible: boolean = false;
 
   constructor(
-    private readonly applicationService: ApplicationService,
+    protected readonly applicationService: ApplicationService,
     private readonly themeService: ThemeService
   ) {
     super();

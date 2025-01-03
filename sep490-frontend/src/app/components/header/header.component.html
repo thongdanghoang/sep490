@@ -1,20 +1,22 @@
-<p-button
-    icon="pi pi-bars"
-    [rounded]="true"
-    [text]="true"
-    severity="secondary"
-    class="block sm:hidden"
-    (click)="visible = true"
-/>
+<ng-container *ngIf="applicationService.isMobile()">
+    <p-button
+        icon="pi pi-bars"
+        [rounded]="true"
+        [text]="true"
+        severity="secondary"
+        class="block sm:hidden"
+        (onClick)="visible = true"
+    />
 
-<p-drawer [(visible)]="visible" header="Drawer">
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
-    </p>
-</p-drawer>
+    <p-drawer [(visible)]="visible" header="Drawer">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat.
+        </p>
+    </p-drawer></ng-container
+>
 
 <div class="flex gap-3 items-center">
     <p-button
@@ -24,23 +26,12 @@
         severity="secondary"
     />
 
-    @if (isDarkMode | async) {
-        <p-button
-            icon="pi pi-moon"
-            [rounded]="true"
-            [text]="true"
-            (onClick)="toggleLightDark()"
-            aria-label="Switch to light mode"
-        />
-    } @else {
-        <p-button
-            icon="pi pi-sun"
-            [rounded]="true"
-            [text]="true"
-            (onClick)="toggleLightDark()"
-            aria-label="Switch to dark mode"
-        />
-    }
+    <p-button
+        icon="pi {{ isDarkMode ? 'pi pi-moon' : 'pi pi-sun' }}"
+        [rounded]="true"
+        [text]="true"
+        (onClick)="toggleLightDark()"
+    />
 
     @if (authenticated | async) {
         <p-avatar
@@ -59,21 +50,22 @@
         />
     }
 
-    <p-select
-        [options]="languages"
-        [(ngModel)]="selectedLanguage"
-        optionLabel="display"
-        placeholder="Select language"
-        class="hidden sm:flex min-w-36"
-    />
-
-    <!--TODO: implement isMobile js function to detect mobile-->
-    <p-select
-        [options]="languages"
-        [(ngModel)]="selectedLanguage"
-        optionLabel="mobile"
-        placeholder="Select language"
-        class="flex sm:hidden min-w-20"
-        size="small"
-    />
+    @if (applicationService.isMobile()) {
+        <p-select
+            [options]="languages"
+            [(ngModel)]="selectedLanguage"
+            optionLabel="mobile"
+            placeholder="Select language"
+            class="min-w-20"
+            size="small"
+        />
+    } @else {
+        <p-select
+            [options]="languages"
+            [(ngModel)]="selectedLanguage"
+            optionLabel="display"
+            placeholder="Select language"
+            class="min-w-36"
+        />
+    }
 </div>
