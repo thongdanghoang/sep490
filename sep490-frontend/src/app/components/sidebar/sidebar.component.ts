@@ -26,32 +26,32 @@ export class SidebarComponent implements OnInit {
           {
             label: 'Coefficient center',
             icon: 'pi pi-percentage',
-            route: `/${AppRoutingConstants.DASHBOARD_PATH}`
+            route: `/${AppRoutingConstants.EMISSIONS_PATH}`
           },
           {
-            label: 'Carbon inventory management',
+            label: 'Building',
             icon: 'pi pi-building',
-            route: `/${AppRoutingConstants.ENTERPRISE_PATH}`
-          },
-          {
-            label: 'Users',
-            icon: 'pi pi-users',
-            route: `/${AppRoutingConstants.DASHBOARD_PATH}`
+            route: `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.BUILDING_PATH}`
           }
         ]
       },
       {
-        label: 'Customer',
+        label: 'Manage',
         items: [
+          {
+            label: 'Users',
+            icon: 'pi pi-users',
+            route: `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.USERS_PATH}`
+          },
           {
             label: 'Subscription',
             icon: 'pi pi-money-bill',
-            route: `/${AppRoutingConstants.DASHBOARD_PATH}`
+            route: `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.PLAN_PATH}`
           },
           {
             label: 'Payment',
             icon: 'pi pi-wallet',
-            route: `/${AppRoutingConstants.DASHBOARD_PATH}`
+            route: `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.PAYMENT_PATH}`
           }
         ]
       }

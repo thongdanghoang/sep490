@@ -24,6 +24,8 @@ import {UnauthorizedComponent} from './components/unauthorized/unauthorized.comp
 import {CoreModule} from './modules/core/core.module';
 import {SharedModule} from './modules/shared/shared.module';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
+import { PricingComponent } from './components/pricing/pricing.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 enum OidcScopes {
   OPENID = 'openid',
@@ -53,7 +55,9 @@ function initAuth(
     HeaderComponent,
     FooterComponent,
     HomeComponent,
-    SidebarComponent
+    SidebarComponent,
+    PricingComponent,
+    DashboardComponent
   ],
   imports: [
     AppRoutingModule,
