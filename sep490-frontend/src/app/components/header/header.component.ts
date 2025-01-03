@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ApplicationService} from '../../modules/core/services/application.service';
 import {ThemeService} from '../../modules/core/services/theme.service';
@@ -7,6 +8,7 @@ import {SubscriptionAwareComponent} from '../../modules/core/subscription-aware.
 interface Language {
   display: string;
   mobile: string;
+  key: string;
 }
 
 @Component({
@@ -25,7 +27,8 @@ export class HeaderComponent
 
   constructor(
     protected readonly applicationService: ApplicationService,
-    private readonly themeService: ThemeService
+    private readonly themeService: ThemeService,
+    private readonly translate: TranslateService
   ) {
     super();
     this.authenticated = this.applicationService.isAuthenticated();
@@ -33,11 +36,15 @@ export class HeaderComponent
 
   ngOnInit(): void {
     this.languages = [
-      {display: 'Tiếng Việt', mobile: 'VI'},
-      {display: 'English', mobile: 'EN'},
-      {display: '中文(简体)', mobile: 'ZH'}
+      {display: 'Tiếng Việt', mobile: 'VI', key: 'vi'},
+      {display: 'English', mobile: 'EN', key: 'en'},
+      {display: '中文(简体)', mobile: 'ZH', key: 'zh'}
     ];
     this.selectedLanguage = this.languages[0];
+  }
+
+  protected changeLanguage(language: Language): void {
+    this.translate.use(language.key);
   }
 
   protected login(): void {

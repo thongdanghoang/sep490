@@ -3,6 +3,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
+import {TranslateModule} from '@ngx-translate/core';
 import {AutoFocusModule} from 'primeng/autofocus';
 import {ButtonModule} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
@@ -23,6 +24,7 @@ import {MenuModule} from 'primeng/menu';
 import {BadgeModule} from 'primeng/badge';
 import {Select} from 'primeng/select';
 import {DrawerModule} from 'primeng/drawer';
+import {TranslateParamsPipe} from './pipes/translate-params.pipe';
 
 const primeNgModules = [
   AutoFocusModule,
@@ -51,11 +53,12 @@ const commons = [
   HttpClientModule,
   FormsModule,
   ReactiveFormsModule,
-  NgOptimizedImage
+  NgOptimizedImage,
+  TranslateModule
 ];
 
 @NgModule({
-  declarations: [ConfirmDialogComponent],
+  declarations: [ConfirmDialogComponent, TranslateParamsPipe],
   imports: [...commons, ...primeNgModules],
   exports: [...commons, ...primeNgModules],
   providers: [DatePipe, ModalProvider]

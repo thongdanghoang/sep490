@@ -1,7 +1,9 @@
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {
   AuthInterceptor,
   AuthModule,
@@ -24,8 +26,8 @@ import {UnauthorizedComponent} from './components/unauthorized/unauthorized.comp
 import {CoreModule} from './modules/core/core.module';
 import {SharedModule} from './modules/shared/shared.module';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
-import { PricingComponent } from './components/pricing/pricing.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import {PricingComponent} from './components/pricing/pricing.component';
+import {DashboardComponent} from './components/dashboard/dashboard.component';
 
 enum OidcScopes {
   OPENID = 'openid',
@@ -44,6 +46,11 @@ function initAuth(
         resolve(data);
       });
     });
+}
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http);
 }
 
 @NgModule({
@@ -79,6 +86,13 @@ function initAuth(
         logLevel: environment.production ? LogLevel.Warn : LogLevel.Debug,
         historyCleanupOff: true,
         secureRoutes: []
+      }
+    }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
       }
     })
   ],
