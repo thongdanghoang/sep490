@@ -4,5 +4,6 @@ export const AppRoutingConstants = {
   DEV_PATH: 'dev',
   ENTERPRISE_PATH: 'enterprise',
   FORBIDDEN: 'forbidden',
-  UNAUTHORIZED: 'unauthorized'
+  UNAUTHORIZED: 'unauthorized',
+  SUBSCRIPTION: 'subscription'
 } as const;

@@ -6,11 +6,16 @@ import {UnauthorizedComponent} from './components/unauthorized/unauthorized.comp
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {AutoLoginPartialRoutesGuard} from 'angular-auth-oidc-client';
 import {HomeComponent} from './components/home/home.component';
+import {SubscriptionComponent} from './components/subscription/subscription.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent
+  },
+  {
+    path: AppRoutingConstants.SUBSCRIPTION,
+    component: SubscriptionComponent
   },
   {
     path: AppRoutingConstants.DEV_PATH,
