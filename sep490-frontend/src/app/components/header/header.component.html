@@ -1,24 +1,71 @@
-@if (authenticated | async) {
-    <p-button label="Logout" [outlined]="true" (onClick)="logout()" />
-} @else {
-    <p-button label="Sign in" [text]="true" (onClick)="login()" />
-    <p-button label="Sign up" [outlined]="true" />
-}
+<ng-container *ngIf="applicationService.isMobile()">
+    <p-button
+        icon="pi pi-bars"
+        [rounded]="true"
+        [text]="true"
+        severity="secondary"
+        class="block sm:hidden"
+        (onClick)="visible = true"
+    />
 
-@if (isDarkMode | async) {
+    <p-drawer [(visible)]="visible" header="Drawer">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat.
+        </p>
+    </p-drawer></ng-container
+>
+
+<div class="flex gap-3 items-center">
     <p-button
-        icon="pi pi-moon"
+        icon="pi pi-inbox"
+        [rounded]="true"
+        [text]="true"
+        severity="secondary"
+    />
+
+    <p-button
+        icon="pi {{ isDarkMode ? 'pi pi-moon' : 'pi pi-sun' }}"
         [rounded]="true"
         [text]="true"
         (onClick)="toggleLightDark()"
-        aria-label="Switch to light mode"
     />
-} @else {
-    <p-button
-        icon="pi pi-sun"
-        [rounded]="true"
-        [text]="true"
-        (onClick)="toggleLightDark()"
-        aria-label="Switch to dark mode"
-    />
-}
+
+    @if (authenticated | async) {
+        <p-avatar
+            image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+            class="mr-2"
+            shape="circle"
+            (click)="logout()"
+        />
+    } @else {
+        <p-button
+            icon="pi pi-sign-in"
+            [rounded]="true"
+            [text]="true"
+            severity="secondary"
+            (onClick)="login()"
+        />
+    }
+
+    @if (applicationService.isMobile()) {
+        <p-select
+            [options]="languages"
+            [(ngModel)]="selectedLanguage"
+            optionLabel="mobile"
+            placeholder="Select language"
+            class="min-w-20"
+            size="small"
+        />
+    } @else {
+        <p-select
+            [options]="languages"
+            [(ngModel)]="selectedLanguage"
+            optionLabel="display"
+            placeholder="Select language"
+            class="min-w-36"
+        />
+    }
+</div>
