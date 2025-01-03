@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuItem} from 'primeng/api';
+import {AppRoutingConstants} from '../../app-routing.constant';
 
 @Component({
   selector: 'app-sidebar',
@@ -20,22 +21,22 @@ export class SidebarComponent implements OnInit {
           {
             label: 'Dashboard',
             icon: 'pi pi-chart-line',
-            route: '/dashboard'
+            route: `/${AppRoutingConstants.DASHBOARD_PATH}`
           },
           {
             label: 'Coefficient center',
             icon: 'pi pi-percentage',
-            route: '/coefficient-center'
+            route: `/${AppRoutingConstants.DASHBOARD_PATH}`
           },
           {
             label: 'Carbon inventory management',
             icon: 'pi pi-building',
-            route: '/carbon-inventory-management'
+            route: `/${AppRoutingConstants.ENTERPRISE_PATH}`
           },
           {
             label: 'Users',
             icon: 'pi pi-users',
-            route: '/users'
+            route: `/${AppRoutingConstants.DASHBOARD_PATH}`
           }
         ]
       },
@@ -45,12 +46,12 @@ export class SidebarComponent implements OnInit {
           {
             label: 'Subscription',
             icon: 'pi pi-money-bill',
-            route: '/subscription'
+            route: `/${AppRoutingConstants.DASHBOARD_PATH}`
           },
           {
             label: 'Payment',
             icon: 'pi pi-wallet',
-            route: '/payment'
+            route: `/${AppRoutingConstants.DASHBOARD_PATH}`
           }
         ]
       }

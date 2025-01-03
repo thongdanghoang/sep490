@@ -13,6 +13,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {MenubarModule} from 'primeng/menubar';
 import {PasswordModule} from 'primeng/password';
 import {RippleModule} from 'primeng/ripple';
+import {TableModule} from 'primeng/table';
 import {TabMenuModule} from 'primeng/tabmenu';
 import {ToastModule} from 'primeng/toast';
 import {ConfirmDialogComponent} from './components/dialog/confirm-dialog/confirm-dialog.component';
@@ -37,6 +38,7 @@ const primeNgModules = [
   MenuModule,
   MenubarModule,
   Select,
+  TableModule,
   TabMenuModule,
   ToastModule,
   PasswordModule,
