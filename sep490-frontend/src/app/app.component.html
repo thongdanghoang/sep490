@@ -3,9 +3,15 @@
     <header class="mb-5">
         <app-header></app-header>
     </header>
-    <main class="flex-grow">
-        <router-outlet></router-outlet>
-    </main>
+    <div class="flex flex-grow flex-col lg:flex-row">
+        <!-- Sidebar: Hidden on smaller screens, visible on larger screens -->
+        <app-sidebar class="w-full lg:w-1/4 hidden lg:block"></app-sidebar>
+        
+        <!-- Main content: Takes full width on smaller screens -->
+        <main class="flex-grow">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
     <footer>
         <app-footer class="mt-auto"></app-footer>
     </footer>

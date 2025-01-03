@@ -11,13 +11,14 @@ import {SubscriptionAwareComponent} from '../../modules/core/subscription-aware.
 })
 export class HeaderComponent extends SubscriptionAwareComponent {
   protected readonly authenticated: Observable<boolean>;
+  protected currentLanguage: string = 'English'; // Default language
 
   constructor(
     private readonly applicationService: ApplicationService,
     private readonly themeService: ThemeService
   ) {
     super();
-    this.authenticated = this.applicationService.isAuthenticated();
+    this.authenticated = this.applicationService.isAuthenticated(); 
   }
 
   protected login(): void {
@@ -34,5 +35,11 @@ export class HeaderComponent extends SubscriptionAwareComponent {
 
   protected toggleLightDark(): void {
     this.themeService.toggleLightDark();
+  }
+
+  protected setLanguage(lang: string): void {
+    this.currentLanguage = lang;
+    console.log(`Language set to: ${lang}`);
+    // Add logic for local i18n, e.g., updating a translation service
   }
 }
