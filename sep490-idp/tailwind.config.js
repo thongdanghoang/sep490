@@ -5,10 +5,15 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#01493a",
+          DEFAULT: "#1DCBD7",
+          dark: '#16A9B2',
         },
       },
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'], // Add 'Inter' font family
+      }
     },
+
   },
   plugins: [],
 };

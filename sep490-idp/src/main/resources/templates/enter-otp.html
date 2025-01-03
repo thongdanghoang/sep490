@@ -7,47 +7,52 @@
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<div class="flex items-center justify-center min-h-screen px-4">
-    <div class="flex flex-col lg:flex-row items-center w-full max-w-5xl">
+<div class="flex items-center justify-center min-h-screen px-4 lg:bg-[url('/img/background.jpg')] lg:bg-no-repeat lg:bg-cover">
+    <div class="flex flex-col lg:flex-col items-center w-full max-w-5xl">
         <!-- Enter OTP Form Section -->
-        <div class="bg-white p-6 rounded w-full lg:w-1/2">
-            <h2 class="text-center text-green-500 text-2xl font-bold mb-6 uppercase" th:text="#{enterOtp.title}">Enter OTP</h2>
+        <div class="bg-white lg:bg-opacity-80 p-6 rounded-xl w-full lg:w-1/2">
+            <h2 class="text-center text-primary lg:text-5xl text-2xl font-black font-inter my-6" th:text="#{enterOtp.title}">Enter OTP</h2>
             <form id="enter-otp-form" role="form" th:object="${otpDTO}" th:action="@{/enter-otp}" method="post">
-                <div class="mb-4">
-                    <label for="otp" class="block text-gray-500 font-medium" th:text="#{enterOtp.label.otp}">OTP Code</label>
+                <div class="mb-4 flex flex-col items-center justify-center">
+                    <p class="max-w-[400px] w-full block text-gray-500 font-medium" th:text="#{enterOtp.label.otp}">We have sent code to you email:</p>
+                    <p class="max-w-[400px] w-full block text-gray-500 font-medium mb-4">**************@*****.***</p>
                     <input type="text" required
                             pattern="[0-9]*"
                             inputmode="numeric"
                             maxlength="6"
                             autocomplete="one-time-code"
                             autofocus
-                            class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring focus:ring-green-200 focus:outline-none"
+                            placeholder="OTP"
+                            class="max-w-[400px] w-full p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
                             id="otp" th:field="*{otpCode}" name="otpCode">
+                    <div th:if="${errorMessage}" class="bg-red-100 max-w-[400px] w-full border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4">
+                        <span th:text="${errorMessage}"></span>
+                    </div>
+                    <div class="flex lg:flex-row flex-col-reverse items-center max-w-[400px] w-full justify-between mt-4">
+                        <a th:href="@{/login}" class="mt-4 text-center text-primary border border-primary py-2 px-4 rounded lg:max-w-[185px] w-full hover:underline" th:text="#{forgotPassword.btn.backToLogin}">
+                        </a>
+                        <button type="submit"
+                                class="mt-4 w-full lg:max-w-[185px] bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark focus:ring focus:ring-primary focus:outline-none"
+                                th:text="#{enterOtp.btn.submit}">
+                        </button>
+                    </div>
                 </div>
-                <div th:if="${errorMessage}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-                    <span th:text="${errorMessage}"></span>
-                </div>
-                <div>
-                    <button type="submit"
-                            class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 focus:ring focus:ring-green-200 focus:outline-none"
-                            th:text="#{enterOtp.btn.submit}">
-                    </button>
-                </div>
+
             </form>
             <div class="text-center mt-4">
-                <a th:href="@{/forgot-password}" class="text-green-500 hover:underline" th:text="#{enterOtp.btn.resendOtp}">
+                <a th:href="@{/forgot-password}" class="text-primary hover:underline" th:text="#{enterOtp.btn.resendOtp}">
                 </a>
             </div>
             <div class="text-center mt-3">
-                <a th:href="@{''(lang=en)}" class="text-green-500 hover:underline" th:text="#{language.english}">English</a> |
-                <a th:href="@{''(lang=vi)}" class="text-green-500 hover:underline" th:text="#{language.vietnamese}">Vietnamese</a>
+                <a th:href="@{''(lang=en)}" class="text-primary hover:underline" th:text="#{language.english}">English</a> |
+                <a th:href="@{''(lang=vi)}" class="text-primary hover:underline" th:text="#{language.vietnamese}">Vietnamese</a>
             </div>
         </div>
 
         <!-- Enter OTP Image Section -->
-        <div class="hidden lg:flex lg:w-1/2 justify-center items-center">
-            <img th:src="@{/img/logo.svg}" alt="City Globe" class="max-w-full h-auto">
-        </div>
+<!--        <div class="hidden lg:flex lg:w-1/2 justify-center items-center">-->
+<!--            <img th:src="@{/img/logo.svg}" alt="City Globe" class="max-w-full h-auto">-->
+<!--        </div>-->
     </div>
 </div>
 </body>
