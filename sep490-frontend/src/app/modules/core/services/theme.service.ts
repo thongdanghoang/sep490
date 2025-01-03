@@ -7,17 +7,17 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 const MyPreset = definePreset(Material, {
   semantic: {
     primary: {
-      50: '#f2f6f5',
-      100: '#c2d3d0',
-      200: '#92b1aa',
-      300: '#628e85',
-      400: '#316c5f',
-      500: '#01493a',
-      600: '#013e31',
-      700: '#013329',
-      800: '#012820',
-      900: '#001d17',
-      950: '#00120f'
+      50: '#f4fcfd',
+      100: '#c9f3f5',
+      200: '#9ee9ee',
+      300: '#73dfe6',
+      400: '#48d5df',
+      500: '#1dcbd7',
+      600: '#19adb7',
+      700: '#148e97',
+      800: '#107076',
+      900: '#0c5156',
+      950: '#073336'
     },
     colorScheme: {
       light: {

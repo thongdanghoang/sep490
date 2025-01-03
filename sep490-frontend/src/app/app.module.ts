@@ -23,7 +23,7 @@ import {NotFoundComponent} from './components/not-found/not-found.component';
 import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
 import {CoreModule} from './modules/core/core.module';
 import {SharedModule} from './modules/shared/shared.module';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
+import {SidebarComponent} from './components/sidebar/sidebar.component';
 
 enum OidcScopes {
   OPENID = 'openid',

@@ -1,166 +1,71 @@
-@if (authenticated | async) {
-    <p-button label="Logout" [outlined]="true" (onClick)="logout()" />
-} @else {
-    <nav>
-        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div class="relative flex h-16 items-center justify-end">
-                <div                       class="absolute inset-y-0 left-0 flex items-center sm:hidden"                       >
-            <!-- Mobile menu button-->
-            <button type="button"
-              class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-              aria-controls="mobile-menu" aria-expanded="false">
-              <span class="absolute -inset-0.5"></span>
-              <span class="sr-only">Open main menu</span>
-              <!--
-                      Icon when menu is closed.
-          
-                      Menu open: "hidden", Menu closed: "block"
-                    -->
-              <svg class="block size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                aria-hidden="true" data-slot="icon">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-              </svg>
-              <!--
-                      Icon when menu is open.
-          
-                      Menu open: "block", Menu closed: "hidden"
-                    -->
-              <svg class="hidden size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                aria-hidden="true" data-slot="icon">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-          <!-- <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                  <div class="flex shrink-0 items-center">
-                    <img class="h-8 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
-                  </div>
-                  <div class="hidden sm:ml-6 sm:block">
-                    <div class="flex space-x-4">
-                      <a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Dashboard</a>
-                      <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
-                      <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
-                      <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</a>
-                    </div>
-                  </div>
-                </div> -->
-          <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button type="button"
-              class="relative rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-              <span class="absolute"></span>
-              <span class="sr-only">View notifications</span>
-              @if (isDarkMode | async) {
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M30 32H18C17.6389 32 17.2813 31.9289 16.9476 31.7907C16.614 31.6525 16.3108 31.4499 16.0555 31.1945C15.8001 30.9392 15.5975 30.636 15.4593 30.3024C15.3211 29.9687 15.25 29.6111 15.25 29.25V23.25C15.25 23.0511 15.329 22.8603 15.4697 22.7197C15.6103 22.579 15.8011 22.5 16 22.5C16.1989 22.5 16.3897 22.579 16.5303 22.7197C16.671 22.8603 16.75 23.0511 16.75 23.25V29.25C16.746 29.4167 16.7754 29.5824 16.8364 29.7376C16.8974 29.8927 16.9889 30.0341 17.1053 30.1533C17.2218 30.2726 17.361 30.3674 17.5146 30.4321C17.6683 30.4967 17.8333 30.53 18 30.53H30C30.3315 30.53 30.6495 30.3983 30.8839 30.1639C31.1183 29.9295 31.25 29.6115 31.25 29.28V23.28C31.25 23.0811 31.329 22.8903 31.4697 22.7497C31.6103 22.609 31.8011 22.53 32 22.53C32.1989 22.53 32.3897 22.609 32.5303 22.7497C32.671 22.8903 32.75 23.0811 32.75 23.28V29.28C32.7421 30.0041 32.4489 30.6959 31.934 31.2052C31.4191 31.7144 30.7242 32 30 32Z"
-                  fill="#FFFFFF" />
-                <path
-                  d="M24 27.2499C23.0925 27.2505 22.2159 26.9211 21.5333 26.3232C20.8508 25.7252 20.4089 24.8995 20.29 23.9999H16C15.8654 24.001 15.733 23.9657 15.6167 23.8979C15.5004 23.8301 15.4045 23.7323 15.339 23.6147C15.2736 23.4971 15.241 23.364 15.2447 23.2294C15.2483 23.0949 15.2882 22.9638 15.36 22.8499L19.09 16.8499C19.2431 16.5821 19.4667 16.3613 19.7364 16.2115C20.0061 16.0616 20.3116 15.9885 20.62 15.9999H27.38C27.7095 16.0009 28.032 16.0953 28.3099 16.2724C28.5879 16.4494 28.8098 16.7017 28.95 16.9999L32.64 22.9399C32.6906 23.0509 32.7134 23.1726 32.7063 23.2944C32.6993 23.4161 32.6627 23.5344 32.5996 23.6388C32.5366 23.7432 32.449 23.8307 32.3445 23.8936C32.24 23.9566 32.1218 23.9931 32 23.9999H27.71C27.5911 24.8995 27.1492 25.7252 26.4666 26.3232C25.7841 26.9211 24.9074 27.2505 24 27.2499ZM17.35 22.5299H21C21.1989 22.5299 21.3896 22.609 21.5303 22.7496C21.671 22.8903 21.75 23.081 21.75 23.2799V23.4999C21.75 24.0967 21.987 24.669 22.409 25.0909C22.8309 25.5129 23.4032 25.7499 24 25.7499C24.5967 25.7499 25.169 25.5129 25.591 25.0909C26.0129 24.669 26.25 24.0967 26.25 23.4999V23.2799C26.25 23.081 26.329 22.8903 26.4696 22.7496C26.6103 22.609 26.8011 22.5299 27 22.5299H30.65L27.65 17.6699C27.57 17.5299 27.49 17.4699 27.39 17.4699H20.62C20.5727 17.4711 20.5266 17.4847 20.4863 17.5092C20.4459 17.5338 20.4127 17.5685 20.39 17.6099L17.35 22.5299Z"
-                  fill="#FFFFFF" />
-              </svg>
-              }@else {
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M30 32H18C17.6389 32 17.2813 31.9289 16.9476 31.7907C16.614 31.6525 16.3108 31.4499 16.0555 31.1945C15.8001 30.9392 15.5975 30.636 15.4593 30.3024C15.3211 29.9687 15.25 29.6111 15.25 29.25V23.25C15.25 23.0511 15.329 22.8603 15.4697 22.7197C15.6103 22.579 15.8011 22.5 16 22.5C16.1989 22.5 16.3897 22.579 16.5303 22.7197C16.671 22.8603 16.75 23.0511 16.75 23.25V29.25C16.746 29.4167 16.7754 29.5824 16.8364 29.7376C16.8974 29.8927 16.9889 30.0341 17.1053 30.1533C17.2218 30.2726 17.361 30.3674 17.5146 30.4321C17.6683 30.4967 17.8333 30.53 18 30.53H30C30.3315 30.53 30.6495 30.3983 30.8839 30.1639C31.1183 29.9295 31.25 29.6115 31.25 29.28V23.28C31.25 23.0811 31.329 22.8903 31.4697 22.7497C31.6103 22.609 31.8011 22.53 32 22.53C32.1989 22.53 32.3897 22.609 32.5303 22.7497C32.671 22.8903 32.75 23.0811 32.75 23.28V29.28C32.7421 30.0041 32.4489 30.6959 31.934 31.2052C31.4191 31.7144 30.7242 32 30 32Z"
-                  fill="#2A2A2A" />
-                <path
-                  d="M24 27.2499C23.0925 27.2505 22.2159 26.9211 21.5333 26.3232C20.8508 25.7252 20.4089 24.8995 20.29 23.9999H16C15.8654 24.001 15.733 23.9657 15.6167 23.8979C15.5004 23.8301 15.4045 23.7323 15.339 23.6147C15.2736 23.4971 15.241 23.364 15.2447 23.2294C15.2483 23.0949 15.2882 22.9638 15.36 22.8499L19.09 16.8499C19.2431 16.5821 19.4667 16.3613 19.7364 16.2115C20.0061 16.0616 20.3116 15.9885 20.62 15.9999H27.38C27.7095 16.0009 28.032 16.0953 28.3099 16.2724C28.5879 16.4494 28.8098 16.7017 28.95 16.9999L32.64 22.9399C32.6906 23.0509 32.7134 23.1726 32.7063 23.2944C32.6993 23.4161 32.6627 23.5344 32.5996 23.6388C32.5366 23.7432 32.449 23.8307 32.3445 23.8936C32.24 23.9566 32.1218 23.9931 32 23.9999H27.71C27.5911 24.8995 27.1492 25.7252 26.4666 26.3232C25.7841 26.9211 24.9074 27.2505 24 27.2499ZM17.35 22.5299H21C21.1989 22.5299 21.3896 22.609 21.5303 22.7496C21.671 22.8903 21.75 23.081 21.75 23.2799V23.4999C21.75 24.0967 21.987 24.669 22.409 25.0909C22.8309 25.5129 23.4032 25.7499 24 25.7499C24.5967 25.7499 25.169 25.5129 25.591 25.0909C26.0129 24.669 26.25 24.0967 26.25 23.4999V23.2799C26.25 23.081 26.329 22.8903 26.4696 22.7496C26.6103 22.609 26.8011 22.5299 27 22.5299H30.65L27.65 17.6699C27.57 17.5299 27.49 17.4699 27.39 17.4699H20.62C20.5727 17.4711 20.5266 17.4847 20.4863 17.5092C20.4459 17.5338 20.4127 17.5685 20.39 17.6099L17.35 22.5299Z"
-                  fill="#2A2A2A" />
-              </svg>
-              }
-            </button>
-            <div class="relative ml-3">
-              <div>
-                @if (isDarkMode | async) {
-                <p-button icon="pi pi-moon" [rounded]="true" [text]="true" (onClick)="toggleLightDark()"
-                  aria-label="Switch to light mode" />
-                <!-- <div>                         
-                                <p-button type="button" class="relative rounded-full text-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" (onClick)="toggleLightDark()">
-                                    <span class="absolute"></span>
-                                    <span class="sr-only">Toggle light/dark mode</span>
-                                    <i class="pi pi-moon w-12 h-12 content-center"></i>
-                              </p-button>
-                            </div> -->
-                } @else {
-                <p-button icon="pi pi-sun" [rounded]="true" [text]="true" (onClick)="toggleLightDark()"
-                  aria-label="Switch to dark mode" />
-                }
-              </div>
-            </div>
-            <!-- Profile dropdown -->
-            <div class="relative ml-3">
-              <div>
-                <button type="button"
-                  class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                  id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                  <span class="absolute"></span>
-                  <span class="sr-only">Open profile</span>
-                  <img class="size-8 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    alt="">
-                </button>
-              </div>
-            </div>
-
-            <div class="relative ml-3">
-              <div>
-                <div class="relative">
-                  <button class="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md border-2 border-current"
-                    onclick="document.getElementById('dropdown-menu')?.classList.toggle('hidden')">
-                    <span id="current-language">{{ currentLanguage }}</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                      stroke="currentColor" class="w-4 h-4 ml-2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
-                    </svg>
-                  </button>
-                  <!-- Dropdown List -->
-                  <div id="dropdown-menu"
-                    class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg hidden">
-                    <p-button class="block w-full px-4 py-2 text-left hover:bg-gray-100"
-                      (onClick)="setLanguage('English')">English</p-button>
-                    <p-button class="block w-full px-4 py-2 text-left hover:bg-gray-100"
-                      (onClick)="setLanguage('Vietnamese')">Vietnamese</p-button>
-                  </div>
-                </div>
-              </div>
-              <!-- Dropdown List (Hidden by default) -->
-              <!-- Add dropdown functionality here -->
-            </div>
-          </div>
-        </div>
-      </div>
-
-          <!-- Mobile menu, show/hide based on menu state. -->
-          <div class="sm:hidden" id="mobile-menu">
-            <div class="space-y-1 px-2 pb-3 pt-2">
-              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-              <a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
-                aria-current="page">Dashboard</a>
-              <a href="#"
-                class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
-              <a href="#"
-                class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
-              <a href="#"
-                class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</a>
-            </div>
-          </div>
-    </nav>
-}
-
-<!-- @if (isDarkMode | async) {
+<ng-container *ngIf="applicationService.isMobile()">
     <p-button
-        icon="pi pi-moon"
+        icon="pi pi-bars"
+        [rounded]="true"
+        [text]="true"
+        severity="secondary"
+        class="block sm:hidden"
+        (onClick)="visible = true"
+    />
+
+    <p-drawer [(visible)]="visible" header="Drawer">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat.
+        </p>
+    </p-drawer></ng-container
+>
+
+<div class="flex gap-3 items-center">
+    <p-button
+        icon="pi pi-inbox"
+        [rounded]="true"
+        [text]="true"
+        severity="secondary"
+    />
+
+    <p-button
+        icon="pi {{ isDarkMode ? 'pi pi-moon' : 'pi pi-sun' }}"
         [rounded]="true"
         [text]="true"
         (onClick)="toggleLightDark()"
-        aria-label="Switch to light mode"
     />
-} @else {
-    <p-button
-        icon="pi pi-sun"
-        [rounded]="true"
-        [text]="true"
-        (onClick)="toggleLightDark()"
-        aria-label="Switch to dark mode"
-    />
-} -->
+
+    @if (authenticated | async) {
+        <p-avatar
+            image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+            class="mr-2"
+            shape="circle"
+            (click)="logout()"
+        />
+    } @else {
+        <p-button
+            icon="pi pi-sign-in"
+            [rounded]="true"
+            [text]="true"
+            severity="secondary"
+            (onClick)="login()"
+        />
+    }
+
+    @if (applicationService.isMobile()) {
+        <p-select
+            [options]="languages"
+            [(ngModel)]="selectedLanguage"
+            optionLabel="mobile"
+            placeholder="Select language"
+            class="min-w-20"
+            size="small"
+        />
+    } @else {
+        <p-select
+            [options]="languages"
+            [(ngModel)]="selectedLanguage"
+            optionLabel="display"
+            placeholder="Select language"
+            class="min-w-36"
+        />
+    }
+</div>
