@@ -56,10 +56,12 @@ public class ForgotPasswordController {
     @GetMapping("/enter-otp")
     public String showOtpPage(Model model) {
         Boolean otpSent = (Boolean) session.getAttribute(SESSION_OTP_SENT);
-        if (otpSent == null || !otpSent) {
+        String email = (String) session.getAttribute(SESSION_FORGOT_PASSWORD_EMAIL);
+        if (otpSent == null || !otpSent || email == null) {
             return "redirect:/login";
         }
         model.addAttribute("otpDTO", new OtpDTO());
+        model.addAttribute("email", email);
         return "enter-otp";
     }
 

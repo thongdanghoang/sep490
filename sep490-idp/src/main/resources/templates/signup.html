@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="flex items-center justify-center min-h-screen py-8 px-4 lg:bg-[url('/img/background.jpg')] lg:bg-no-repeat lg:bg-cover">
-    <div class="flex flex-col lg:flex-col items-center w-full h-full max-w-5xl">
+    <div class="flex flex-col items-center w-full h-full max-w-5xl">
         <!-- Sign-Up Form Section -->
         <div class="bg-white p-6 lg:bg-opacity-80 rounded-xl w-full lg:w-1/2">
             <h2 class="text-center text-primary lg:text-5xl text-2xl font-black font-inter my-6 uppercase" th:text="#{signup.title}"></h2>
@@ -71,14 +71,10 @@
             </form>
             <div class="text-center mt-3">
                 <a th:href="@{''(lang=en)}" class="text-primary font-inter hover:underline" th:text="#{language.english}">English</a> |
-                <a th:href="@{''(lang=vi)}" class="text-primary font-inter hover:underline" th:text="#{language.vietnamese}">Vietnamese</a>
+                <a th:href="@{''(lang=vi)}" class="text-primary font-inter hover:underline" th:text="#{language.vietnamese}">Vietnamese</a> |
+                <a th:href="@{''(lang=zh)}" class="text-primary font-inter hover:underline" th:text="#{language.chinese}">Chinese</a>
             </div>
         </div>
-
-        <!-- Sign-Up Image Section -->
-<!--        <div class="hidden lg:flex lg:w-1/2 justify-center items-center">-->
-<!--            <img th:src="@{/img/logo.svg}" alt="Sign Up" class="max-w-full h-auto">-->
-<!--        </div>-->
     </div>
 </div>
 </body>
