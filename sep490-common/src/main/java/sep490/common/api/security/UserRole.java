@@ -10,6 +10,7 @@ import sep490.common.api.BaseEnum;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public enum UserRole implements BaseEnum {
     ENTERPRISE_OWNER(RoleNameConstant.ENTERPRISE_OWNER),
+    ENTERPRISE_EMPLOYEE(RoleNameConstant.ENTERPRISE_EMPLOYEE),
     SYSTEM_ADMIN(RoleNameConstant.SYSTEM_ADMIN);
     
     private final String code;
@@ -17,8 +18,9 @@ public enum UserRole implements BaseEnum {
     
     public static final class RoleNameConstant {
         public static final String ENTERPRISE_OWNER = "sep490.EnterpriseOwner";
+        public static final String ENTERPRISE_EMPLOYEE = "sep490.EnterpriseEmployee";
         public static final String SYSTEM_ADMIN = "sep490.SystemAdmin";
-        
+
         private RoleNameConstant() {
         }
     }
