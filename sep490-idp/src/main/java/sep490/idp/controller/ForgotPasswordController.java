@@ -75,6 +75,7 @@ public class ForgotPasswordController {
             return "redirect:/forgot-reset-password";
         }
         model.addAttribute(ERROR_MESSAGE, messageUtil.getMessage("forgotPassword.error.invalidOtp"));
+        model.addAttribute("email", email);
         return "enter-otp";
     }
 
