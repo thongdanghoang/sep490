@@ -6,9 +6,11 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import sep490.idp.entity.BuildingPermissionEntity;
 import sep490.idp.security.UserAuthenticationToken;
 import sep490.idp.security.UserContextData;
 
+import java.util.List;
 import java.util.Optional;
 
 public final class SecurityUtils {
@@ -25,6 +27,11 @@ public final class SecurityUtils {
             return Optional.of(currentUser);
         }
         return Optional.empty();
+    }
+
+    public static List<BuildingPermissionEntity> getPermissions() {
+        Optional<UserContextData> currentUser = getUserContextData();
+        return currentUser.map(UserContextData::getPermissions).orElse(null);
     }
 
     public static void storeAuthenticationToContext(UserAuthenticationToken authenticationToken,
