@@ -4,11 +4,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
 
 import java.util.Objects;
 import java.util.UUID;
 
 @Embeddable
+@Getter
 public class BuildingPermissionId {
 
     @Column(name = "building_id", nullable = false)

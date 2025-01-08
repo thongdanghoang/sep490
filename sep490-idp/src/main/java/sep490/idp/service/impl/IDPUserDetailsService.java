@@ -6,8 +6,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import sep490.idp.entity.BuildingPermissionEntity;
+import sep490.idp.repository.BuildingPermissionRepository;
 import sep490.idp.repository.UserRepository;
 import sep490.idp.security.UserContextData;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +19,7 @@ import sep490.idp.security.UserContextData;
 public class IDPUserDetailsService implements UserDetailsService {
     
     private final UserRepository userRepository;
+    private final BuildingPermissionRepository buildingPermissionRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -22,6 +27,7 @@ public class IDPUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found: " + username);
         }
-        return new UserContextData(user);
+        List<BuildingPermissionEntity> permissions = buildingPermissionRepository.findAllByUserId(user.getId());
+        return new UserContextData(user, permissions);
     }
 }
