@@ -1,6 +1,5 @@
 package sep490.idp.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -14,10 +13,7 @@ import java.util.Set;
 @Table(name = "enterprise")
 @Getter
 @Setter
-public class EnterpriseEntity extends AbstractAuditableEntity {
-
-    @Column(name = "name", nullable = false)
-    private String name;
+public class EnterpriseEntity extends AbstractReferenceEntity {
 
     @OneToMany(mappedBy = "enterprise")
     private Set<BuildingEntity> buildings = new HashSet<>();

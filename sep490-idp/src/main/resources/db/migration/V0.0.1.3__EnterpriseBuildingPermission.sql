@@ -1,13 +1,7 @@
 -- Enterprise
 CREATE TABLE enterprise
 (
-    id                 UUID         NOT NULL DEFAULT gen_random_uuid(),
-    version            INTEGER      NOT NULL,
-    name               VARCHAR(255) NOT NULL,
-    created_date       TIMESTAMP,
-    created_by         VARCHAR(255),
-    last_modified_date TIMESTAMP,
-    last_modified_by   VARCHAR(255)
+    id                 UUID         NOT NULL
 );
 ALTER TABLE enterprise
     ADD CONSTRAINT enterprise_pk PRIMARY KEY (id);

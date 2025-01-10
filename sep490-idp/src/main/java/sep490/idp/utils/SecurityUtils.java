@@ -31,7 +31,7 @@ public final class SecurityUtils {
 
     public static List<BuildingPermissionEntity> getPermissions() {
         Optional<UserContextData> currentUser = getUserContextData();
-        return currentUser.map(UserContextData::getPermissions).orElse(null);
+        return currentUser.map(UserContextData::getPermissions).orElse(List.of());
     }
 
     public static void storeAuthenticationToContext(UserAuthenticationToken authenticationToken,
