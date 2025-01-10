@@ -10,6 +10,7 @@ import sep490.idp.dto.SignupResult;
 import sep490.idp.entity.UserEntity;
 import sep490.idp.repository.UserRepository;
 import sep490.idp.service.UserService;
+import sep490.idp.utils.IMessageUtil;
 import sep490.idp.validation.Validator;
 
 @Service
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService {
     @Qualifier("signupValidator")
     private final Validator<SignupDTO> validator;
 
+
     @Override
     public SignupResult signup(SignupDTO signupDTO, Model model) {
         SignupResult result = validateSignupDTO(signupDTO);
@@ -29,6 +31,8 @@ public class UserServiceImpl implements UserService {
             var user = createUser(signupDTO);
             userRepo.save(user);
             result.setSuccess(true);
+            result.setSuccessMessage("signup.notification");
+            result.setRedirectUrl("redirect:/login?message=" + result.getSuccessMessage());
         }
 
         return result;
