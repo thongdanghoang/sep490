@@ -14,6 +14,7 @@ import sep490.idp.dto.ForgotPasswordDTO;
 import sep490.idp.dto.ForgotResetPasswordDTO;
 import sep490.idp.dto.OtpDTO;
 import sep490.idp.service.ForgotPasswordService;
+import sep490.idp.utils.IEmailUtil;
 import sep490.idp.utils.IMessageUtil;
 
 
@@ -24,6 +25,7 @@ public class ForgotPasswordController {
     private final ForgotPasswordService forgotPasswordService;
     private final IMessageUtil messageUtil;
     private final HttpSession session;
+    private final IEmailUtil emailUtil;
 
     private static final String SESSION_OTP_SENT = "otp_sent";
     private static final String SESSION_OTP_VERIFIED = "otp_verified";
@@ -60,8 +62,9 @@ public class ForgotPasswordController {
         if (otpSent == null || !otpSent || email == null) {
             return "redirect:/login";
         }
+        String maskEmail = emailUtil.maskEmail(email);
         model.addAttribute("otpDTO", new OtpDTO());
-        model.addAttribute("email", email);
+        model.addAttribute("email", maskEmail);
         return "enter-otp";
     }
 
@@ -69,13 +72,13 @@ public class ForgotPasswordController {
     public String verifyOtp(@ModelAttribute OtpDTO otpDTO, Model model) {
         String email = (String) session.getAttribute(SESSION_FORGOT_PASSWORD_EMAIL);
         boolean isValid = forgotPasswordService.verifyOtp(otpDTO.getOtpCode(), email);
-
         if (isValid) {
             session.setAttribute(SESSION_OTP_VERIFIED, true);
             return "redirect:/forgot-reset-password";
         }
         model.addAttribute(ERROR_MESSAGE, messageUtil.getMessage("forgotPassword.error.invalidOtp"));
-        model.addAttribute("email", email);
+        String maskEmail = emailUtil.maskEmail(email);
+        model.addAttribute("email", maskEmail);
         return "enter-otp";
     }
 
