@@ -1,130 +1,36 @@
-<div class="flex flex-col gap-8">
-  <div class="card flex justify-content-center gap-2">
-    <p-button (onClick)="confirm()" label="Save" [outlined]="true" />
-    <p-button (onClick)="confirmDelete()" label="Delete" severity="danger" [outlined]="true" />
-  </div>
-  <div class="card flex justify-center gap-2">
-    <p-button icon="pi pi-check"/>
-    <p-button label="Submit" icon="pi pi-check"/>
-    <p-button label="Submit" icon="pi pi-check" iconPos="right"/>
-  </div>
-  <div class="card flex flex-wrap gap-4 justify-center">
-    Severity
-    <p-button label="Primary" />
-    <p-button label="Secondary" severity="secondary" />
-    <p-button label="Success" severity="success" />
-    <p-button label="Info" severity="info" />
-    <p-button label="Warn" severity="warn" />
-    <p-button label="Help" severity="help" />
-    <p-button label="Danger" severity="danger" />
-    <p-button label="Contrast" severity="contrast" />
-  </div>
-  <div class="card flex flex-wrap gap-4 justify-center">
-    Raised
-    <p-button label="Primary" [raised]="true" />
-    <p-button label="Secondary" [raised]="true" severity="secondary" />
-    <p-button label="Success" [raised]="true" severity="success" />
-    <p-button label="Info" [raised]="true" severity="info" />
-    <p-button label="Warn" [raised]="true" severity="warn" />
-    <p-button label="Help" [raised]="true" severity="help" />
-    <p-button label="Danger" [raised]="true" severity="danger" />
-    <p-button label="Contrast" [raised]="true" severity="contrast" />
-  </div>
-  <div class="card flex flex-wrap gap-4 justify-center">
-    Rounded
-    <p-button label="Primary" [rounded]="true" />
-    <p-button label="Secondary" [rounded]="true" severity="secondary" />
-    <p-button label="Success" [rounded]="true" severity="success" />
-    <p-button label="Info" [rounded]="true" severity="info" />
-    <p-button label="Warn" [rounded]="true" severity="warn" />
-    <p-button label="Help" [rounded]="true" severity="help" />
-    <p-button label="Danger" [rounded]="true" severity="danger" />
-    <p-button label="Contrast" [rounded]="true" severity="contrast" />
-  </div>
-  <div class="card flex flex-wrap gap-4 justify-center">
-    Text
-    <p-button label="Primary" variant="text" />
-    <p-button label="Secondary" variant="text" severity="secondary" />
-    <p-button label="Success" variant="text" severity="success" />
-    <p-button label="Info" variant="text" severity="info" />
-    <p-button label="Warn" variant="text" severity="warn" />
-    <p-button label="Help" variant="text" severity="help" />
-    <p-button label="Danger" variant="text" severity="danger" />
-    <p-button label="Plain" variant="text" />
-  </div>
-  <div class="card flex flex-wrap gap-4 justify-center">
-    Raised Text
-    <p-button label="Primary" variant="text" [raised]="true" />
-    <p-button label="Secondary" variant="text" [raised]="true" severity="secondary" />
-    <p-button label="Success" variant="text" [raised]="true" severity="success" />
-    <p-button label="Info" variant="text" [raised]="true" severity="info" />
-    <p-button label="Warn" variant="text" [raised]="true" severity="warn" />
-    <p-button label="Help" variant="text" [raised]="true" severity="help" />
-    <p-button label="Danger" variant="text" [raised]="true" severity="danger" />
-    <p-button label="Plain" variant="text" [raised]="true" />
-  </div>
-  <div class="card flex flex-wrap gap-4 justify-center">
-    Outlined
-    <p-button label="Primary" variant="outlined" />
-    <p-button label="Secondary" variant="outlined" severity="secondary" />
-    <p-button label="Success" variant="outlined" severity="success" />
-    <p-button label="Info" variant="outlined" severity="info" />
-    <p-button label="Warn" variant="outlined" severity="warn" />
-    <p-button label="Help" variant="outlined" severity="help" />
-    <p-button label="Danger" variant="outlined" severity="danger" />
-    <p-button label="Contrast" variant="outlined" severity="contrast" />
-  </div>
-  <div class="card">
-    Icon Only
-    <div class="flex justify-center flex-wrap gap-4 mb-6">
-      <p-button icon="pi pi-check" />
-      <p-button icon="pi pi-bookmark" severity="secondary" />
-      <p-button icon="pi pi-search" severity="success" />
-      <p-button icon="pi pi-user" severity="info" />
-      <p-button icon="pi pi-bell" severity="warn" />
-      <p-button icon="pi pi-heart" severity="help" />
-      <p-button icon="pi pi-times" severity="danger" />
+<table-template
+  *ngIf="!applicationService.isMobile()"
+  [fetch]="fetchProducts"
+  [columns]="cols"
+  [criteria]="productCriteria"
+  [captionTemplateRef]="captionTemplateRef"
+  [triggerSearch]="searchEvent"
+  [checkbox]="true"
+  (selectionChange)="onSelectionChange($event)">
+  <ng-template #captionTemplateRef>
+    <div class="flex items-center justify-between">
+      <div class="flex gap-2.5">
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search"/>
+          <input [(ngModel)]="productCriteria.criteria" type="text" pInputText placeholder="Search" (keydown.enter)="search()"/>
+        </p-iconfield>
+        <p-button severity="primary" label="Search" icon="pi pi-user-plus" outlined (onClick)="search()"/>
+      </div>
+      <div class="flex gap-2.5">
+        <p-button severity="danger"
+                  [label]="selectedProducts && selectedProducts.length
+                  ? 'Delete (' + selectedProducts?.length + ') products'
+                  : 'Delete'"
+                  icon="pi pi-trash"
+                  outlined
+                  [disabled]="!selectedProducts || !selectedProducts.length"
+                  (onClick)="confirmDelete()"
+        />
+        <p-button severity="primary" label="Add product" icon="pi pi-user-plus"/>
+      </div>
     </div>
-    <div class="flex justify-center flex-wrap gap-4 mb-6">
-      <p-button icon="pi pi-check" [rounded]="true" />
-      <p-button icon="pi pi-bookmark" [rounded]="true" severity="secondary" />
-      <p-button icon="pi pi-search" [rounded]="true" severity="success" />
-      <p-button icon="pi pi-user" [rounded]="true" severity="info" />
-      <p-button icon="pi pi-bell" [rounded]="true" severity="warn" />
-      <p-button icon="pi pi-heart" [rounded]="true" severity="help" />
-      <p-button icon="pi pi-times" [rounded]="true" severity="danger" />
-    </div>
-    <div class="flex justify-center flex-wrap gap-4 mb-6">
-      <p-button icon="pi pi-check" [rounded]="true" [outlined]="true" />
-      <p-button icon="pi pi-bookmark" [rounded]="true" severity="secondary" [outlined]="true" />
-      <p-button icon="pi pi-search" [rounded]="true" severity="success" [outlined]="true" />
-      <p-button icon="pi pi-user" [rounded]="true" severity="info" [outlined]="true" />
-      <p-button icon="pi pi-bell" [rounded]="true" severity="warn" [outlined]="true" />
-      <p-button icon="pi pi-heart" [rounded]="true" severity="help" [outlined]="true" />
-      <p-button icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true" />
-    </div>
-    <div class="flex justify-center flex-wrap gap-4 mb-6">
-      <p-button icon="pi pi-check" [rounded]="true" [text]="true" [raised]="true" />
-      <p-button icon="pi pi-bookmark" [rounded]="true" [text]="true" [raised]="true" severity="secondary" />
-      <p-button icon="pi pi-search" [rounded]="true" [text]="true" [raised]="true" severity="success" />
-      <p-button icon="pi pi-user" [rounded]="true" [text]="true" [raised]="true" severity="info" />
-      <p-button icon="pi pi-bell" [rounded]="true" [text]="true" [raised]="true" severity="warn" />
-      <p-button icon="pi pi-heart" [rounded]="true" [text]="true" [raised]="true" severity="help" />
-      <p-button icon="pi pi-times" [rounded]="true" [text]="true" [raised]="true" severity="danger" />
-    </div>
-    <div class="flex justify-center flex-wrap gap-4 mb-6">
-      <p-button icon="pi pi-check" [rounded]="true" [text]="true" />
-      <p-button icon="pi pi-bookmark" [rounded]="true" [text]="true" severity="secondary" />
-      <p-button icon="pi pi-search" [rounded]="true" [text]="true" severity="success" />
-      <p-button icon="pi pi-user" [rounded]="true" [text]="true" severity="info" />
-      <p-button icon="pi pi-bell" [rounded]="true" [text]="true" severity="warn" />
-      <p-button icon="pi pi-heart" [rounded]="true" [text]="true" severity="help" />
-      <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" />
-    </div>
-  </div>
-  <div class="card flex justify-center flex-wrap gap-4">
-    Badge
-    <p-button label="Emails" badge="2" styleClass="m-0" />
-    <p-button label="Messages" icon="pi pi-users" badge="2" badgeSeverity="contrast" styleClass="m-0" [outlined]="true" />
-  </div>
-</div>
+  </ng-template>
+  <ng-template #actionsTemplate let-product>
+    <p-button icon="pi pi-ellipsis-v" [rounded]="true" [text]="true" severity="contrast"/>
+  </ng-template>
+</table-template>

@@ -1,3 +1,36 @@
 {
+  "common": {
+    "noRow": "未找到任何记录"
+  },
+  "validation": {
+    "email": "格式无效：请输入有效的电子邮件地址",
+    "max": "值必须小于或等于{{max}}",
+    "maxlength": "最多支持{{requiredLength}}个字符",
+    "min": "值必须大于或等于{{min}}",
+    "minlength": "至少需要{{requiredLength}}个字符",
+    "pattern": "无效的值",
+    "required": "此字段是必填项"
+  },
+  "http": {
+    "error": {
+      "status": {
+        "400": {
+          "title": "错误请求"
+        },
+        "401": {
+          "title": "未经授权"
+        },
+        "403": {
+          "title": "被禁止"
+        },
+        "404": {
+          "title": "未找到"
+        },
+        "417": {
+          "title": "期望失败"
+        }
+      }
+    }
+  },
   "enterprise": "企业"
 }

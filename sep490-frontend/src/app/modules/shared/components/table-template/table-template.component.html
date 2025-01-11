@@ -1,0 +1,76 @@
+<p-table
+    #tableTemplateComponent
+    *ngIf="searchResult"
+    [value]="searchResult.results"
+    [tableStyle]="{ 'min-width': '60rem' }"
+    (sortFunction)="onSortChange($event)"
+    [customSort]="true"
+    [columns]="columns"
+    class="w-full"
+    [rowHover]="true"
+    [(selection)]="selected"
+    (selectionChange)="onSelectionChange($event)"
+>
+    @if (captionTemplateRef) {
+        <ng-template pTemplate="caption">
+            <ng-container *ngTemplateOutlet="captionTemplateRef"></ng-container>
+        </ng-template>
+    }
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            @if (checkbox) {
+                <th style="width: 3rem" id="checkbox">
+                    <p-tableHeaderCheckbox />
+                </th>
+            }
+            @for (col of columns; track col.field) {
+                @if (col.header) {
+                    @if (col.sortable) {
+                        <th [id]="col.field" [pSortableColumn]="col.field">
+                            {{ col.header }} <p-sortIcon [field]="col.field" />
+                        </th>
+                    } @else {
+                        <th [id]="col.header">
+                            {{ col.header }}
+                        </th>
+                    }
+                } @else {
+                    <th [id]="col.field" style="width: 5rem"></th>
+                }
+            }
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+            @if (checkbox) {
+                <td style="width: 3rem">
+                    <p-tableCheckbox [value]="rowData" />
+                </td>
+            }
+            <td *ngFor="let col of columns">
+                @if (col.templateRef) {
+                    <ng-container
+                        *ngTemplateOutlet="
+                            col.templateRef;
+                            context: { $implicit: rowData }
+                        "
+                    ></ng-container>
+                } @else {
+                    {{ rowData[col.field] }}
+                }
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-paginator
+    *ngIf="searchResult"
+    (onPageChange)="onPageChange($event)"
+    [first]="searchCriteria.page.offset"
+    [rows]="searchCriteria.page.limit"
+    [totalRecords]="searchResult.total"
+    [showCurrentPageReport]="true"
+    [showPageLinks]="true"
+    [showJumpToPageDropdown]="false"
+    [rowsPerPageOptions]="ApplicationConstant.DEFAULT_PAGE_OPTIONS"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+/>

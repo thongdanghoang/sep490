@@ -1,12 +1,16 @@
 import {Directive, OnDestroy} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 
 @Directive()
 export abstract class SubscriptionAwareComponent implements OnDestroy {
+  protected readonly destroy$: Subject<void> = new Subject<void>();
+
   private readonly subscriptions: Subscription[] = [];
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(s => s.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   protected registerSubscription(
