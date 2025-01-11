@@ -1,4 +1,7 @@
 {
+  "common": {
+    "noRow": "Không tìm thấy bản ghi nào."
+  },
   "validation": {
     "email": "Định dạng không đúng: vui lòng nhập địa chỉ email hợp lệ",
     "max": "Giá trị phải nhỏ hơn hoặc bằng {{max}}",
@@ -7,6 +10,27 @@
     "minlength": "Cần có ít nhất {{requiredLength}} ký tự",
     "pattern": "Giá trị không hợp lệ",
     "required": "Trường này là bắt buộc"
+  },
+  "http": {
+    "error": {
+      "status": {
+        "400": {
+          "title": "Yêu cầu không hợp lệ"
+        },
+        "401": {
+          "title": "Không được phép"
+        },
+        "403": {
+          "title": "Bị từ chối"
+        },
+        "404": {
+          "title": "Không tìm thấy"
+        },
+        "417": {
+          "title": "Kỳ vọng thất bại"
+        }
+      }
+    }
   },
   "enterprise": "Doanh Nghiệp"
 }

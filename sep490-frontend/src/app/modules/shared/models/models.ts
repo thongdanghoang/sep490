@@ -10,8 +10,8 @@ export interface SortDto {
 
 export interface SearchCriteriaDto<C> {
   page: SearchPageDto;
-  criteria: C;
-  sort: SortDto;
+  criteria?: C;
+  sort?: SortDto;
 }
 
 export interface SearchResultDto<R> {

@@ -1,3 +1,36 @@
 {
+  "common": {
+    "noRow": "Nothing has been found."
+  },
+  "validation": {
+    "email": "Invalid format: please enter a valid email address",
+    "max": "Value must be less than or equal to {{max}}",
+    "maxlength": "A maximum of {{requiredLength}} characters is supported",
+    "min": "Value must be greater than or equal to {{min}}",
+    "minlength": "At least {{requiredLength}} characters are required",
+    "pattern": "Invalid value",
+    "required": "This field is required"
+  },
+  "http": {
+    "error": {
+      "status": {
+        "400": {
+          "title": "Bad Request"
+        },
+        "401": {
+          "title": "Unauthorized"
+        },
+        "403": {
+          "title": "Forbidden"
+        },
+        "404": {
+          "title": "Not Found"
+        },
+        "417": {
+          "title": "Expectation Failed"
+        }
+      }
+    }
+  },
   "enterprise": "Enterprise"
 }
