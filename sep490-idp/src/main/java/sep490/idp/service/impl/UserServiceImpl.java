@@ -39,11 +39,12 @@ public class UserServiceImpl implements UserService {
         result.setRedirectUrl("redirect:/login");
         result.setSuccess(true);
 
-        validator.getValidateFirstMessage(signupDTO).ifPresent(msg -> {
+        validator.validate(signupDTO);
+        if (!signupDTO.isValidated()) {
             result.setSuccess(false);
-            result.setErrorMessage(msg);
+            result.setErrorMessage(signupDTO.getFirstErrorMsg().orElse(null));
             result.setRedirectUrl("signup");
-        });
+        }
 
         return result;
     }

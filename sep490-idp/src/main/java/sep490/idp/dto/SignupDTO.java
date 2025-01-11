@@ -4,13 +4,13 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import sep490.idp.validation.ToValidated;
+import sep490.idp.validation.ToBeValidated;
 
 import static sep490.common.api.utils.CommonConstant.*;
 
 @Getter
 @Setter
-public class SignupDTO implements ToValidated {
+public class SignupDTO extends ToBeValidated {
 
     @Pattern(regexp = EMAIL_PATTERN, message = "{validation.email.invalid}")
     @Size(min = 1, max = 255, message = "{validation.email.length}")
