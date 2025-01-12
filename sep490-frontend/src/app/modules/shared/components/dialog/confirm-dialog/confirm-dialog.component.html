@@ -8,7 +8,7 @@
     ></span>
 </div>
 <!-- Footer -->
-<div class="flex justify-end gap-2">
+<div class="flex justify-end items-center gap-2">
     <button
         type="button"
         pRipple
@@ -17,6 +17,8 @@
         (click)="reject()"
         [ngClass]="'p-confirm-dialog-reject'"
         [class]="option('rejectButtonStyleClass')"
+        outlined
+        size="small"
     ></button>
     <button
         type="button"
@@ -26,5 +28,6 @@
         (click)="accept()"
         [ngClass]="'p-confirm-dialog-accept'"
         [class]="option('acceptButtonStyleClass')"
+        size="small"
     ></button>
 </div>
