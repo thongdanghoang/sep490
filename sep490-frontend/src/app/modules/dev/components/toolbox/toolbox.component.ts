@@ -53,6 +53,7 @@ export class ToolboxComponent
   ngOnInit(): void {
     this.fetchProducts = this.devService.getData.bind(this.devService);
     this.productCriteria = { criteria: '' };
+    console.log('actionsTemplate', this.actionsTemplate);
     this.cols = [
       { field: 'code', header: 'Code', sortable: true },
       { field: 'name', header: 'Name', sortable: true },
