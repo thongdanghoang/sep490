@@ -12,6 +12,8 @@ import sep490.idp.dto.*;
 import sep490.idp.repository.UserAuthenticatorRepository;
 import sep490.idp.security.UserContextData;
 import sep490.idp.service.UserService;
+import sep490.idp.utils.IMessageUtil;
+
 import java.util.UUID;
 
 
@@ -22,7 +24,7 @@ import java.util.UUID;
 public class MainController {
 
     public static final String ERROR_MSG = "errorMsg";
-
+    private final IMessageUtil messageUtil;
     private final UserService userService;
     private final UserAuthenticatorRepository authenticatorRepository;
 
@@ -33,11 +35,14 @@ public class MainController {
     }
 
     @GetMapping("/login")
-    public String loginPage(@RequestParam(value = "error", required = false) String error, Model model) {
+    public String loginPage(@RequestParam(value = "error", required = false) String error, @RequestParam(value = "message", required = false) String message, Model model) {
         model.addAttribute("challenge", UUID.randomUUID().toString());
         model.addAttribute("loginDTO", new LoginDTO());
         if (error != null) {
             model.addAttribute("errorKey", error);
+        }
+        if (message != null) {
+            model.addAttribute("message", messageUtil.getMessage(message));
         }
         return "login";
     }
