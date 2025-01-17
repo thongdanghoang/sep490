@@ -105,4 +105,35 @@ public class EmailUtil implements IEmailUtil {
         }
     }
 
+    @Override
+    public String maskEmail(String email) {
+        if (email == null || !email.contains("@")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+
+        String[] parts = email.split("@");
+        String localPart = parts[0];
+        String domainPart = parts[1];
+
+        // Mask the local part
+        int localVisibleLength = Math.min(3, localPart.length());
+        String maskedLocal = localPart.substring(0, localVisibleLength)
+                + "•".repeat(localPart.length() - localVisibleLength);
+
+        // Mask the domain part
+        String[] domainParts = domainPart.split("\\.");
+        if (domainParts.length < 2) {
+            throw new IllegalArgumentException("Invalid domain format");
+        }
+
+        String domainName = domainParts[0];
+        int domainVisibleLength = Math.min(1, domainName.length());
+        String maskedDomain = domainName.substring(0, domainVisibleLength)
+                + "•".repeat(domainName.length() - domainVisibleLength)
+                + "." + domainParts[1];
+
+        // Combine masked local and domain parts
+        return maskedLocal + "@" + maskedDomain;
+    }
+
 }
