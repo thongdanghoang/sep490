@@ -2,10 +2,18 @@ package sep490.idp.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import sep490.common.api.security.UserRole;
+import sep490.common.api.security.UserScope;
 import sep490.common.api.utils.CommonConstant;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -19,6 +27,17 @@ public class UserEntity extends AbstractAuditableEntity {
     @Pattern(regexp = CommonConstant.EMAIL_PATTERN)
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_role")
+    private UserRole role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_scope")
+    private UserScope scope;
+
+    @OneToMany(mappedBy = "id.user")
+    private Set<BuildingPermissionEntity> permissions = new HashSet<>();
 
     @Column(name = "password", nullable = false, length = 72)
     private String password;

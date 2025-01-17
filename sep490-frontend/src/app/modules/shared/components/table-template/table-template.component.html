@@ -27,11 +27,11 @@
                 @if (col.header) {
                     @if (col.sortable) {
                         <th [id]="col.field" [pSortableColumn]="col.field">
-                            {{ col.header }} <p-sortIcon [field]="col.field" />
+                            {{ col.header | translate }} <p-sortIcon [field]="col.field" />
                         </th>
                     } @else {
                         <th [id]="col.header">
-                            {{ col.header }}
+                            {{ col.header | translate }}
                         </th>
                     }
                 } @else {
@@ -67,10 +67,10 @@
     (onPageChange)="onPageChange($event)"
     [first]="searchCriteria.page.offset"
     [rows]="searchCriteria.page.limit"
-    [totalRecords]="searchResult.total"
+    [totalRecords]="searchResult.totalElements"
     [showCurrentPageReport]="true"
     [showPageLinks]="true"
     [showJumpToPageDropdown]="false"
     [rowsPerPageOptions]="ApplicationConstant.DEFAULT_PAGE_OPTIONS"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+    currentPageReportTemplate="{{paginatorTemplateString}}"
 />

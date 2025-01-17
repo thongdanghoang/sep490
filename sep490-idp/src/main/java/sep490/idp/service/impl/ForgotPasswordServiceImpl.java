@@ -25,6 +25,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional(rollbackFor = Throwable.class)
 public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
     private final UserRepository userRepo;
@@ -56,7 +57,6 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     }
 
     @Override
-    @Transactional
     public boolean changePassword(ForgotResetPasswordDTO resetPasswordDTO, String email) {
         if (!resetPasswordDTO.getPassword().equals(resetPasswordDTO.getConfirmPassword()) || StringUtils.isEmpty(email)) {
             return false;

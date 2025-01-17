@@ -18,6 +18,7 @@ import {AbstractSearchComponent} from '../abstract-search';
 
 export interface TableTemplateColumn {
   field: string;
+  sortField?: string;
   header: string;
   sortable?: boolean;
   templateRef?: TemplateRef<any>;
@@ -46,6 +47,9 @@ export class TableTemplateComponent<
   @Input() triggerSearch: EventEmitter<void> | undefined;
   @Output() readonly selectionChange: EventEmitter<R[]> = new EventEmitter();
   selected: R[] | undefined;
+  paginatorTemplateString: string = this.translate.instant(
+    'table.paginatorString'
+  );
 
   protected readonly ApplicationConstant = ApplicationConstant;
 
@@ -63,6 +67,13 @@ export class TableTemplateComponent<
         .pipe(takeUntil(this.destroy$))
         .subscribe((): void => this.submit());
     }
+    this.registerSubscription(
+      this.translate.onLangChange.subscribe(() => {
+        this.paginatorTemplateString = this.translate.instant(
+          'table.paginatorString'
+        );
+      })
+    );
   }
 
   override initSearchDto(): void {
@@ -78,15 +89,23 @@ export class TableTemplateComponent<
 
   onSortChange(event: SortEvent): void {
     if (event.field && event.order) {
-      this.sort = {
-        colId: event.field,
-        sort: event.order === 1 ? 'ASC' : 'DESC'
-      };
+      const sortCol = this.columns.find(col => col.field === event.field);
+      if (sortCol?.sortField) {
+        this.sort = {
+          field: sortCol.sortField,
+          direction: event.order === 1 ? 'ASC' : 'DESC'
+        };
+      } else {
+        this.sort = {
+          field: event.field,
+          direction: event.order === 1 ? 'ASC' : 'DESC'
+        };
+      }
     }
     if (
       this.sort &&
-      (this.searchCriteria.sort?.colId !== this.sort.colId ||
-        this.searchCriteria.sort?.sort !== this.sort.sort)
+      (this.searchCriteria.sort?.field !== this.sort.field ||
+        this.searchCriteria.sort?.direction !== this.sort.direction)
     ) {
       if (this.isSorted == null) {
         this.isSorted = true;

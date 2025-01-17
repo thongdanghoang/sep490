@@ -16,7 +16,7 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     this.items = [
       {
-        label: 'enterprise',
+        label: 'enterprise.title',
         items: [
           {
             label: 'Dashboard',

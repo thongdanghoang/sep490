@@ -7,7 +7,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import sep490.common.api.security.UserRole;
+import sep490.common.api.security.PermissionRole;
 
 import java.util.Objects;
 
@@ -21,7 +21,7 @@ public class BuildingPermissionEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private UserRole role;
+    private PermissionRole role;
 
     @Override
     public boolean equals(Object o) {

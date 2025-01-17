@@ -32,5 +32,31 @@
       }
     }
   },
-  "enterprise": "Doanh Nghiệp"
+  "enterprise": {
+    "title": "Doanh nghiệp",
+    "Users": {
+      "title": "Người dùng",
+      "description": "Người dùng là những người trong doanh nghiệp hiện tại.",
+      "table": {
+        "name": "Tên",
+        "email": "Email",
+        "role": "Vai trò",
+        "scope": "Phạm vi"
+      }
+    }
+  },
+  "enum": {
+    "role": {
+      "SYSTEM_ADMIN": "Quản trị viên",
+      "ENTERPRISE_OWNER": "Chủ doanh nghiệp",
+      "ENTERPRISE_EMPLOYEE": "Nhân viên doanh nghiệp"
+    },
+    "scope": {
+      "BUILDING": "Tòa nhà",
+      "ENTERPRISE": "Doanh nghiệp"
+    }
+  },
+  "table": {
+    "paginatorString": "Hiển thị {first} đến {last} trong tổng số {totalRecords}"
+  }
 }

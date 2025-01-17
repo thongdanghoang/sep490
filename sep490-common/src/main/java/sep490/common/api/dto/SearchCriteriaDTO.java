@@ -1,13 +1,14 @@
 package sep490.common.api.dto;
 
-import java.util.List;
+
+import jakarta.validation.constraints.NotNull;
 
 public record SearchCriteriaDTO<T>(
         PageDTO page,
-        List<SortDTO> sorts,
+        @NotNull SortDTO sort,
         T criteria
 ) {
-    public static <T> SearchCriteriaDTO<T> of(PageDTO page, List<SortDTO> sorts, T criteria) {
-        return new SearchCriteriaDTO<>(page, sorts, criteria);
+    public static <T> SearchCriteriaDTO<T> of(PageDTO page, SortDTO sort, T criteria) {
+        return new SearchCriteriaDTO<>(page, sort, criteria);
     }
 }
