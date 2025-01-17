@@ -20,6 +20,9 @@ public abstract class ToBeValidated {
     }
 
     public Optional<String> getFirstErrorMsg() {
+        if (errorMap.isEmpty()) {
+            return Optional.empty();
+        }
         return Optional.ofNullable(this.getErrorMap().entrySet().iterator().next().getValue());
     }
 }

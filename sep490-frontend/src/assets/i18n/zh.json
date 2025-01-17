@@ -32,5 +32,31 @@
       }
     }
   },
-  "enterprise": "企业"
+  "enterprise": {
+    "title": "企业",
+    "Users": {
+      "title": "用户",
+      "description": "用户是当前公司中的用户。",
+      "table": {
+        "name": "姓名",
+        "email": "电子邮件",
+        "role": "角色",
+        "scope": "范围"
+      }
+    }
+  },
+  "enum": {
+    "role": {
+      "SYSTEM_ADMIN": "管理员",
+      "ENTERPRISE_OWNER": "企业所有者",
+      "ENTERPRISE_EMPLOYEE": "企业员工"
+    },
+    "scope": {
+      "BUILDING": "建筑",
+      "ENTERPRISE": "企业"
+    }
+  },
+  "table": {
+    "paginatorString": "显示第 {first} 到第 {last} 条，共 {totalRecords} 条记录"
+  }
 }

@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import sep490.idp.entity.BuildingPermissionEntity;
 import sep490.idp.repository.BuildingPermissionRepository;
 import sep490.idp.security.UserAuthenticationToken;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Throwable.class)
 public class LoginService {
 
     private final HttpServletRequest request;

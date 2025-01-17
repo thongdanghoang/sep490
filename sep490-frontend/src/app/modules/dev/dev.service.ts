@@ -391,7 +391,7 @@ export class DevService {
     console.log('getData - searchCriteria: ', searchCriteria.page, searchCriteria.sort, searchCriteria.criteria);
     return of({
       results: products.slice(searchCriteria.page.offset, searchCriteria.page.offset + searchCriteria.page.limit),
-      total: products.length,
+      totalElements: products.length,
     }).pipe(delay(500));
   }
 }

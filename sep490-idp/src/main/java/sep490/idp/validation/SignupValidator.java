@@ -2,6 +2,7 @@ package sep490.idp.validation;
 
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import sep490.idp.dto.SignupDTO;
@@ -28,9 +29,7 @@ public class SignupValidator implements Validator<SignupDTO> {
     }
 
     private void checkValidated(SignupDTO dto) {
-        if (!dto.getErrorMap().isEmpty()) {
-            dto.setValidated(false);
-        }
+        dto.setValidated(dto.getErrorMap().isEmpty() && StringUtils.isEmpty(dto.getErrorMsg()));
     }
 
     private boolean passwordsMatch(SignupDTO signupDTO) {

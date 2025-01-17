@@ -4,8 +4,8 @@ export interface SearchPageDto {
 }
 
 export interface SortDto {
-  colId: string;
-  sort: 'ASC' | 'DESC';
+  field: string;
+  direction: 'ASC' | 'DESC';
 }
 
 export interface SearchCriteriaDto<C> {
@@ -16,7 +16,7 @@ export interface SearchCriteriaDto<C> {
 
 export interface SearchResultDto<R> {
   results: R[];
-  total: number;
+  totalElements: number;
 }
 
 export interface KeyValue<T = any> {
