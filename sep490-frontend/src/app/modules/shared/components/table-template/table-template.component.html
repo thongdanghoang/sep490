@@ -27,7 +27,8 @@
                 @if (col.header) {
                     @if (col.sortable) {
                         <th [id]="col.field" [pSortableColumn]="col.field">
-                            {{ col.header | translate }} <p-sortIcon [field]="col.field" />
+                            {{ col.header | translate }}
+                            <p-sortIcon [field]="col.field" />
                         </th>
                     } @else {
                         <th [id]="col.header">
@@ -72,5 +73,5 @@
     [showPageLinks]="true"
     [showJumpToPageDropdown]="false"
     [rowsPerPageOptions]="ApplicationConstant.DEFAULT_PAGE_OPTIONS"
-    currentPageReportTemplate="{{paginatorTemplateString}}"
+    currentPageReportTemplate="{{ paginatorTemplateString }}"
 />

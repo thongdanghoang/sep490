@@ -2,5 +2,6 @@
 export const environment = {
   production: false,
   oidcAuthority: 'http://localhost:8080',
+  idpApiUrl: 'http://localhost:8080',
   oidcClientId: 'oidc-client',
 };
