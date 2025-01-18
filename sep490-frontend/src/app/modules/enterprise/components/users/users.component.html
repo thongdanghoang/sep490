@@ -1,50 +1,82 @@
-<h1 class="font-bold text-lg">{{ 'enterprise.Users.title' | translate }}</h1>
-<p class="font-light">{{ 'enterprise.Users.description' | translate }}</p>
+<h1 class="font-bold text-lg">{{ "enterprise.Users.title" | translate }}</h1>
+<p class="font-light">{{ "enterprise.Users.description" | translate }}</p>
 <div>
     <table-template
-            *ngIf="!applicationService.isMobile()"
-            [fetch]="fetchUsers"
-            [columns]="cols"
-            [sort]="undefined"
-            [criteria]="searchCriteria"
-            [triggerSearch]="searchEvent"
-            [captionTemplateRef]="captionTemplateRef"
-            [checkbox]="true"
-            (selectionChange)="onSelectionChange($event)">
+        *ngIf="!applicationService.isMobile()"
+        [fetch]="fetchUsers"
+        [columns]="cols"
+        [sort]="undefined"
+        [criteria]="searchCriteria"
+        [triggerSearch]="searchEvent"
+        [captionTemplateRef]="captionTemplateRef"
+        [checkbox]="true"
+        (selectionChange)="onSelectionChange($event)"
+    >
     </table-template>
-        <ng-template #captionTemplateRef>
-            <div class="flex items-center justify-between">
-                <div class="flex gap-2.5">
-                    <p-iconfield>
-                        <p-inputicon styleClass="pi pi-search"/>
-                        <input [(ngModel)]="searchCriteria" type="text" pInputText placeholder="Search" (keydown.enter)="search()"/>
-                    </p-iconfield>
-                    <p-button severity="primary" label="Search" icon="pi pi-user-plus" outlined (onClick)="search()"/>
-                </div>
-                <div class="flex gap-2.5">
-                    <p-button severity="danger"
-                            [label]="selected && selected.length
-                      ? 'Delete (' + selected?.length + ') products'
-                      : 'Delete'"
-                            icon="pi pi-trash"
-                            outlined
-                            [disabled]="!selected || !selected.length"
-                            (onClick)="confirmDelete()"
+    <ng-template #captionTemplateRef>
+        <div class="flex items-center justify-between">
+            <div class="flex gap-2.5">
+                <p-iconfield>
+                    <p-inputicon styleClass="pi pi-search" />
+                    <input
+                        [(ngModel)]="searchCriteria"
+                        type="text"
+                        pInputText
+                        placeholder="Search"
+                        (keydown.enter)="search()"
                     />
-                    <p-button severity="primary" label="Add user" icon="pi pi-user-plus"/>
-                </div>
+                </p-iconfield>
+                <p-button
+                    severity="primary"
+                    label="Search"
+                    icon="pi pi-user-plus"
+                    outlined
+                    (onClick)="search()"
+                />
             </div>
-        </ng-template>
-        <ng-template #actionsTemplate let-rowData>
-            <div class="flex">
-                <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="info" (onClick)="onEdit(rowData)"/>
-                <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" (onClick)="onDelete(rowData)"/>
+            <div class="flex gap-2.5">
+                <p-button
+                    severity="danger"
+                    [label]="
+                        selected && selected.length
+                            ? 'Delete (' + selected?.length + ') users'
+                            : 'Delete'
+                    "
+                    icon="pi pi-trash"
+                    outlined
+                    [disabled]="!selected || !selected.length"
+                    (onClick)="confirmDelete()"
+                />
+                <p-button
+                    severity="primary"
+                    label="Add user"
+                    icon="pi pi-user-plus"
+                />
             </div>
-        </ng-template>
-        <ng-template #roleTemplate let-rowData>
-            <p>{{ 'enum.role.' + rowData.role | translate}}</p>
-        </ng-template>
-        <ng-template #scopeTemplate let-rowData>
-            <p>{{ 'enum.scope.' + rowData.scope | translate}}</p>
-        </ng-template>
+        </div>
+    </ng-template>
+    <ng-template #actionsTemplate let-rowData>
+        <div class="flex">
+            <p-button
+                icon="pi pi-pencil"
+                [rounded]="true"
+                [text]="true"
+                severity="info"
+                (onClick)="onEdit(rowData)"
+            />
+            <p-button
+                icon="pi pi-trash"
+                [rounded]="true"
+                [text]="true"
+                severity="danger"
+                (onClick)="onDelete(rowData)"
+            />
+        </div>
+    </ng-template>
+    <ng-template #roleTemplate let-rowData>
+        <p>{{ "enum.role." + rowData.role | translate }}</p>
+    </ng-template>
+    <ng-template #scopeTemplate let-rowData>
+        <p>{{ "enum.scope." + rowData.scope | translate }}</p>
+    </ng-template>
 </div>
