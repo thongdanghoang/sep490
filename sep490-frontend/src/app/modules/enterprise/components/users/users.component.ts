@@ -5,16 +5,15 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {ApplicationService} from '../../../core/services/application.service';
+import {TableTemplateColumn} from '../../../shared/components/table-template/table-template.component';
+import {EnterpriseUserDTO} from '../../../shared/models/business-model';
 import {
   SearchCriteriaDto,
   SearchResultDto
 } from '../../../shared/models/models';
-import {ApplicationService} from '../../../core/services/application.service';
-import {Observable} from 'rxjs';
-import {EnterpriseUserDTO} from '../../../shared/models/business-model';
-import {TableTemplateColumn} from '../../../shared/components/table-template/table-template.component';
-import {environment} from '../../../../../environments/environment';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-users',
@@ -23,7 +22,8 @@ import {environment} from '../../../../../environments/environment';
 })
 export class UsersComponent implements OnInit {
   @ViewChild('roleTemplate', {static: true}) roleTemplate!: TemplateRef<any>;
-  @ViewChild('scopeTemplate', {static: true}) scopeTemplate!: TemplateRef<any>;
+  @ViewChild('scopeTemplate', {static: true})
+  scopeTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate', {static: true})
   actionsTemplate!: TemplateRef<any>;
 
@@ -36,20 +36,13 @@ export class UsersComponent implements OnInit {
   protected searchCriteria: string = '';
 
   constructor(
-    private readonly httpClient: HttpClient,
-    protected readonly applicationService: ApplicationService
+    protected readonly applicationService: ApplicationService,
+    private readonly userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.buildCols();
-    this.fetchUsers = (
-      criteria
-    ): Observable<SearchResultDto<EnterpriseUserDTO>> => {
-      return this.httpClient.post<SearchResultDto<EnterpriseUserDTO>>(
-        `${environment.idpApiUrl}/api/enterprise-user/search`,
-        criteria
-      );
-    };
+    this.fetchUsers = this.userService.getUsers.bind(this.userService);
   }
 
   buildCols(): void {

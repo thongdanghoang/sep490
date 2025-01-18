@@ -10,6 +10,7 @@ import {UsersComponent} from './components/users/users.component';
 import {PlanComponent} from './components/plan/plan.component';
 import {PaymentComponent} from './components/payment/payment.component';
 import {BuildingsComponent} from './components/buildings/buildings.component';
+import {UserService} from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,6 @@ import {BuildingsComponent} from './components/buildings/buildings.component';
     BuildingsComponent
   ],
   imports: [SharedModule, EnterpriseRoutingModule],
-  providers: [MarkerService, PopupService, RegionService]
+  providers: [MarkerService, PopupService, RegionService, UserService]
 })
 export class EnterpriseModule {}

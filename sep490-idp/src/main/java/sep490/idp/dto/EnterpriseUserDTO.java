@@ -5,5 +5,8 @@ import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
 
 public record EnterpriseUserDTO(
-    String name, String email, UserRole role, UserScope scope
-) { }
+        String name,
+        String email,
+        UserRole role,
+        UserScope scope) {
+}

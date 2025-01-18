@@ -26,9 +26,12 @@
             @for (col of columns; track col.field) {
                 @if (col.header) {
                     @if (col.sortable) {
-                        <th [id]="col.field" [pSortableColumn]="col.field">
+                        <th
+                            [id]="col.field"
+                            [pSortableColumn]="col.sortField ?? col.field"
+                        >
                             {{ col.header | translate }}
-                            <p-sortIcon [field]="col.field" />
+                            <p-sortIcon [field]="col.sortField ?? col.field" />
                         </th>
                     } @else {
                         <th [id]="col.header">

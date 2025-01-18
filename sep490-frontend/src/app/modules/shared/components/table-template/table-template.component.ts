@@ -47,14 +47,15 @@ export class TableTemplateComponent<
   @Input() triggerSearch: EventEmitter<void> | undefined;
   @Output() readonly selectionChange: EventEmitter<R[]> = new EventEmitter();
   selected: R[] | undefined;
-  paginatorTemplateString: string = this.translate.instant(
-    'table.paginatorString'
-  );
+  paginatorTemplateString: string;
 
   protected readonly ApplicationConstant = ApplicationConstant;
 
   constructor(translate: TranslateService, messageService: MessageService) {
     super(translate, messageService);
+    this.paginatorTemplateString = this.translate.instant(
+      'table.paginatorString'
+    );
   }
 
   override ngOnInit(): void {
@@ -68,7 +69,7 @@ export class TableTemplateComponent<
         .subscribe((): void => this.submit());
     }
     this.registerSubscription(
-      this.translate.onLangChange.subscribe(() => {
+      this.translate.onLangChange.subscribe((): void => {
         this.paginatorTemplateString = this.translate.instant(
           'table.paginatorString'
         );
@@ -89,18 +90,10 @@ export class TableTemplateComponent<
 
   onSortChange(event: SortEvent): void {
     if (event.field && event.order) {
-      const sortCol = this.columns.find(col => col.field === event.field);
-      if (sortCol?.sortField) {
-        this.sort = {
-          field: sortCol.sortField,
-          direction: event.order === 1 ? 'ASC' : 'DESC'
-        };
-      } else {
-        this.sort = {
-          field: event.field,
-          direction: event.order === 1 ? 'ASC' : 'DESC'
-        };
-      }
+      this.sort = {
+        field: event.field,
+        direction: event.order === 1 ? 'ASC' : 'DESC'
+      };
     }
     if (
       this.sort &&

@@ -16,6 +16,10 @@ public interface EnterpriseUserMapper {
 
     @Named("toFullName")
     default String translateToFullName(UserEntity user) {
-        return user.getFirstName() + " " + user.getLastName();
+        return new StringBuilder()
+                .append(user.getFirstName())
+                .append(" ")
+                .append(user.getLastName())
+                .toString();
     }
 }
