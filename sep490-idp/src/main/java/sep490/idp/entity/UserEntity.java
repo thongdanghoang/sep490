@@ -4,10 +4,16 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
 import sep490.common.api.utils.CommonConstant;
@@ -15,6 +21,12 @@ import sep490.common.api.utils.CommonConstant;
 import java.util.HashSet;
 import java.util.Set;
 
+@NamedEntityGraph(
+        name = UserEntity.USER_PERMISSIONS_ENTITY_GRAPH,
+        attributeNodes = {
+                @NamedAttributeNode("permissions")
+        }
+)
 @Entity
 @Getter
 @Setter
@@ -23,25 +35,27 @@ import java.util.Set;
 @Builder
 @Table(name = "users")
 public class UserEntity extends AbstractAuditableEntity {
-
+    
+    public static final String USER_PERMISSIONS_ENTITY_GRAPH = "user-permissions-entity-graph";
+    
     @Pattern(regexp = CommonConstant.EMAIL_PATTERN)
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-
+    
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role")
     private UserRole role;
-
+    
     @Enumerated(EnumType.STRING)
     @Column(name = "user_scope")
     private UserScope scope;
-
+    
     @OneToMany(mappedBy = "id.user")
     private Set<BuildingPermissionEntity> permissions = new HashSet<>();
-
+    
     @Column(name = "password", nullable = false, length = 72)
     private String password;
-
+    
     @Column(name = "email_verified")
     private boolean emailVerified;
     

@@ -1,4 +1,8 @@
+import {environment} from '../environments/environment';
+
 export class AppRoutingConstants {
+  public static readonly IDP_API_URL = environment.idpApiUrl;
+
   // To be remove
   public static readonly DEV_PATH = 'dev';
 
