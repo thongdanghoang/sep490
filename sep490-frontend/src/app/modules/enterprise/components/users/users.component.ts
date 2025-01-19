@@ -15,6 +15,10 @@ import {
 } from '../../../shared/models/models';
 import {UserService} from '../../services/user.service';
 
+export interface UserCriteria {
+  criteria: string;
+}
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -28,12 +32,12 @@ export class UsersComponent implements OnInit {
   actionsTemplate!: TemplateRef<any>;
 
   protected fetchUsers!: (
-    criteria: SearchCriteriaDto<string>
+    criteria: SearchCriteriaDto<UserCriteria>
   ) => Observable<SearchResultDto<EnterpriseUserDTO>>;
   protected cols: TableTemplateColumn[] = [];
   protected readonly searchEvent: EventEmitter<void> = new EventEmitter();
   protected selected: EnterpriseUserDTO[] = [];
-  protected searchCriteria: string = '';
+  protected searchCriteria: UserCriteria = {criteria: ''};
 
   constructor(
     protected readonly applicationService: ApplicationService,

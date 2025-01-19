@@ -13,6 +13,7 @@ import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
 import sep490.idp.dto.SignupDTO;
 import sep490.idp.dto.SignupResult;
+import sep490.idp.dto.UserCriteriaDTO;
 import sep490.idp.entity.UserEntity;
 import sep490.idp.mapper.CommonMapper;
 import sep490.idp.repository.UserRepository;
@@ -77,7 +78,7 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public Page<UserEntity> search(SearchCriteriaDTO<String> searchCriteria) {
-        return userRepo.searchByName(searchCriteria.criteria(), CommonMapper.toPageable(searchCriteria.page(), searchCriteria.sort()));
+    public Page<UserEntity> search(SearchCriteriaDTO<UserCriteriaDTO> searchCriteria) {
+        return userRepo.searchByName(searchCriteria.criteria().criteria(), CommonMapper.toPageable(searchCriteria.page(), searchCriteria.sort()));
     }
 }

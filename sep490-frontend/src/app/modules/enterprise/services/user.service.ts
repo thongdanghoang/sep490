@@ -4,13 +4,14 @@ import {Observable} from 'rxjs';
 import {AppRoutingConstants} from '../../../app-routing.constant';
 import {EnterpriseUserDTO} from '../../shared/models/business-model';
 import {SearchCriteriaDto, SearchResultDto} from '../../shared/models/models';
+import {UserCriteria} from '../components/users/users.component';
 
 @Injectable()
 export class UserService {
   constructor(private readonly httpClient: HttpClient) {}
 
   public getUsers(
-    criteria: SearchCriteriaDto<string>
+    criteria: SearchCriteriaDto<UserCriteria>
   ): Observable<SearchResultDto<EnterpriseUserDTO>> {
     return this.httpClient.post<SearchResultDto<EnterpriseUserDTO>>(
       `${AppRoutingConstants.IDP_API_URL}/api/enterprise-user/search`,
