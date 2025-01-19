@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import sep490.idp.entity.UserEntity;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -20,10 +22,19 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     
     @EntityGraph(UserEntity.USER_PERMISSIONS_ENTITY_GRAPH)
     @Query(value = """
-            SELECT u
-            FROM UserEntity u
-            WHERE LOWER(u.firstName) LIKE LOWER(CONCAT('%', :name, '%'))
-            OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :name, '%'))
+                SELECT u
+                FROM UserEntity u
+                WHERE u.id IN (:ids)
             """)
-    Page<UserEntity> searchByName(String name, Pageable pageable);
+    List<UserEntity> findByIDsWithPermissions(Set<UUID> ids);
+    
+    @Query(
+            """
+                    SELECT u.id
+                    FROM UserEntity u
+                    WHERE LOWER(u.firstName) LIKE LOWER(CONCAT('%', :name, '%'))
+                    OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :name, '%'))
+                    """
+    )
+    Page<UUID> findByName(String name, Pageable pageable);
 }

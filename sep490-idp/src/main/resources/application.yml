@@ -46,6 +46,8 @@ spring:
       hibernate:
         show_sql: false
         format_sql: false
+        query:
+          fail_on_pagination_over_collection_fetch: true
 
 logging:
   level:

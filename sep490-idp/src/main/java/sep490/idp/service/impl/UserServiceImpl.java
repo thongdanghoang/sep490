@@ -20,6 +20,9 @@ import sep490.idp.repository.UserRepository;
 import sep490.idp.service.UserService;
 import sep490.idp.validation.Validator;
 
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -79,6 +82,14 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public Page<UserEntity> search(SearchCriteriaDTO<UserCriteriaDTO> searchCriteria) {
-        return userRepo.searchByName(searchCriteria.criteria().criteria(), CommonMapper.toPageable(searchCriteria.page(), searchCriteria.sort()));
+        var userIDs = userRepo.findByName(
+                searchCriteria.criteria().criteria(),
+                CommonMapper.toPageable(searchCriteria.page(), searchCriteria.sort())
+                                         );
+        var results = userRepo
+                .findByIDsWithPermissions(userIDs.toSet())
+                .stream()
+                .collect(Collectors.toMap(UserEntity::getId, Function.identity()));
+        return userIDs.map(results::get);
     }
 }

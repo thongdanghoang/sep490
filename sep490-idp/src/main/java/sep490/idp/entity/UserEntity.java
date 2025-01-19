@@ -14,6 +14,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
 import sep490.common.api.utils.CommonConstant;
