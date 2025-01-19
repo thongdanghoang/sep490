@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import sep490.common.api.dto.SearchCriteriaDTO;
 import sep490.common.api.dto.SearchResultDTO;
 import sep490.idp.dto.EnterpriseUserDTO;
+import sep490.idp.dto.UserCriteriaDTO;
 import sep490.idp.mapper.EnterpriseUserMapper;
 import sep490.idp.service.UserService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/enterprise-user")
@@ -21,10 +24,10 @@ public class EnterpriseUserRestController {
     private final EnterpriseUserMapper userMapper;
     
     @PostMapping("/search")
-    public ResponseEntity<SearchResultDTO<EnterpriseUserDTO>> searchEnterpriseUser(@RequestBody SearchCriteriaDTO<String> searchCriteria) {
+    public ResponseEntity<SearchResultDTO<EnterpriseUserDTO>> searchEnterpriseUser(@RequestBody SearchCriteriaDTO<UserCriteriaDTO> searchCriteria) {
         var searchResults = userService.search(searchCriteria);
         if (searchResults.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(SearchResultDTO.of(List.of(), searchResults.getTotalElements()));
         }
         var results = searchResults.get().map(userMapper::userEntityToEnterpriseUserDTO).toList();
         var totalElements = searchResults.getTotalElements();

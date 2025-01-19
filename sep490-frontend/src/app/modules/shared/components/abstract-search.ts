@@ -43,7 +43,7 @@ export abstract class AbstractSearchComponent<
   }
 
   submit(): void {
-    if (this.criteria !== undefined && this.filterValidator) {
+    if (this.criteria && this.filterValidator) {
       this.searchCriteria.criteria = this.criteria;
       this.filterValidator(this.searchCriteria.criteria)
         .pipe(takeUntil(this.destroy$))
