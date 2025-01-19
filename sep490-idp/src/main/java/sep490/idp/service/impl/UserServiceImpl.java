@@ -67,17 +67,16 @@ public class UserServiceImpl implements UserService {
     
     
     private UserEntity createUser(SignupDTO signupDTO) {
-        return UserEntity.builder()
-                         .email(signupDTO.getEmail())
-                         .emailVerified(false)
-                         .role(UserRole.ENTERPRISE_OWNER)
-                         .scope(UserScope.ENTERPRISE)
-                         .firstName(signupDTO.getFirstName())
-                         .lastName(signupDTO.getLastName())
-                         .phone(signupDTO.getPhone())
-                         .phoneVerified(false)
-                         .password(passwordEncoder.encode(signupDTO.getPassword()))
-                         .build();
+        return UserEntity.register(
+                signupDTO.getEmail(),
+                false,
+                UserRole.ENTERPRISE_OWNER,
+                UserScope.ENTERPRISE,
+                signupDTO.getFirstName(),
+                signupDTO.getLastName(),
+                signupDTO.getPhone(),
+                false,
+                passwordEncoder.encode(signupDTO.getPassword()));
     }
     
     @Override

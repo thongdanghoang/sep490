@@ -10,7 +10,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,12 +29,11 @@ import java.util.Set;
         }
 )
 @Entity
+@Table(name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Table(name = "users")
 public class UserEntity extends AbstractAuditableEntity {
     
     public static final String USER_PERMISSIONS_ENTITY_GRAPH = "user-permissions-entity-graph";
@@ -72,5 +70,28 @@ public class UserEntity extends AbstractAuditableEntity {
     
     @Column(name = "last_name", length = 100)
     private String lastName;
+    
+    public static UserEntity register(
+            String email,
+            boolean emailVerified,
+            UserRole role,
+            UserScope scope,
+            String firstName,
+            String lastName,
+            String phone,
+            boolean phoneVerified,
+            String password) {
+        UserEntity user = new UserEntity();
+        user.setEmail(email);
+        user.setEmailVerified(emailVerified);
+        user.setRole(role);
+        user.setScope(scope);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPhone(phone);
+        user.setPhoneVerified(phoneVerified);
+        user.setPassword(password);
+        return user;
+    }
     
 }
