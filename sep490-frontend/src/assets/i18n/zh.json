@@ -1,6 +1,10 @@
 {
   "common": {
-    "noRow": "未找到任何记录"
+    "noRow": "未找到任何记录",
+    "defaultConfirmMessage": "是否删除该用户？",
+    "confirmHeader": "确认",
+    "accept": "是",
+    "reject": "否"
   },
   "validation": {
     "email": "格式无效：请输入有效的电子邮件地址",
@@ -42,6 +46,16 @@
         "email": "电子邮件",
         "role": "角色",
         "scope": "范围"
+      },
+      "message": {
+        "success" : {
+          "summary": "成功",
+          "detail" : "用户已删除"
+        },
+        "error" : {
+          "summary": "错误",
+          "detail" : "用户删除失败"
+        }
       }
     }
   },

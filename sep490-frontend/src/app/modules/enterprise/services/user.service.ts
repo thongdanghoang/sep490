@@ -18,4 +18,11 @@ export class UserService {
       criteria
     );
   }
+
+  public deleteUsers(userIds: string[]): Observable<void> {
+    return this.httpClient.post<void>(
+      `${AppRoutingConstants.IDP_API_URL}/api/enterprise-user/delete`,
+      userIds
+    );
+  }
 }

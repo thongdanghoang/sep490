@@ -71,6 +71,9 @@ public class UserEntity extends AbstractAuditableEntity {
     @Column(name = "last_name", length = 100)
     private String lastName;
     
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+    
     public static UserEntity register(
             String email,
             boolean emailVerified,

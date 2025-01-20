@@ -1,5 +1,6 @@
 package sep490.idp.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,7 +9,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import sep490.common.api.dto.SearchCriteriaDTO;
+import sep490.common.api.exceptions.BusinessErrorParam;
+import sep490.common.api.exceptions.BusinessException;
 import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
 import sep490.idp.dto.SignupDTO;
@@ -20,6 +24,11 @@ import sep490.idp.repository.UserRepository;
 import sep490.idp.service.UserService;
 import sep490.idp.validation.Validator;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -90,5 +99,22 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .collect(Collectors.toMap(UserEntity::getId, Function.identity()));
         return userIDs.map(results::get);
+    }
+    
+    @Override
+    public void deleteUsers(Set<UUID> userIds) throws BusinessException {
+        if (CollectionUtils.isEmpty(userIds)) {
+            throw new BusinessException("userIds", "user.delete.no.ids", Collections.emptyList());
+        }
+        List<UserEntity> users = userRepo.findByIdInAndDeletedFalse(userIds);
+        if (users.size() != userIds.size()) {
+            Set<UUID> foundIds = users.stream().map(UserEntity::getId).collect(Collectors.toSet());
+            userIds.removeAll(foundIds);
+            throw new BusinessException("userIds", "user.delete.not.found",
+                                        List.of(new BusinessErrorParam("ids", userIds)));
+        }
+        users.forEach(user -> user.setDeleted(true));
+        userRepo.saveAll(users);
+        
     }
 }
