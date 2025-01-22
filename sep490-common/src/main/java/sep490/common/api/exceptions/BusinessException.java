@@ -56,6 +56,10 @@ public class BusinessException extends Exception {
     protected BusinessException(String i18nKey) {
         this(null, i18nKey, List.of());
     }
+    
+    public BusinessException(String field, String i18nKey) {
+        this(field, i18nKey, List.of());
+    }
 
     protected BusinessException(String i18nKey, int httpStatus, Throwable cause) {
         this(null, i18nKey, Collections.emptyList(), httpStatus, cause);

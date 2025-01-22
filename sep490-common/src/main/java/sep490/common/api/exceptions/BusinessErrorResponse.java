@@ -20,4 +20,8 @@ public record BusinessErrorResponse(
     public ServerErrorType getErrorType() {
         return ServerErrorType.BUSINESS;
     }
+    
+    public BusinessErrorResponse(BusinessException exception, String correlationId) {
+        this(correlationId, exception.field, exception.i18nKey, exception.args);
+    }
 }

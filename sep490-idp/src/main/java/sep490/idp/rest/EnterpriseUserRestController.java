@@ -10,6 +10,7 @@ import sep490.common.api.dto.SearchCriteriaDTO;
 import sep490.common.api.dto.SearchResultDTO;
 import sep490.common.api.exceptions.BusinessException;
 import sep490.idp.dto.EnterpriseUserDTO;
+import sep490.idp.dto.NewEnterpriseUserDTO;
 import sep490.idp.dto.UserCriteriaDTO;
 import sep490.idp.mapper.EnterpriseUserMapper;
 import sep490.idp.service.UserService;
@@ -35,6 +36,12 @@ public class EnterpriseUserRestController {
         var results = searchResults.get().map(userMapper::userEntityToEnterpriseUserDTO).toList();
         var totalElements = searchResults.getTotalElements();
         return ResponseEntity.ok(SearchResultDTO.of(results, totalElements));
+    }
+    
+    @PostMapping("/create")
+    public ResponseEntity<?> createNewEnterpriseUser(@RequestBody NewEnterpriseUserDTO dto) throws BusinessException {
+        userService.createNewUser(dto);
+        return ResponseEntity.ok().build();
     }
     
     @PostMapping("/delete")

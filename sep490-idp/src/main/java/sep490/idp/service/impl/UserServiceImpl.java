@@ -1,9 +1,9 @@
 package sep490.idp.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,19 +13,28 @@ import org.springframework.util.CollectionUtils;
 import sep490.common.api.dto.SearchCriteriaDTO;
 import sep490.common.api.exceptions.BusinessErrorParam;
 import sep490.common.api.exceptions.BusinessException;
+import sep490.common.api.exceptions.TechnicalException;
 import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
+import sep490.common.api.utils.SEPUtils;
+import sep490.idp.dto.NewEnterpriseUserDTO;
 import sep490.idp.dto.SignupDTO;
 import sep490.idp.dto.SignupResult;
 import sep490.idp.dto.UserCriteriaDTO;
+import sep490.idp.entity.BuildingPermissionEntity;
 import sep490.idp.entity.UserEntity;
 import sep490.idp.mapper.CommonMapper;
+import sep490.idp.mapper.EnterpriseUserMapper;
+import sep490.idp.repository.BuildingRepository;
 import sep490.idp.repository.UserRepository;
 import sep490.idp.service.UserService;
+import sep490.idp.utils.IEmailUtil;
+import sep490.idp.utils.IMessageUtil;
+import sep490.idp.utils.SEPMailMessage;
+import sep490.idp.utils.SecurityUtils;
 import sep490.idp.validation.Validator;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -42,6 +51,12 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     @Qualifier("signupValidator")
     private final Validator<SignupDTO> validator;
+    private final EnterpriseUserMapper userMapper;
+    private final BuildingRepository buildingRepo;
+    private final IMessageUtil messageUtil;
+    private final IEmailUtil emailUtil;
+    @Value("${spring.application.homepage}")
+    private String homepage;
     
     
     @Override
@@ -92,8 +107,7 @@ public class UserServiceImpl implements UserService {
     public Page<UserEntity> search(SearchCriteriaDTO<UserCriteriaDTO> searchCriteria) {
         var userIDs = userRepo.findByName(
                 searchCriteria.criteria().criteria(),
-                CommonMapper.toPageable(searchCriteria.page(), searchCriteria.sort())
-                                         );
+                CommonMapper.toPageable(searchCriteria.page(), searchCriteria.sort()));
         var results = userRepo
                 .findByIDsWithPermissions(userIDs.toSet())
                 .stream()
@@ -116,5 +130,61 @@ public class UserServiceImpl implements UserService {
         users.forEach(user -> user.setDeleted(true));
         userRepo.saveAll(users);
         
+    }
+    
+    @Override
+    public UserEntity createNewUser(NewEnterpriseUserDTO dto) throws BusinessException {
+        var user = userMapper.newEnterpriseUserDTOToEntity(dto);
+        if (userRepo.existsByEmail(user.getEmail())) {
+            throw new BusinessException("email", "email.exist");
+        }
+        mappingUserPermission(dto, user);
+        String password = SEPUtils.alphaNumericString(12);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole(UserRole.ENTERPRISE_EMPLOYEE);
+        
+        SEPMailMessage message = populateNewUserMailMessage(user.getEmail(), password);
+        emailUtil.sendMail(message);
+        
+        return userRepo.save(user);
+    }
+    
+    private void mappingUserPermission(NewEnterpriseUserDTO dto, UserEntity user) throws BusinessException {
+        if (user.getScope() == UserScope.ENTERPRISE) {
+            UserEntity owner = userRepo.findByEmail(SecurityUtils.getUserEmail()).orElseThrow(() -> new TechnicalException("Owner not exists"));
+            Set<BuildingPermissionEntity> buildingPermissionEntitySet =
+                    owner.getPermissions()
+                         .stream()
+                         .map(p -> p.getId().getBuildingId())
+                         .map(bId -> new BuildingPermissionEntity(bId, user, dto.permissionRole()))
+                         .collect(Collectors.toSet());
+            
+            user.setPermissions(buildingPermissionEntitySet);
+        } else if (user.getScope() == UserScope.BUILDING) {
+            if (CollectionUtils.isEmpty(dto.buildings()) || !buildingRepo.existsAllByIdIn(dto.buildings())) {
+                throw new BusinessException("buildings", "buildings.invalid");
+            }
+            Set<BuildingPermissionEntity> buildingPermissionEntitySet =
+                    dto.buildings()
+                       .stream()
+                       .map(bId -> new BuildingPermissionEntity(bId, user, dto.permissionRole()))
+                       .collect(Collectors.toSet());
+            
+            user.setPermissions(buildingPermissionEntitySet);
+        }
+    }
+    
+    private SEPMailMessage populateNewUserMailMessage(String email, String password) {
+        SEPMailMessage message = new SEPMailMessage();
+        
+        message.setTemplateName("new-user-notify.ftl");
+        message.setTo(email);
+        message.setSubject(messageUtil.getMessage("newUser.mail.title"));
+        
+        message.addTemplateModel("userEmail", email);
+        message.addTemplateModel("password", password);
+        message.addTemplateModel("homepage", homepage);
+        
+        return message;
     }
 }

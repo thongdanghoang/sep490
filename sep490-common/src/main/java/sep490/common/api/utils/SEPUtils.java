@@ -21,5 +21,15 @@ public class SEPUtils {
         }
         return otp.toString();
     }
+    
+    public static String alphaNumericString(int len) {
+        String AB = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(AB.charAt(random.nextInt(AB.length())));
+        }
+        return sb.toString();
+    }
 
 }

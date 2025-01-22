@@ -19,6 +19,10 @@ export class UserService {
     );
   }
 
+  public createUserURL(): string {
+    return `${AppRoutingConstants.IDP_API_URL}/api/enterprise-user/create`;
+  }
+
   public deleteUsers(userIds: string[]): Observable<void> {
     return this.httpClient.post<void>(
       `${AppRoutingConstants.IDP_API_URL}/api/enterprise-user/delete`,

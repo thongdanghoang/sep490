@@ -18,6 +18,7 @@ import {InputSwitchModule} from 'primeng/inputswitch';
 import {InputTextModule} from 'primeng/inputtext';
 import {MenuModule} from 'primeng/menu';
 import {MenubarModule} from 'primeng/menubar';
+import {MultiSelect} from 'primeng/multiselect';
 import {PaginatorModule} from 'primeng/paginator';
 import {PasswordModule} from 'primeng/password';
 import {RippleModule} from 'primeng/ripple';
@@ -25,6 +26,7 @@ import {Select} from 'primeng/select';
 import {TableModule} from 'primeng/table';
 import {TabMenuModule} from 'primeng/tabmenu';
 import {ToastModule} from 'primeng/toast';
+import {ToggleSwitch} from 'primeng/toggleswitch';
 import {ConfirmDialogComponent} from './components/dialog/confirm-dialog/confirm-dialog.component';
 import {TableTemplateComponent} from './components/table-template/table-template.component';
 import {TranslateParamsPipe} from './pipes/translate-params.pipe';
@@ -51,7 +53,9 @@ const primeNgModules = [
   ToastModule,
   PaginatorModule,
   PasswordModule,
-  RippleModule
+  RippleModule,
+  MultiSelect,
+  ToggleSwitch
 ];
 
 const commons = [

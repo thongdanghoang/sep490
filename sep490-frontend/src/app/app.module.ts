@@ -24,6 +24,7 @@ import {HomeComponent} from './components/home/home.component';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
 import {CoreModule} from './modules/core/core.module';
+import {LanguageInterceptor} from './modules/shared/interceptor/language.interceptor';
 import {SharedModule} from './modules/shared/shared.module';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {PricingComponent} from './components/pricing/pricing.component';
@@ -108,6 +109,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
       deps: [OidcSecurityService],
       multi: true
     },
+    {provide: HTTP_INTERCEPTORS, useClass: LanguageInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]

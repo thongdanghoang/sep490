@@ -1,4 +1,5 @@
 import {Directive, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {
   AbstractControl,
@@ -44,15 +45,16 @@ export abstract class AbstractFormComponent<T>
     protected httpClient: HttpClient,
     protected formBuilder: FormBuilder,
     protected notificationService: MessageService,
-    protected modalProvider: ModalProvider
+    protected modalProvider: ModalProvider,
+    protected translate: TranslateService
   ) {
     super();
   }
 
   ngOnInit(): void {
+    this.initializeData();
     this.formControls = this.initializeFormControls();
     this.formGroup = this.formBuilder.group(this.formControls);
-    this.initializeData();
     this.updateFormControlsState(this.formGroup, [
       (ctr: AbstractControl): void =>
         this.registerSubscription(
@@ -202,9 +204,9 @@ export abstract class AbstractFormComponent<T>
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected showSaveSuccessNotification(result: any): void {
     this.notificationService.add({
-      severity: 'success',
-      summary: 'common.success',
-      detail: 'common.saveSuccess'
+      severity: this.translate.instant('success'),
+      summary: this.translate.instant('common.success'),
+      detail: this.translate.instant('common.saveSuccess')
     });
   }
 
@@ -231,9 +233,9 @@ export abstract class AbstractFormComponent<T>
         }
       } else {
         this.notificationService.add({
-          severity: 'error',
-          summary: 'common.error',
-          detail: `validation.${result.i18nKey}`
+          severity: this.translate.instant('error'),
+          summary: this.translate.instant('common.error'),
+          detail: this.translate.instant(`validation.${result.i18nKey}`)
         });
       }
     }

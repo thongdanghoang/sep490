@@ -1,10 +1,14 @@
 {
   "common": {
     "noRow": "未找到任何记录",
+    "success": "成功",
+    "saveSuccess": "保存成功!",
     "defaultConfirmMessage": "是否删除该用户？",
     "confirmHeader": "确认",
     "accept": "是",
-    "reject": "否"
+    "reject": "否",
+    "create": "创建",
+    "revert": "撤销"
   },
   "validation": {
     "email": "格式无效：请输入有效的电子邮件地址",
@@ -13,7 +17,15 @@
     "min": "值必须大于或等于{{min}}",
     "minlength": "至少需要{{requiredLength}}个字符",
     "pattern": "无效的值",
-    "required": "此字段是必填项"
+    "required": "此字段是必填项",
+    "business": {
+      "email": {
+        "exist": "电子邮件地址已存在"
+      },
+      "buildings": {
+        "invalid": "建筑物选择无效"
+      }
+    }
   },
   "http": {
     "error": {
@@ -40,6 +52,24 @@
     "title": "企业",
     "Users": {
       "title": "用户",
+      "search":"搜索",
+      "add": "添加用户",
+      "create": "创建用户",
+      "delete": "删除",
+      "deleteWithCount": "删除（{{count}}）用户",
+      "email": "电子邮件",
+      "firstName": "名字",
+      "lastName": "姓氏",
+      "role": "角色",
+      "scope": "范围",
+      "placeholders": {
+        "enterEmail": "输入电子邮件",
+        "enterFirstName": "输入名字",
+        "enterLastName": "输入姓氏",
+        "selectRole": "选择角色",
+        "selectScope": "选择范围",
+        "selectBuildings": "选择建筑物"
+      },
       "description": "用户是当前公司中的用户。",
       "table": {
         "name": "姓名",
@@ -64,6 +94,11 @@
       "SYSTEM_ADMIN": "管理员",
       "ENTERPRISE_OWNER": "企业所有者",
       "ENTERPRISE_EMPLOYEE": "企业员工"
+    },
+    "permissionRole": {
+      "MANAGER": "经理",
+      "STAFF": "员工",
+      "AUDITOR": "审计员"
     },
     "scope": {
       "BUILDING": "建筑",

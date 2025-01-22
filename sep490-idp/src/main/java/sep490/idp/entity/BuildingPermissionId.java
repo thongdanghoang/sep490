@@ -5,12 +5,14 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 import java.util.UUID;
 
 @Embeddable
 @Getter
+@NoArgsConstructor
 public class BuildingPermissionId {
 
     @Column(name = "building_id", nullable = false)
@@ -19,7 +21,12 @@ public class BuildingPermissionId {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
-
+    
+    public BuildingPermissionId(UUID buildingId, UserEntity user) {
+        this.buildingId = buildingId;
+        this.user = user;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) { return true; }

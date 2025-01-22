@@ -4,7 +4,6 @@ import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
-import sep490.idp.security.UserContextData;
 import sep490.idp.utils.SecurityUtils;
 
 import java.util.Optional;
@@ -16,8 +15,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
     @Nonnull
     @Override
     public Optional<String> getCurrentAuditor() {
-        return SecurityUtils.getUserContextData()
-                            .map(UserContextData::getUsername)
+        return Optional.ofNullable(SecurityUtils.getUserEmail())
                             .or(() -> Optional.of("unknown"));
     }
 }

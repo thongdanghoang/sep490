@@ -18,8 +18,6 @@ import sep490.idp.utils.IMessageUtil;
 import sep490.idp.utils.SEPMailMessage;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Service
@@ -76,11 +74,9 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         message.setTemplateName("forgot-password-otp.ftl");
         message.setTo(email);
         message.setSubject(messageUtil.getMessage("resetPassword.title"));
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("userEmail", email);
-        map.put("otpCode", userOTP.getOtpCode());
-        message.setTemplateModels(map);
+        
+        message.addTemplateModel("userEmail", email);
+        message.addTemplateModel("otpCode", userOTP.getOtpCode());
 
         return message;
     }

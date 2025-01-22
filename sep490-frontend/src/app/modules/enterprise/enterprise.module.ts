@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 
+import {CreateUserComponent} from './components/create-user/create-user.component';
 import {EnterpriseRoutingModule} from './enterprise-routing.module';
 import {EnterpriseComponent} from './enterprise.component';
 import {SharedModule} from '../shared/shared.module';
@@ -18,7 +19,8 @@ import {UserService} from './services/user.service';
     UsersComponent,
     PlanComponent,
     PaymentComponent,
-    BuildingsComponent
+    BuildingsComponent,
+    CreateUserComponent
   ],
   imports: [SharedModule, EnterpriseRoutingModule],
   providers: [MarkerService, PopupService, RegionService, UserService]

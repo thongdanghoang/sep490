@@ -1,5 +1,6 @@
 package sep490.idp.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,8 +14,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
 import sep490.common.api.utils.CommonConstant;
@@ -50,7 +49,7 @@ public class UserEntity extends AbstractAuditableEntity {
     @Column(name = "user_scope")
     private UserScope scope;
     
-    @OneToMany(mappedBy = "id.user")
+    @OneToMany(mappedBy = "id.user", cascade = CascadeType.PERSIST)
     private Set<BuildingPermissionEntity> permissions = new HashSet<>();
     
     @Column(name = "password", nullable = false, length = 72)
