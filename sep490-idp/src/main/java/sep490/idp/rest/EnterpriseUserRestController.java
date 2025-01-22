@@ -8,12 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sep490.common.api.dto.SearchCriteriaDTO;
 import sep490.common.api.dto.SearchResultDTO;
+import sep490.common.api.exceptions.BusinessException;
 import sep490.idp.dto.EnterpriseUserDTO;
 import sep490.idp.dto.UserCriteriaDTO;
 import sep490.idp.mapper.EnterpriseUserMapper;
 import sep490.idp.service.UserService;
 
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/enterprise-user")
@@ -33,5 +36,12 @@ public class EnterpriseUserRestController {
         var totalElements = searchResults.getTotalElements();
         return ResponseEntity.ok(SearchResultDTO.of(results, totalElements));
     }
+    
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteUsers(@RequestBody Set<UUID> userIds) throws BusinessException {
+          userService.deleteUsers(userIds);
+         return ResponseEntity.noContent().build();
+    }
+    
     
 }

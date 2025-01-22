@@ -37,4 +37,13 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
                     """
     )
     Page<UUID> findByName(String name, Pageable pageable);
+    
+    @Query(
+            """
+                    SELECT u
+                    FROM UserEntity u
+                    WHERE u.id IN :ids AND u.isDeleted = false
+                    """
+    )
+    List<UserEntity> findByIdInAndDeletedFalse(Set<UUID> ids);
 }

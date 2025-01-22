@@ -1,6 +1,10 @@
 {
   "common": {
-    "noRow": "Không tìm thấy bản ghi nào."
+    "noRow": "Không tìm thấy bản ghi nào.",
+    "defaultConfirmMessage": "Bạn có muốn xóa người dùng này không?",
+    "confirmHeader": "Xác nhận",
+    "accept": "Đồng ý",
+    "reject": "Không"
   },
   "validation": {
     "email": "Định dạng không đúng: vui lòng nhập địa chỉ email hợp lệ",
@@ -42,6 +46,16 @@
         "email": "Email",
         "role": "Vai trò",
         "scope": "Phạm vi"
+      },
+      "message": {
+        "success" : {
+          "summary": "Thành công",
+          "detail" : "Đã xóa người dùng"
+        },
+        "error" : {
+          "summary": "Lỗi",
+          "detail" : "Đã xóa người dùng không thành công"
+        }
       }
     }
   },
