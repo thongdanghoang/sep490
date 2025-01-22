@@ -9,6 +9,12 @@ export interface EnterpriseUserDTO {
 }
 
 export enum UserScope {
-  BUILDING = 'building',
-  ENTERPRISE = 'enterprise'
+  BUILDING,
+  ENTERPRISE
+}
+
+export enum PermissionRole {
+  MANAGER,
+  AUDITOR,
+  STAFF
 }

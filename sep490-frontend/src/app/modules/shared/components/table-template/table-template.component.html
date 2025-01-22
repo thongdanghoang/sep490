@@ -69,8 +69,8 @@
 <p-paginator
     *ngIf="searchResult"
     (onPageChange)="onPageChange($event)"
-    [first]="searchCriteria.page.offset"
-    [rows]="searchCriteria.page.limit"
+    [first]="searchCriteria.page.pageNumber"
+    [rows]="searchCriteria.page.pageSize"
     [totalRecords]="searchResult.totalElements"
     [showCurrentPageReport]="true"
     [showPageLinks]="true"

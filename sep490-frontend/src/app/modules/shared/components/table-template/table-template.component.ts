@@ -80,8 +80,8 @@ export class TableTemplateComponent<
   override initSearchDto(): void {
     this.searchCriteria = {
       page: {
-        offset: 0,
-        limit: ApplicationConstant.DEFAULT_PAGE_SIZE
+        pageNumber: 0,
+        pageSize: ApplicationConstant.DEFAULT_PAGE_SIZE
       },
       criteria: this.criteria,
       sort: this.sort
@@ -118,8 +118,8 @@ export class TableTemplateComponent<
   onPageChange(value: PaginatorState): void {
     if (value.first !== undefined && value.rows !== undefined) {
       this.searchCriteria.page = {
-        offset: value.first,
-        limit: value.rows
+        pageNumber: value.first,
+        pageSize: value.rows
       };
       this.search();
     }

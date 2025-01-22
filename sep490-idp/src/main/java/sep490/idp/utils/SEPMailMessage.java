@@ -17,5 +17,12 @@ public class SEPMailMessage extends SimpleMailMessage {
     private Map<String, Object> templateModels = new HashMap<>();
 
     private Map<String, File> attachments = new HashMap<>();
+    
+    public void addTemplateModel(String modelName, Object model) {
+        if (modelName == null || model == null) {
+            throw new IllegalArgumentException("Model name and model cannot be null");
+        }
+        this.templateModels.put(modelName, model);
+    }
 
 }

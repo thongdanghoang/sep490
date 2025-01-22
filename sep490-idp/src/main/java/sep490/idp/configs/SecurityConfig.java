@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
@@ -29,6 +30,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import sep490.idp.service.impl.CustomAuthenticationFailureHandler;
+import sep490.idp.service.impl.UserInfoService;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -36,6 +38,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
@@ -146,34 +149,14 @@ public class SecurityConfig {
     }
     
     @Bean
-    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
+    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer(UserInfoService userInfoService) {
         return context -> {
-            // TODO: implement OidcUserInfoService
             if (OidcParameterNames.ID_TOKEN.equals(context.getTokenType().getValue())) {
-                var userInfo = OidcUserInfo.builder()
-                                           .subject(UUID.randomUUID().toString())
-                                           .email("dano@elca.vn")
-                                           .emailVerified(true)
-                                           .phoneNumber("+1 (604) 555-1234;ext=5678")
-                                           .phoneNumberVerified(false)
-//                        .claim("address", Collections.singletonMap("formatted", "Champ de Mars\n5 Av. Anatole France\n75007 Paris\nFrance"))
-//                        .name("First Last")
-//                        .givenName("First")
-//                        .familyName("Last")
-//                        .middleName("Middle")
-//                        .nickname("User")
-//                        .preferredUsername(USERNAME)
-//                        .profile("https://example.com/" + USERNAME)
-//                        .picture("https://example.com/" + USERNAME + ".jpg")
-//                        .website("https://example.com")
-//                        .gender("female")
-//                        .birthdate("1970-01-01")
-//                        .zoneinfo("Europe/Paris")
-//                        .locale("en-US")
-//                        .updatedAt("1970-01-01T00:00:00Z")
-                                           .build()
-                                           .getClaims();
-                context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(userInfo));
+                OidcUserInfo oidcUserInfo = userInfoService.loadUser(context.getPrincipal().getName());
+                context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(oidcUserInfo.getClaims()));
+            } else if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
+                Map<String, Object> customClaims = userInfoService.getCustomClaimsForJwtAuthenticationToken(context.getPrincipal().getName());
+                context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(customClaims));
             }
         };
     }

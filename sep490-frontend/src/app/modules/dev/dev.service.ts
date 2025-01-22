@@ -390,7 +390,7 @@ export class DevService {
   ): Observable<SearchResultDto<Product>> {
     console.log('getData - searchCriteria: ', searchCriteria.page, searchCriteria.sort, searchCriteria.criteria);
     return of({
-      results: products.slice(searchCriteria.page.offset, searchCriteria.page.offset + searchCriteria.page.limit),
+      results: products.slice(searchCriteria.page.pageNumber, searchCriteria.page.pageNumber + searchCriteria.page.pageSize),
       totalElements: products.length,
     }).pipe(delay(500));
   }

@@ -28,6 +28,7 @@ spring:
       mail.smtp.auth: false
   application:
     name: sep490-idp
+    homepage: http://localhost:4200
   datasource:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC
     username: ${POSTGRES_USER}

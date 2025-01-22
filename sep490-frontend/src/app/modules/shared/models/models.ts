@@ -1,6 +1,6 @@
 export interface SearchPageDto {
-  offset: number;
-  limit: number;
+  pageNumber: number;
+  pageSize: number;
 }
 
 export interface SortDto {
@@ -49,6 +49,12 @@ export interface SelectableItem<V> {
   label: string;
   value: V;
   disabled?: boolean;
+}
+
+export interface EnumOptions {
+  name: string;
+  code: string;
+  i18nCode: string;
 }
 
 export type AutoCompleteDto<V> = SelectableItem<V>;

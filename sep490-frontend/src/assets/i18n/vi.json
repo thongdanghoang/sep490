@@ -4,7 +4,11 @@
     "defaultConfirmMessage": "Bạn có muốn xóa người dùng này không?",
     "confirmHeader": "Xác nhận",
     "accept": "Đồng ý",
-    "reject": "Không"
+    "reject": "Không",
+    "success": "Thành công",
+    "saveSuccess": "Lưu thành công!",
+    "create": "Tạo",
+    "revert": "Hoàn tác"
   },
   "validation": {
     "email": "Định dạng không đúng: vui lòng nhập địa chỉ email hợp lệ",
@@ -13,7 +17,15 @@
     "min": "Giá trị phải lớn hơn hoặc bằng {{min}}",
     "minlength": "Cần có ít nhất {{requiredLength}} ký tự",
     "pattern": "Giá trị không hợp lệ",
-    "required": "Trường này là bắt buộc"
+    "required": "Trường này là bắt buộc",
+    "business": {
+      "email": {
+        "exist": "Địa chỉ email đã tồn tại"
+      },
+      "buildings": {
+        "invalid": "Lựa chọn tòa nhà không hợp lệ"
+      }
+    }
   },
   "http": {
     "error": {
@@ -40,6 +52,24 @@
     "title": "Doanh nghiệp",
     "Users": {
       "title": "Người dùng",
+      "search":"Tìm kiếm",
+      "add": "Thêm người dùng",
+      "create": "Tạo người dùng",
+      "delete": "Xóa",
+      "deleteWithCount": "Xóa ({{count}}) người dùng",
+      "email": "Email",
+      "firstName": "Tên",
+      "lastName": "Họ",
+      "role": "Vai trò",
+      "scope": "Phạm vi",
+      "placeholders": {
+        "enterEmail": "Nhập email",
+        "enterFirstName": "Nhập tên",
+        "enterLastName": "Nhập họ",
+        "selectRole": "Chọn vai trò",
+        "selectScope": "Chọn phạm vi",
+        "selectBuildings": "Chọn tòa nhà"
+      },
       "description": "Người dùng là những người trong doanh nghiệp hiện tại.",
       "table": {
         "name": "Tên",
@@ -64,6 +94,11 @@
       "SYSTEM_ADMIN": "Quản trị viên",
       "ENTERPRISE_OWNER": "Chủ doanh nghiệp",
       "ENTERPRISE_EMPLOYEE": "Nhân viên doanh nghiệp"
+    },
+    "permissionRole": {
+      "MANAGER": "Quản lý",
+      "STAFF": "Nhân viên",
+      "AUDITOR": "Kiểm tra viên"
     },
     "scope": {
       "BUILDING": "Tòa nhà",

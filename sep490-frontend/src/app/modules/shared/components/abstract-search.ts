@@ -107,6 +107,6 @@ export abstract class AbstractSearchComponent<
   protected abstract initSearchDto(): void;
 
   protected resetPage(): void {
-    this.searchCriteria.page.offset = 0;
+    this.searchCriteria.page.pageNumber = 0;
   }
 }

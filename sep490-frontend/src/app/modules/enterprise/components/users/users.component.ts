@@ -18,6 +18,7 @@ import {MessageService} from 'primeng/api';
 import {ModalProvider} from '../../../shared/services/modal-provider';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {TranslateService} from '@ngx-translate/core';
+import {AppRoutingConstants} from '../../../../app-routing.constant';
 
 export interface UserCriteria {
   criteria: string;
@@ -37,6 +38,7 @@ export class UsersComponent
   scopeTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate', {static: true})
   actionsTemplate!: TemplateRef<any>;
+  protected readonly AppRoutingConstants = AppRoutingConstants;
   protected fetchUsers!: (
     criteria: SearchCriteriaDto<UserCriteria>
   ) => Observable<SearchResultDto<EnterpriseUserDTO>>;

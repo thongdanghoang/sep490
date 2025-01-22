@@ -18,6 +18,7 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     
     boolean existsByEmail(String email);
     
+    @EntityGraph(UserEntity.USER_PERMISSIONS_ENTITY_GRAPH)
     Optional<UserEntity> findByEmail(String email);
     
     @EntityGraph(UserEntity.USER_PERMISSIONS_ENTITY_GRAPH)
