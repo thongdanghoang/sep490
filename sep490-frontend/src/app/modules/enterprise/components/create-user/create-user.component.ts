@@ -31,7 +31,6 @@ interface BuildingDTO {
   name: string;
 }
 
-/* eslint-disable dot-notation */
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -56,6 +55,14 @@ export class CreateUserComponent extends AbstractFormComponent<NewEnterpriseUser
       i18nCode: 'enum.permissionRole.AUDITOR'
     }
   ];
+  protected readonly enterpriseFormStructure = {
+    email: new FormControl<string>('', [Validators.required, Validators.email]),
+    firstName: new FormControl<string>('', [Validators.required]),
+    lastName: new FormControl<string>('', [Validators.required]),
+    permissionRole: new FormControl<string>('', [Validators.required]),
+    scope: new FormControl<string>('', [Validators.required]),
+    buildings: new FormControl<string[]>([], [Validators.required])
+  };
 
   protected scopeOptions: EnumOptions[] = [
     {
@@ -100,23 +107,23 @@ export class CreateUserComponent extends AbstractFormComponent<NewEnterpriseUser
 
   onScopeChange(event: any): void {
     if (event.value === UserScope[UserScope.BUILDING]) {
-      this.formGroup.controls['buildings'].addValidators(Validators.required);
-      this.formGroup.controls['buildings'].markAsUntouched();
+      this.enterpriseFormStructure.buildings.addValidators(Validators.required);
+      this.enterpriseFormStructure.buildings.markAsUntouched();
     } else {
-      this.formGroup.controls['buildings'].removeValidators(
+      this.enterpriseFormStructure.buildings.removeValidators(
         Validators.required
       );
-      this.formGroup.controls['buildings'].markAsUntouched();
+      this.enterpriseFormStructure.buildings.markAsUntouched();
     }
   }
 
   onLangChange(): void {
     this.updateOptionsLabel();
-    this.formGroup.controls['permissionRole'].setValue('');
-    this.formGroup.controls['permissionRole'].setErrors(null);
-    this.formGroup.controls['scope'].setValue('');
-    this.formGroup.controls['scope'].setErrors(null);
-    this.formGroup.controls['buildings'].setValue([]);
+    this.enterpriseFormStructure.permissionRole.setValue('');
+    this.enterpriseFormStructure.permissionRole.setErrors(null);
+    this.enterpriseFormStructure.scope.setValue('');
+    this.enterpriseFormStructure.scope.setErrors(null);
+    this.enterpriseFormStructure.buildings.setValue([]);
   }
 
   updateOptionsLabel(): void {
@@ -136,24 +143,15 @@ export class CreateUserComponent extends AbstractFormComponent<NewEnterpriseUser
   }
 
   protected initializeFormControls(): {[p: string]: AbstractControl} {
-    return {
-      email: new FormControl<string>('', [
-        Validators.required,
-        Validators.email
-      ]),
-      firstName: new FormControl<string>('', [Validators.required]),
-      lastName: new FormControl<string>('', [Validators.required]),
-      permissionRole: new FormControl<string>('', [Validators.required]),
-      scope: new FormControl<string>('', [Validators.required]),
-      buildings: new FormControl<string[]>([], [Validators.required])
-    };
+    return this.enterpriseFormStructure;
   }
 
   protected override prepareDataBeforeSubmit(): void {
     if (
-      this.formGroup.controls['scope'].value === UserScope[UserScope.ENTERPRISE]
+      this.enterpriseFormStructure.scope.value ===
+      UserScope[UserScope.ENTERPRISE]
     ) {
-      this.formGroup.controls['buildings'].setValue([]);
+      this.enterpriseFormStructure.buildings.setValue([]);
     }
   }
 
@@ -162,7 +160,7 @@ export class CreateUserComponent extends AbstractFormComponent<NewEnterpriseUser
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected onSubmitFormDataSuccess(result: any): void {
+  protected onSubmitFormDataSuccess(_result: any): void {
     void this.router.navigate([
       '/',
       AppRoutingConstants.ENTERPRISE_PATH,
