@@ -81,6 +81,20 @@ public class SecurityConfig {
         return http.build();
     }
     
+    /**
+     * Configures a security filter chain specifically for API endpoints with JWT-based authentication.
+     *
+     * @param http the HttpSecurity configuration to customize
+     * @return a configured SecurityFilterChain for API requests
+     * @throws Exception if an error occurs during security configuration
+     *
+     * This filter chain applies the following security settings:
+     * - Applies to all paths starting with "/api/**"
+     * - Requires authentication for all requests
+     * - Uses stateless session management
+     * - Enables JWT-based resource server authentication
+     * - Adds a monitoring filter after the security context filter
+     */
     @Bean
     @Order(2)
     public SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
@@ -93,6 +107,20 @@ public class SecurityConfig {
         return http.build();
     }
     
+    /**
+     * Configures the default security filter chain for web application security.
+     *
+     * This method sets up security rules for HTTP requests, including:
+     * - Permitting access to static resources (CSS, images, JavaScript)
+     * - Allowing public access to signup, login, passkey login, and password reset pages
+     * - Requiring authentication for all other requests
+     * - Configuring form-based login with custom parameters
+     * - Setting up WebAuthn (passkey) authentication
+     *
+     * @param http The HttpSecurity configuration to be customized
+     * @return A configured SecurityFilterChain for default web security
+     * @throws Exception if an error occurs during security configuration
+     */
     @Bean
     @Order(3)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -122,16 +150,41 @@ public class SecurityConfig {
     }
     
     
+    /**
+     * Creates a custom authentication failure handler bean for managing authentication failures.
+     *
+     * @return A {@link CustomAuthenticationFailureHandler} that handles authentication error scenarios
+     * @see CustomAuthenticationFailureHandler
+     */
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return new CustomAuthenticationFailureHandler();
     }
     
+    /**
+     * Creates a BCrypt password encoder bean for secure password hashing.
+     *
+     * @return A BCryptPasswordEncoder configured with default settings
+     * @see BCryptPasswordEncoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     
+    /**
+     * Creates a JSON Web Key (JWK) source using a key pair from a keystore.
+     *
+     * This method loads an RSA key pair from a Java KeyStore (JKS) file located in the classpath.
+     * The key pair is used for signing and verifying JSON Web Tokens (JWTs) in the OAuth2 authorization server.
+     *
+     * @return A JWK source containing an immutable set of RSA keys for token signing
+     * @throws NoSuchAlgorithmException If the specified key algorithm is not available
+     *
+     * @see KeyStoreKeyFactory
+     * @see RSAKey
+     * @see JWKSet
+     */
     @Bean
     public JWKSource<SecurityContext> jwkSource()
             throws NoSuchAlgorithmException {
@@ -147,6 +200,15 @@ public class SecurityConfig {
         return new ImmutableJWKSet<>(jwkSet);
     }
     
+    /**
+     * Customizes JWT tokens by adding additional claims based on token type.
+     *
+     * For ID tokens, retrieves OpenID Connect (OIDC) user information and adds all user claims.
+     * For access tokens, retrieves custom claims for the authenticated user.
+     *
+     * @param userInfoService Service to load user information and retrieve custom claims
+     * @return OAuth2TokenCustomizer that modifies JWT claims for different token types
+     */
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer(UserInfoService userInfoService) {
         return context -> {
