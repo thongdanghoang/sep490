@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAd
 import sep490.idp.exceptions.BasicValidationException;
 
 import java.lang.reflect.Type;
+import java.util.Collections;
 
 @RestControllerAdvice(basePackages = "sep490.idp.rest")
 public class RequestBodyUnawareValidation extends RequestBodyAdviceAdapter {
@@ -25,7 +26,12 @@ public class RequestBodyUnawareValidation extends RequestBodyAdviceAdapter {
             var validator = factory.getValidator();
             var violations = validator.validate(body);
             if (!CollectionUtils.isEmpty(violations)) {
-                throw new BasicValidationException(violations);
+                var violation = violations.stream().findFirst().get();
+                throw new BasicValidationException(
+                        violation.getPropertyPath().toString(),
+                        violation.getMessage(),
+                        Collections.emptyList()
+                );
             }
         }
         return super.afterBodyRead(body, inputMessage, parameter, targetType, converterType);

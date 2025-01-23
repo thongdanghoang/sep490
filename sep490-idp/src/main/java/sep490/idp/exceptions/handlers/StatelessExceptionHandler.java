@@ -17,8 +17,10 @@ import sep490.common.api.utils.MDCContext;
 public class StatelessExceptionHandler {
     
     private static TechnicalErrorResponse technicalError(Throwable exception, String errorMsg) {
-        log.error("Unhandled exception occurred", exception);
-        return new TechnicalErrorResponse(MDC.get(MDCContext.CORRELATION_ID), errorMsg);
+        var correlationId = MDC.get(MDCContext.CORRELATION_ID);
+        var logMsg = "Unhandled exception occurred: %s".formatted(correlationId);
+        log.error(logMsg, exception);
+        return new TechnicalErrorResponse(correlationId, errorMsg);
     }
     
     private static BusinessErrorResponse businessError(BusinessException exception) {
