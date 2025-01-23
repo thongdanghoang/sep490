@@ -8,11 +8,13 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.encrypt.KeyStoreKeyFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
@@ -32,8 +34,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import sep490.idp.service.impl.CustomAuthenticationFailureHandler;
 import sep490.idp.service.impl.UserInfoService;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -132,19 +132,15 @@ public class SecurityConfig {
     @Bean
     public JWKSource<SecurityContext> jwkSource()
             throws NoSuchAlgorithmException {
-        KeyPairGenerator keyPairGenerator =
-                KeyPairGenerator.getInstance("RSA");
-        keyPairGenerator.initialize(2048);
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-        RSAPublicKey publicKey =
-                (RSAPublicKey) keyPair.getPublic();
-        RSAPrivateKey privateKey =
-                (RSAPrivateKey) keyPair.getPrivate();
-        RSAKey rsaKey = new RSAKey.Builder(publicKey)
+        var keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"), "P@ssW0rd".toCharArray());
+        var keyPair = keyStoreKeyFactory.getKeyPair("GreenBuildings");
+        var publicKey = (RSAPublicKey) keyPair.getPublic();
+        var privateKey = (RSAPrivateKey) keyPair.getPrivate();
+        var rsaKey = new RSAKey.Builder(publicKey)
                 .privateKey(privateKey)
-                .keyID(UUID.randomUUID().toString())
+                .keyID("kid")
                 .build();
-        JWKSet jwkSet = new JWKSet(rsaKey);
+        var jwkSet = new JWKSet(rsaKey);
         return new ImmutableJWKSet<>(jwkSet);
     }
     
