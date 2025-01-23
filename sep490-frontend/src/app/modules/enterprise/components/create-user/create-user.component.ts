@@ -11,25 +11,16 @@ import {TranslateService} from '@ngx-translate/core';
 import {MessageService} from 'primeng/api';
 import {AppRoutingConstants} from '../../../../app-routing.constant';
 import {AbstractFormComponent} from '../../../shared/components/form/abstract-form-component';
-import {PermissionRole, UserScope} from '../../../shared/models/business-model';
+import {
+  BuildingDTO,
+  NewEnterpriseUserDTO,
+  PermissionRole,
+  UserScope
+} from '../../../shared/models/business-model';
 import {EnumOptions} from '../../../shared/models/models';
 import {ModalProvider} from '../../../shared/services/modal-provider';
 import {v4 as uuidv4} from 'uuid';
 import {UserService} from '../../services/user.service';
-
-export interface NewEnterpriseUserDTO {
-  email: string;
-  firstName: string;
-  lastName: string;
-  permissionRole: string;
-  scope: string;
-  buildingIds: string[];
-}
-
-interface BuildingDTO {
-  id: string;
-  name: string;
-}
 
 @Component({
   selector: 'app-create-user',
@@ -55,7 +46,7 @@ export class CreateUserComponent extends AbstractFormComponent<NewEnterpriseUser
       i18nCode: 'enum.permissionRole.AUDITOR'
     }
   ];
-  protected readonly enterpriseFormStructure = {
+  protected readonly enterpriseUserForm = {
     email: new FormControl<string>('', [Validators.required, Validators.email]),
     firstName: new FormControl<string>('', [Validators.required]),
     lastName: new FormControl<string>('', [Validators.required]),
@@ -107,23 +98,21 @@ export class CreateUserComponent extends AbstractFormComponent<NewEnterpriseUser
 
   onScopeChange(event: any): void {
     if (event.value === UserScope[UserScope.BUILDING]) {
-      this.enterpriseFormStructure.buildings.addValidators(Validators.required);
-      this.enterpriseFormStructure.buildings.markAsUntouched();
+      this.enterpriseUserForm.buildings.addValidators(Validators.required);
+      this.enterpriseUserForm.buildings.markAsUntouched();
     } else {
-      this.enterpriseFormStructure.buildings.removeValidators(
-        Validators.required
-      );
-      this.enterpriseFormStructure.buildings.markAsUntouched();
+      this.enterpriseUserForm.buildings.removeValidators(Validators.required);
+      this.enterpriseUserForm.buildings.markAsUntouched();
     }
   }
 
   onLangChange(): void {
     this.updateOptionsLabel();
-    this.enterpriseFormStructure.permissionRole.setValue('');
-    this.enterpriseFormStructure.permissionRole.setErrors(null);
-    this.enterpriseFormStructure.scope.setValue('');
-    this.enterpriseFormStructure.scope.setErrors(null);
-    this.enterpriseFormStructure.buildings.setValue([]);
+    this.enterpriseUserForm.permissionRole.setValue('');
+    this.enterpriseUserForm.permissionRole.setErrors(null);
+    this.enterpriseUserForm.scope.setValue('');
+    this.enterpriseUserForm.scope.setErrors(null);
+    this.enterpriseUserForm.buildings.setValue([]);
   }
 
   updateOptionsLabel(): void {
@@ -143,15 +132,14 @@ export class CreateUserComponent extends AbstractFormComponent<NewEnterpriseUser
   }
 
   protected initializeFormControls(): {[p: string]: AbstractControl} {
-    return this.enterpriseFormStructure;
+    return this.enterpriseUserForm;
   }
 
   protected override prepareDataBeforeSubmit(): void {
     if (
-      this.enterpriseFormStructure.scope.value ===
-      UserScope[UserScope.ENTERPRISE]
+      this.enterpriseUserForm.scope.value === UserScope[UserScope.ENTERPRISE]
     ) {
-      this.enterpriseFormStructure.buildings.setValue([]);
+      this.enterpriseUserForm.buildings.setValue([]);
     }
   }
 

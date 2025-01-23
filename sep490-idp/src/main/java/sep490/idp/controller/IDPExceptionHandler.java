@@ -1,8 +1,11 @@
 package sep490.idp.controller;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,10 +25,26 @@ public class IDPExceptionHandler {
         BusinessErrorResponse response = new BusinessErrorResponse(ex, UUID.randomUUID().toString());
         return ResponseEntity.badRequest().body(response);
     }
+    
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity processJsonInvalidFormatException(InvalidFormatException e) {
+        return ResponseEntity.badRequest().build();
+    }
+    
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
+    public ResponseEntity handleInvalidMethodArgEx(Exception ex) {
+        MethodArgumentNotValidException exp = (MethodArgumentNotValidException) ex;
+        log.warn("Invalid method argument send through proxy API or missing validation in frontend");
+        exp.getBindingResult()
+            .getAllErrors()
+            .forEach(err -> log.warn("Error field {}", ((FieldError) err).getField()));
+        return ResponseEntity.badRequest().build();
+    }
 
     @ExceptionHandler(Exception.class)
     public String handleGenericException(Exception ex, Model model) {
-        log.error(ex.getMessage());
+        log.error(ex.getMessage(), ex);
         model.addAttribute("error", "An unexpected error occurred, please contact admin!");
         return "error";
     }

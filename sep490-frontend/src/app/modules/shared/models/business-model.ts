@@ -18,3 +18,17 @@ export enum PermissionRole {
   AUDITOR,
   STAFF
 }
+
+export interface NewEnterpriseUserDTO {
+  email: string;
+  firstName: string;
+  lastName: string;
+  permissionRole: string;
+  scope: string;
+  buildingIds: string[];
+}
+
+export interface BuildingDTO {
+  id: string;
+  name: string;
+}
