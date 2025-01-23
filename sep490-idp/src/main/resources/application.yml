@@ -18,8 +18,6 @@ spring:
                 - phone
             require-authorization-consent: false
             require-proof-key: true
-  mvc:
-    log-request-details: true
   mail:
     host: ${SMTP_HOST:127.0.0.1}
     port: ${SMTP_PORT:1025}
@@ -55,10 +53,11 @@ spring:
 
 logging:
   level:
+    root: INFO
     org:
       springframework:
-        security: DEBUG
-        web: DEBUG
+        security: ${SPRING_SECURITY_LOG_LEVEL:INFO}
+        web: ${SPRING_WEB_LOG_LEVEL:INFO}
       hibernate:
         SQL: ${HIBERNATE_SQL_LOG_LEVEL:TRACE}
         type:
