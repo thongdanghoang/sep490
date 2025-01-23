@@ -15,7 +15,6 @@ public class AuditorAwareImpl implements AuditorAware<String> {
     @Nonnull
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.ofNullable(SecurityUtils.getUserEmail())
-                            .or(() -> Optional.of("unknown"));
+        return SecurityUtils.getUserEmail().or(() -> Optional.of("unknown"));
     }
 }

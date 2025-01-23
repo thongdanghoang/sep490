@@ -151,7 +151,9 @@ public class UserServiceImpl implements UserService {
     
     private void mappingUserPermission(NewEnterpriseUserDTO dto, UserEntity user) throws BusinessException {
         if (user.getScope() == UserScope.ENTERPRISE) {
-            UserEntity owner = userRepo.findByEmail(SecurityUtils.getUserEmail()).orElseThrow(() -> new TechnicalException("Owner not exists"));
+            String currentUserEmail = SecurityUtils.getUserEmail().orElseThrow(() -> new TechnicalException("No user in context"));
+            UserEntity owner = userRepo.findByEmail(currentUserEmail)
+                                       .orElseThrow(() -> new TechnicalException("Owner does not exist"));
             Set<BuildingPermissionEntity> buildingPermissionEntitySet =
                     owner.getPermissions()
                          .stream()

@@ -26,15 +26,16 @@ public final class SecurityUtils {
         // Utility class. No instantiation allowed.
     }
 
-    public static String getUserEmail() {
+    public static Optional<String> getUserEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
-            throw new TechnicalException("No authentication present in context");
+            log.warn("No authentication present in context");
+            return Optional.empty();
         }
         if (authentication instanceof JwtAuthenticationToken jwt) {
-            return jwt.getName();
+            return Optional.of(jwt.getName());
         }
-        return getUserContextData().orElseThrow(() -> new TechnicalException("Authentication principal not exists")).getUsername();
+        return getUserContextData().map(UserContextData::getUsername);
     }
     
     public static Optional<UserContextData> getUserContextData() {
@@ -45,7 +46,7 @@ public final class SecurityUtils {
         }
         if (authentication instanceof JwtAuthenticationToken) {
             log.warn("Cannot retrieve user context data from JWT authentication token. Principal is not of type UserContextData");
-            throw new TechnicalException("Cannot retrieve user context data from JWT authentication token");
+            return Optional.empty();
         }
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserContextData currentUser) {
