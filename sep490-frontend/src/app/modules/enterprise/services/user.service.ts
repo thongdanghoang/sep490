@@ -14,7 +14,7 @@ export class UserService {
     criteria: SearchCriteriaDto<UserCriteria>
   ): Observable<SearchResultDto<EnterpriseUserDTO>> {
     return this.httpClient.post<SearchResultDto<EnterpriseUserDTO>>(
-      `${AppRoutingConstants.IDP_API_URL}/api/enterprise-user/search`,
+      `${AppRoutingConstants.IDP_API_URL}/enterprise-user/search`,
       criteria
     );
   }
@@ -25,7 +25,7 @@ export class UserService {
 
   public deleteUsers(userIds: string[]): Observable<void> {
     return this.httpClient.post<void>(
-      `${AppRoutingConstants.IDP_API_URL}/api/enterprise-user/delete`,
+      `${AppRoutingConstants.IDP_API_URL}/enterprise-user/delete`,
       userIds
     );
   }

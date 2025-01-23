@@ -11,9 +11,9 @@ import java.util.Map;
  * An exception class that represent the business error for the application.
  */
 @Getter
-public class BusinessException extends Exception {
+public class BusinessException extends RuntimeException {
     protected final String field;
-    protected final String i18nKey; // Follow oblique convention: 'i18n.validation.${i18nKey}'
+    protected final String i18nKey;
     protected final ArrayList<BusinessErrorParam> args;
     protected final int httpStatus;
 
