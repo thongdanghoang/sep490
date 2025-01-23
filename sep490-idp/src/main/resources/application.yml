@@ -18,6 +18,8 @@ spring:
                 - phone
             require-authorization-consent: false
             require-proof-key: true
+  mvc:
+    log-request-details: true
   mail:
     host: ${SMTP_HOST:127.0.0.1}
     port: ${SMTP_PORT:1025}
@@ -50,11 +52,17 @@ spring:
         query:
           fail_on_pagination_over_collection_fetch: true
 
+
 logging:
   level:
     org:
+      springframework:
+        security: DEBUG
+        web: DEBUG
       hibernate:
-        SQL: ${HIBERNATE_SQL_LOG_LEVEL:INFO}
+        SQL: ${HIBERNATE_SQL_LOG_LEVEL:TRACE}
         type:
           descriptor:
-            sql: ${HIBERNATE_SQL_PARAM_LOG_LEVEL:INFO}
+            sql: ${HIBERNATE_SQL_PARAM_LOG_LEVEL:TRACE}
+server:
+  port: 8180
