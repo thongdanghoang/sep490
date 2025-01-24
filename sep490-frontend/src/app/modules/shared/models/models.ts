@@ -1,3 +1,10 @@
+import {UUID} from '../../../../types/uuid';
+
+export interface BaseDTO {
+  id: UUID;
+  version: number;
+}
+
 export interface SearchPageDto {
   pageNumber: number;
   pageSize: number;

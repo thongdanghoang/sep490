@@ -1,7 +1,7 @@
+import {BaseDTO} from './models';
 import {Role} from './role-names.constant';
 
-export interface EnterpriseUserDTO {
-  id: string;
+export interface EnterpriseUserDTO extends BaseDTO {
   email: string;
   name: string;
   role: Role;

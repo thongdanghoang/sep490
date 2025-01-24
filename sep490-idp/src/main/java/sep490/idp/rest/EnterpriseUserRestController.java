@@ -1,6 +1,5 @@
 package sep490.idp.rest;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sep490.common.api.dto.SearchCriteriaDTO;
 import sep490.common.api.dto.SearchResultDTO;
-import sep490.common.api.exceptions.BusinessException;
 import sep490.idp.dto.EnterpriseUserDTO;
 import sep490.idp.dto.NewEnterpriseUserDTO;
 import sep490.idp.dto.UserCriteriaDTO;
@@ -40,15 +38,15 @@ public class EnterpriseUserRestController {
     }
     
     @PostMapping("/create")
-    public ResponseEntity<?> createNewEnterpriseUser(@Valid @RequestBody NewEnterpriseUserDTO dto) throws BusinessException {
+    public ResponseEntity<Void> createNewEnterpriseUser(@RequestBody NewEnterpriseUserDTO dto) {
         userService.createNewUser(dto);
         return ResponseEntity.ok().build();
     }
     
     @PostMapping("/delete")
-    public ResponseEntity deleteUsers(@RequestBody Set<UUID> userIds) throws BusinessException {
-          userService.deleteUsers(userIds);
-         return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteUsers(@RequestBody Set<UUID> userIds) {
+        userService.deleteUsers(userIds);
+        return ResponseEntity.noContent().build();
     }
     
     

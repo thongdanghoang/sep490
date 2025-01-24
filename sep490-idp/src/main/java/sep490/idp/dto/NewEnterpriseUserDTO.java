@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 public record NewEnterpriseUserDTO(
-        @Pattern(regexp = CommonConstant.EMAIL_PATTERN) String email,
+        @NotBlank @Pattern(regexp = CommonConstant.EMAIL_PATTERN) String email,
         @NotBlank String firstName,
         @NotBlank String lastName,
         @NotNull PermissionRole permissionRole,

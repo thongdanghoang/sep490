@@ -2,9 +2,9 @@ package sep490.common.api.utils;
 
 import java.security.SecureRandom;
 
-public class SEPUtils {
+public class CommonUtils {
 
-    private SEPUtils() {
+    private CommonUtils() {
         // Utility class, no instances allowed
     }
 

@@ -6,6 +6,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {Observable, takeUntil} from 'rxjs';
+import {UUID} from '../../../../../types/uuid';
 import {ApplicationService} from '../../../core/services/application.service';
 import {TableTemplateColumn} from '../../../shared/components/table-template/table-template.component';
 import {EnterpriseUserDTO} from '../../../shared/models/business-model';
@@ -123,7 +124,7 @@ export class UsersComponent
   }
 
   private deleteUsers(): void {
-    const userIds = this.selected.map(user => user.id);
+    const userIds: UUID[] = this.selected.map(user => user.id);
 
     this.userService.deleteUsers(userIds).subscribe({
       next: () => {
