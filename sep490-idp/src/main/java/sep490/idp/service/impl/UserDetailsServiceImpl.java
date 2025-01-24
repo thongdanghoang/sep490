@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final BuildingPermissionRepository buildingPermissionRepository;
 
     @Override
-    public UserContextData loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         var user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
             throw new UsernameNotFoundException("User not found: " + email);

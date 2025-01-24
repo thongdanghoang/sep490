@@ -116,20 +116,17 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public void deleteUsers(Set<UUID> userIds) throws BusinessException {
+    public void deleteUsers(Set<UUID> userIds) {
         if (CollectionUtils.isEmpty(userIds)) {
             throw new BusinessException("userIds", "user.delete.no.ids", Collections.emptyList());
         }
-        List<UserEntity> users = userRepo.findByIdInAndDeletedFalse(userIds);
+        var users = userRepo.findByIdInAndDeletedFalse(userIds);
         if (users.size() != userIds.size()) {
-            Set<UUID> foundIds = users.stream().map(UserEntity::getId).collect(Collectors.toSet());
-            userIds.removeAll(foundIds);
+            userIds.removeAll(users.stream().map(UserEntity::getId).collect(Collectors.toSet()));
             throw new BusinessException("userIds", "user.delete.not.found",
                                         List.of(new BusinessErrorParam("ids", userIds)));
         }
-        users.forEach(user -> user.setDeleted(true));
-        userRepo.saveAll(users);
-        
+        userRepo.deleteAll(users);
     }
     
     @Override
