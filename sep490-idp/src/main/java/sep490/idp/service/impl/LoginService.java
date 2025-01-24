@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import sep490.idp.entity.BuildingPermissionEntity;
 import sep490.idp.repository.BuildingPermissionRepository;
-import sep490.idp.security.UserAuthenticationToken;
+import sep490.idp.security.PasskeyAuthenticationToken;
 import sep490.idp.entity.UserEntity;
 import sep490.idp.security.UserContextData;
 import sep490.idp.utils.SecurityUtils;
@@ -25,7 +25,7 @@ public class LoginService {
 
     public void login(UserEntity user) {
         List<BuildingPermissionEntity> permissions = buildingPermissionRepository.findAllByUserId(user.getId());
-        var auth = new UserAuthenticationToken(new UserContextData(user, permissions));
+        var auth = new PasskeyAuthenticationToken(new UserContextData(user, permissions));
         SecurityUtils.storeAuthenticationToContext(auth, request, response);
     }
 }

@@ -13,6 +13,7 @@
       <env name="OIDC_REDIRECT_URI" value="http://localhost:4200" />
       <env name="POSTGRES_PASSWORD" value="postgres" />
       <env name="POSTGRES_USER" value="postgres" />
+      <env name="SPRING_SECURITY_LOG_LEVEL" value="DEBUG" />
     </envs>
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateResources" />
     <module name="sep490-idp.main" />

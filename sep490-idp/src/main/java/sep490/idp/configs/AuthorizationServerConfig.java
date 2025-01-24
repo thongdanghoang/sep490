@@ -5,6 +5,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -13,9 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.encrypt.KeyStoreKeyFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
@@ -24,46 +23,45 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import sep490.idp.filters.BearerTokenAuthenticationConverterFilter;
 import sep490.idp.filters.MonitoringFilter;
-import sep490.idp.service.impl.CustomAuthenticationFailureHandler;
+import sep490.idp.repository.UserRepository;
 import sep490.idp.service.impl.UserInfoService;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
-public class SecurityConfig {
+@RequiredArgsConstructor
+public class AuthorizationServerConfig {
+    
+    private final UserRepository userRepository;
     
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(List.of("http://localhost:4200"));
-        corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        corsConfig.setAllowCredentials(true);
-        corsConfig.setMaxAge(3600L);
+    public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig);
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        config.addAllowedOrigin("http://localhost:4200");
+        config.setAllowCredentials(true);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
     
     @Bean
     @Order(1)
-    public SecurityFilterChain asFilterChain(HttpSecurity http)
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
             throws Exception {
         // reference: https://docs.spring.io/spring-authorization-server/reference/guides/how-to-userinfo.html
         // TODO: solve deprecated
@@ -78,63 +76,24 @@ public class SecurityConfig {
                                                    new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                                                                               )
                                   );
-        return http.build();
+        return http.cors(Customizer.withDefaults()).build();
     }
     
     @Bean
     @Order(2)
-    public SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain restSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/api/**")
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(resourceServer -> resourceServer.jwt(Customizer.withDefaults()))
-                .addFilterAfter(new MonitoringFilter(), SecurityContextHolderFilter.class);
+                .addFilterAfter(new MonitoringFilter(), SecurityContextHolderFilter.class)
+                .addFilterAfter(new BearerTokenAuthenticationConverterFilter(userRepository), BearerTokenAuthenticationFilter.class);
         return http.build();
     }
     
     @Bean
-    @Order(3)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-        
-        http.authorizeHttpRequests(
-                c -> c
-                        .requestMatchers("/css/**", "/img/**", "/js/**", "/favicon.ico").permitAll()
-                        .requestMatchers(antMatcher("/signup"), antMatcher("/login")).permitAll()
-                        .requestMatchers(antMatcher("/passkey/login")).permitAll()
-                        .requestMatchers(antMatcher("/forgot-password"), antMatcher("/enter-otp"), antMatcher("/forgot-reset-password")).permitAll()
-                        .anyRequest().authenticated());
-        
-        http.formLogin(form -> form.loginPage("/login")
-                                   .usernameParameter("email")
-                                   .passwordParameter("password")
-                                   .defaultSuccessUrl("/success", false)
-                                   .failureHandler(authenticationFailureHandler())
-                                   .permitAll());
-        
-        // Passkey Configuration
-        http.webAuthn(passkeys ->
-                              passkeys.rpName("SEP490 IDP").rpId("localhost").allowedOrigins("http://localhost:8180"));
-        
-        return http.build();
-    }
-    
-    
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
-    }
-    
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    
-    @Bean
-    public JWKSource<SecurityContext> jwkSource()
-            throws NoSuchAlgorithmException {
+    public JWKSource<SecurityContext> jwkSource() throws NoSuchAlgorithmException {
         var keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"), "P@ssW0rd".toCharArray());
         var keyPair = keyStoreKeyFactory.getKeyPair("GreenBuildings");
         var publicKey = (RSAPublicKey) keyPair.getPublic();

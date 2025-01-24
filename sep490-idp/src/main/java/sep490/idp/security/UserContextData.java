@@ -13,9 +13,9 @@ import java.util.List;
 
 @Getter
 public class UserContextData implements UserDetails {
-    private final transient UserEntity userEntity;
     private final String username;
     private final String password;
+    private final transient UserEntity userEntity;
     private final List<GrantedAuthority> authorities;
     private transient List<BuildingPermissionEntity> permissions;
     
@@ -27,7 +27,8 @@ public class UserContextData implements UserDetails {
         this.authorities = Collections.emptyList();
     }
 
-    public UserContextData(@NotNull UserEntity userEntity, List<BuildingPermissionEntity> permissions) {
+    public UserContextData(@NotNull UserEntity userEntity,
+                           List<BuildingPermissionEntity> permissions) {
         this(userEntity);
         this.permissions = permissions;
     }
