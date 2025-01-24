@@ -43,7 +43,7 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
             """
                     SELECT u
                     FROM UserEntity u
-                    WHERE u.id IN :ids AND u.isDeleted = false
+                    WHERE u.id IN :ids
                     """
     )
     List<UserEntity> findByIdInAndDeletedFalse(Set<UUID> ids);

@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SoftDelete;
 import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
 import sep490.common.api.utils.CommonConstant;
@@ -33,6 +34,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@SoftDelete
 public class UserEntity extends AbstractAuditableEntity {
     
     public static final String USER_PERMISSIONS_ENTITY_GRAPH = "user-permissions-entity-graph";
@@ -69,9 +71,6 @@ public class UserEntity extends AbstractAuditableEntity {
     
     @Column(name = "last_name", length = 100)
     private String lastName;
-    
-    @Column(name = "is_deleted")
-    private boolean isDeleted;
     
     public static UserEntity register(
             String email,
