@@ -6,13 +6,14 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 import java.io.Serializable;
 
-public class UserAuthenticationToken extends AbstractAuthenticationToken implements Serializable {
+public class PasskeyAuthenticationToken extends AbstractAuthenticationToken implements Serializable {
 
     private final UserContextData userContextData;
 
-    public UserAuthenticationToken(UserContextData userContextData) {
+    public PasskeyAuthenticationToken(UserContextData userContextData) {
         super(null);
         this.userContextData = userContextData;
+        this.setAuthenticated(true);
     }
 
     @Override
@@ -26,20 +27,10 @@ public class UserAuthenticationToken extends AbstractAuthenticationToken impleme
     }
 
     @Override
-    public boolean isAuthenticated() {
-        return true;
-    }
-
-    @Override
-    public void setAuthenticated(boolean authenticated) {
-        throw new RuntimeException("Can't touch this 🎶");
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
 
-        if (!(o instanceof UserAuthenticationToken that)) return false;
+        if (!(o instanceof PasskeyAuthenticationToken that)) return false;
 
         return new EqualsBuilder().appendSuper(super.equals(o)).append(userContextData, that.userContextData).isEquals();
     }

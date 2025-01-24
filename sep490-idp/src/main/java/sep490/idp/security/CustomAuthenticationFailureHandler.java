@@ -1,4 +1,4 @@
-package sep490.idp.service.impl;
+package sep490.idp.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

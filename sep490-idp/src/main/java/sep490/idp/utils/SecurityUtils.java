@@ -6,12 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
-import sep490.common.api.exceptions.TechnicalException;
 import sep490.idp.entity.BuildingPermissionEntity;
-import sep490.idp.security.UserAuthenticationToken;
+import sep490.idp.security.PasskeyAuthenticationToken;
 import sep490.idp.security.UserContextData;
 
 import java.util.List;
@@ -19,22 +17,14 @@ import java.util.Optional;
 
 @Slf4j
 public final class SecurityUtils {
-
+    
     private static final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
-
+    
     private SecurityUtils() {
         // Utility class. No instantiation allowed.
     }
-
+    
     public static Optional<String> getUserEmail() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            log.warn("No authentication present in context");
-            return Optional.empty();
-        }
-        if (authentication instanceof JwtAuthenticationToken jwt) {
-            return Optional.of(jwt.getName());
-        }
         return getUserContextData().map(UserContextData::getUsername);
     }
     
@@ -44,23 +34,19 @@ public final class SecurityUtils {
             log.warn("No authentication present in context");
             return Optional.empty();
         }
-        if (authentication instanceof JwtAuthenticationToken) {
-            log.warn("Cannot retrieve user context data from JWT authentication token. Principal is not of type UserContextData");
-            return Optional.empty();
-        }
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserContextData currentUser) {
             return Optional.of(currentUser);
         }
         return Optional.empty();
     }
-
+    
     public static List<BuildingPermissionEntity> getPermissions() {
         Optional<UserContextData> currentUser = getUserContextData();
         return currentUser.map(UserContextData::getPermissions).orElse(List.of());
     }
-
-    public static void storeAuthenticationToContext(UserAuthenticationToken authenticationToken,
+    
+    public static void storeAuthenticationToContext(PasskeyAuthenticationToken authenticationToken,
                                                     HttpServletRequest request, HttpServletResponse response) {
         if (authenticationToken == null || request == null || response == null) {
             throw new IllegalArgumentException("Parameters cannot be null");
