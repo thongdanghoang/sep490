@@ -16,7 +16,7 @@ import sep490.common.api.exceptions.BusinessException;
 import sep490.common.api.exceptions.TechnicalException;
 import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
-import sep490.common.api.utils.SEPUtils;
+import sep490.common.api.utils.CommonUtils;
 import sep490.idp.dto.NewEnterpriseUserDTO;
 import sep490.idp.dto.SignupDTO;
 import sep490.idp.dto.SignupResult;
@@ -133,20 +133,20 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public UserEntity createNewUser(NewEnterpriseUserDTO dto) throws BusinessException {
+    public void createNewUser(NewEnterpriseUserDTO dto) {
         var user = userMapper.newEnterpriseUserDTOToEntity(dto);
         if (userRepo.existsByEmail(user.getEmail())) {
             throw new BusinessException("email", "email.exist");
         }
         mappingUserPermission(dto, user);
-        String password = SEPUtils.alphaNumericString(12);
+        String password = CommonUtils.alphaNumericString(12);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(UserRole.ENTERPRISE_EMPLOYEE);
         
         SEPMailMessage message = populateNewUserMailMessage(user.getEmail(), password);
         emailUtil.sendMail(message);
         
-        return userRepo.save(user);
+        userRepo.save(user);
     }
     
     private void mappingUserPermission(NewEnterpriseUserDTO dto, UserEntity user) throws BusinessException {

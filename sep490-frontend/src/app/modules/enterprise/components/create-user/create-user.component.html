@@ -1,273 +1,271 @@
-<div>
-    <div class="px-5">
-        <h1 class="font-bold text-lg">
-            {{ "enterprise.Users.create" | translate }}
-        </h1>
-        <p class="font-light">
-            {{ "enterprise.Users.description" | translate }}
-        </p>
-    </div>
-    <form [formGroup]="formGroup" class="sm:mt-5 p-5">
-        <!-- Email -->
-        <div class="grid grid-cols-12 gap-4 items-center my-3">
-            <label for="email" class="font-normal md:col-span-3 col-span-12">{{
-                "enterprise.Users.email" | translate
-            }}</label>
-            <input
-                formControlName="email"
-                class="flex items-center space-x-3 md:col-span-6 col-span-12 ng-dirty"
-                type="text"
-                id="email"
-                pInputText
-                [ngClass]="{
-                    'ng-dirty':
-                        formGroup.get('email')?.errors &&
-                        formGroup.get('email')?.touched,
-                }"
-                [placeholder]="
-                    'enterprise.Users.placeholders.enterEmail' | translate
-                "
-            />
-            <div
-                *ngIf="formGroup.get('email')?.touched"
-                class="col-span-9 sm:col-start-4"
-            >
-                <div
-                    *ngIf="formGroup.get('email')?.hasError('required')"
-                    class="text-red-600"
-                >
-                    {{ "validation.required" | translate }}
-                </div>
-                <div
-                    *ngIf="formGroup.get('email')?.hasError('email')"
-                    class="text-red-600"
-                >
-                    {{ "validation.email" | translate }}
-                </div>
-                <div
-                    *ngIf="formGroup.get('email')?.hasError('email.exist')"
-                    class="text-red-600"
-                >
-                    {{ "validation.business.email.exist" | translate }}
-                </div>
-            </div>
-        </div>
-
-        <!-- First Name -->
-        <div class="grid grid-cols-12 gap-4 items-center my-3">
-            <label
-                for="firstName"
-                class="font-normal md:col-span-3 col-span-12"
-                >{{ "enterprise.Users.firstName" | translate }}</label
-            >
-            <input
-                formControlName="firstName"
-                class="flex items-center space-x-3 md:col-span-6 col-span-12"
-                type="text"
-                id="firstName"
-                [ngClass]="{
-                    'ng-dirty':
-                        formGroup.get('firstName')?.errors &&
-                        formGroup.get('firstName')?.touched,
-                }"
-                pInputText
-                [placeholder]="
-                    'enterprise.Users.placeholders.enterFirstName' | translate
-                "
-            />
-            <div
-                *ngIf="formGroup.get('firstName')?.touched"
-                class="col-span-9 sm:col-start-4"
-            >
-                <div
-                    *ngIf="formGroup.get('firstName')?.hasError('required')"
-                    class="text-red-600"
-                >
-                    {{ "validation.required" | translate }}
-                </div>
-            </div>
-        </div>
-
-        <!-- Last Name -->
-        <div class="grid grid-cols-12 gap-4 items-center my-3">
-            <label
-                for="lastName"
-                class="font-normal md:col-span-3 col-span-12"
-                >{{ "enterprise.Users.lastName" | translate }}</label
-            >
-            <input
-                formControlName="lastName"
-                class="flex items-center space-x-3 md:col-span-6 col-span-12"
-                type="text"
-                id="lastName"
-                [ngClass]="{
-                    'ng-dirty':
-                        formGroup.get('lastName')?.errors &&
-                        formGroup.get('lastName')?.touched,
-                }"
-                pInputText
-                [placeholder]="
-                    'enterprise.Users.placeholders.enterLastName' | translate
-                "
-            />
-            <div
-                *ngIf="formGroup.get('lastName')?.touched"
-                class="col-span-9 sm:col-start-4"
-            >
-                <div
-                    *ngIf="formGroup.get('lastName')?.hasError('required')"
-                    class="text-red-600"
-                >
-                    {{ "validation.required" | translate }}
-                </div>
-            </div>
-        </div>
-
-        <!-- Role -->
-        <h2 class="font-semibold text-xl">
-            {{ "enterprise.Users.role" | translate }}
-        </h2>
-        <div class="grid grid-cols-12 gap-4 items-center my-3">
-            <label
-                for="permissionRole"
-                class="font-normal md:col-span-3 col-span-12"
-                >{{ "enterprise.Users.role" | translate }}</label
-            >
-            <p-select
-                formControlName="permissionRole"
-                id="permissionRole"
-                optionValue="code"
-                [options]="permissionRoleOptions"
-                optionLabel="name"
-                [ngClass]="{
-                    'ng-dirty':
-                        formGroup.get('permissionRole')?.errors &&
-                        formGroup.get('permissionRole')?.touched,
-                }"
-                [placeholder]="
-                    'enterprise.Users.placeholders.selectRole' | translate
-                "
-                class="w-full md:col-span-6 col-span-12"
-            />
-            <div
-                *ngIf="formGroup.get('permissionRole')?.touched"
-                class="col-span-9 sm:col-start-4"
-            >
-                <div
-                    *ngIf="
-                        formGroup.get('permissionRole')?.hasError('required')
-                    "
-                    class="text-red-600"
-                >
-                    {{ "validation.required" | translate }}
-                </div>
-            </div>
-        </div>
-
-        <h2 class="font-semibold text-xl">
-            {{ "enterprise.Users.scope" | translate }}
-        </h2>
-        <div class="grid grid-cols-12 gap-4 items-center my-3">
-            <label for="scope" class="font-normal md:col-span-3 col-span-12">
-                {{ "enterprise.Users.scope" | translate }}
-            </label>
-            <p-select
-                formControlName="scope"
-                id="scope"
-                [options]="scopeOptions"
-                (onChange)="onScopeChange($event)"
-                optionLabel="name"
-                [placeholder]="
-                    'enterprise.Users.placeholders.selectScope' | translate
-                "
-                [ngClass]="{
-                    'ng-dirty':
-                        formGroup.get('scope')?.errors &&
-                        formGroup.get('scope')?.touched,
-                }"
-                optionValue="code"
-                class="w-full md:col-span-3 col-span-12"
-            />
-            <p-multiselect
-                *ngIf="
-                    formGroup.controls['scope'].value ===
-                    UserScope[UserScope.BUILDING]
-                "
-                [options]="buildings"
-                optionLabel="name"
-                optionValue="id"
-                [ngClass]="{
-                    'ng-dirty':
-                        formGroup.get('buildings')?.errors &&
-                        formGroup.get('buildings')?.touched,
-                }"
-                [placeholder]="
-                    'enterprise.Users.placeholders.selectBuildings' | translate
-                "
-                lazy="true"
-                formControlName="buildings"
-                class="w-full md:col-span-3 col-span-12"
-            ></p-multiselect>
-        </div>
-        <div class="grid grid-cols-12 gap-4 items-center my-3">
-            <div
-                *ngIf="formGroup.get('scope')?.touched"
-                class="sm:col-span-3 col-span-12 sm:col-start-4"
-            >
-                <div
-                    *ngIf="formGroup.get('scope')?.hasError('required')"
-                    class="text-red-600"
-                >
-                    {{ "validation.required" | translate }}
-                </div>
-            </div>
-            <div
-                *ngIf="formGroup.get('buildings')?.touched"
-                class="sm:col-span-3 col-span-12 col-start-1 sm:col-start-7"
-            >
-                <div
-                    *ngIf="formGroup.get('buildings')?.hasError('required')"
-                    class="text-red-600"
-                >
-                    {{ "validation.required" | translate }}
-                </div>
-                <div
-                    *ngIf="
-                        formGroup
-                            .get('buildings')
-                            ?.hasError('buildings.invalid')
-                    "
-                    class="text-red-600"
-                >
-                    {{ "validation.business.buildings.invalid" | translate }}
-                </div>
-            </div>
-        </div>
-        <div class="mt-10"></div>
-
-        <!-- Buttons -->
-        <div class="grid grid-cols-3 gap-4 sm:grid-cols-12">
-            <!-- Create Button -->
-            <div class="sm:col-start-4 col-start-2">
-                <p-button
-                    [label]="'common.create' | translate"
-                    styleClass="w-full"
-                    severity="primary"
-                    [disabled]="disableSubmitButton"
-                    (onClick)="submit()"
-                ></p-button>
-            </div>
-
-            <!-- Revert Button -->
-            <div class="">
-                <p-button
-                    [label]="'common.revert' | translate"
-                    severity="secondary"
-                    styleClass="w-full"
-                    class="text-primary"
-                    (onClick)="onRevert()"
-                ></p-button>
-            </div>
-        </div>
-    </form>
+<div class="px-5">
+    <h1 class="font-bold text-lg">
+        {{ "enterprise.Users.create" | translate }}
+    </h1>
+    <p class="font-light">
+        {{ "enterprise.Users.description" | translate }}
+    </p>
 </div>
+<form [formGroup]="formGroup" class="sm:mt-5 p-5">
+    <!-- Email -->
+    <div class="grid grid-cols-12 gap-4 items-center my-3">
+        <label for="email" class="font-normal md:col-span-3 col-span-12">{{
+            "enterprise.Users.email" | translate
+        }}</label>
+        <input
+            formControlName="email"
+            class="flex items-center space-x-3 md:col-span-6 col-span-12 ng-dirty"
+            type="text"
+            id="email"
+            pInputText
+            [ngClass]="{
+                'ng-dirty':
+                    formGroup.get('email')?.errors &&
+                    formGroup.get('email')?.touched,
+            }"
+            [placeholder]="
+                'enterprise.Users.placeholders.enterEmail' | translate
+            "
+        />
+        <div
+            *ngIf="formGroup.get('email')?.touched"
+            class="col-span-9 sm:col-start-4"
+        >
+            <div
+                *ngIf="formGroup.get('email')?.hasError('required')"
+                class="text-red-600"
+            >
+                {{ "validation.required" | translate }}
+            </div>
+            <div
+                *ngIf="formGroup.get('email')?.hasError('email')"
+                class="text-red-600"
+            >
+                {{ "validation.email" | translate }}
+            </div>
+            <div
+                *ngIf="formGroup.get('email')?.hasError('email.exist')"
+                class="text-red-600"
+            >
+                {{ "validation.business.email.exist" | translate }}
+            </div>
+        </div>
+    </div>
+
+    <!-- First Name -->
+    <div class="grid grid-cols-12 gap-4 items-center my-3">
+        <label for="firstName" class="font-normal md:col-span-3 col-span-12">{{
+            "enterprise.Users.firstName" | translate
+        }}</label>
+        <input
+            formControlName="firstName"
+            class="flex items-center space-x-3 md:col-span-6 col-span-12"
+            type="text"
+            id="firstName"
+            [ngClass]="{
+                'ng-dirty':
+                    formGroup.get('firstName')?.errors &&
+                    formGroup.get('firstName')?.touched,
+            }"
+            pInputText
+            [placeholder]="
+                'enterprise.Users.placeholders.enterFirstName' | translate
+            "
+        />
+        <div
+            *ngIf="formGroup.get('firstName')?.touched"
+            class="col-span-9 sm:col-start-4"
+        >
+            <div
+                *ngIf="formGroup.get('firstName')?.hasError('required')"
+                class="text-red-600"
+            >
+                {{ "validation.required" | translate }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Last Name -->
+    <div class="grid grid-cols-12 gap-4 items-center my-3">
+        <label for="lastName" class="font-normal md:col-span-3 col-span-12">{{
+            "enterprise.Users.lastName" | translate
+        }}</label>
+        <input
+            formControlName="lastName"
+            class="flex items-center space-x-3 md:col-span-6 col-span-12"
+            type="text"
+            id="lastName"
+            [ngClass]="{
+                'ng-dirty':
+                    formGroup.get('lastName')?.errors &&
+                    formGroup.get('lastName')?.touched,
+            }"
+            pInputText
+            [placeholder]="
+                'enterprise.Users.placeholders.enterLastName' | translate
+            "
+        />
+        <div
+            *ngIf="formGroup.get('lastName')?.touched"
+            class="col-span-9 sm:col-start-4"
+        >
+            <div
+                *ngIf="formGroup.get('lastName')?.hasError('required')"
+                class="text-red-600"
+            >
+                {{ "validation.required" | translate }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Role -->
+    <h2 class="font-semibold text-xl">
+        {{ "enterprise.Users.role" | translate }}
+    </h2>
+    <div class="grid grid-cols-12 gap-4 items-center my-3">
+        <label
+            for="permissionRole"
+            class="font-normal md:col-span-3 col-span-12"
+            >{{ "enterprise.Users.role" | translate }}</label
+        >
+        <p-select
+            formControlName="permissionRole"
+            id="permissionRole"
+            optionValue="value"
+            [options]="permissionRoleOptions"
+            optionLabel="label"
+            [ngClass]="{
+                'ng-dirty':
+                    formGroup.get('permissionRole')?.errors &&
+                    formGroup.get('permissionRole')?.touched,
+            }"
+            [placeholder]="
+                'enterprise.Users.placeholders.selectRole' | translate
+            "
+            class="w-full md:col-span-6 col-span-12"
+        >
+            <ng-template #selectedItem let-selectedOption>
+                <div>{{ selectedOption.label | translate }}</div></ng-template
+            >
+            <ng-template #item let-item
+                ><div>{{ item.label | translate }}</div></ng-template
+            >
+        </p-select>
+        <div
+            *ngIf="formGroup.get('permissionRole')?.touched"
+            class="col-span-9 sm:col-start-4"
+        >
+            <div
+                *ngIf="formGroup.get('permissionRole')?.hasError('required')"
+                class="text-red-600"
+            >
+                {{ "validation.required" | translate }}
+            </div>
+        </div>
+    </div>
+
+    <h2 class="font-semibold text-xl">
+        {{ "enterprise.Users.scope" | translate }}
+    </h2>
+    <div class="grid grid-cols-12 gap-4 items-center my-3">
+        <label for="scope" class="font-normal md:col-span-3 col-span-12">
+            {{ "enterprise.Users.scope" | translate }}
+        </label>
+        <p-select
+            formControlName="scope"
+            id="scope"
+            [options]="scopeOptions"
+            optionLabel="label"
+            [placeholder]="
+                'enterprise.Users.placeholders.selectScope' | translate
+            "
+            [ngClass]="{
+                'ng-dirty':
+                    formGroup.get('scope')?.errors &&
+                    formGroup.get('scope')?.touched,
+            }"
+            optionValue="value"
+            class="w-full md:col-span-3 col-span-12"
+        >
+            <ng-template #selectedItem let-selectedOption>
+                <div>{{ selectedOption.label | translate }}</div></ng-template
+            >
+            <ng-template #item let-item
+                ><div>{{ item.label | translate }}</div></ng-template
+            >
+        </p-select>
+        <p-multiselect
+            *ngIf="
+                enterpriseUserStructure.scope.value ===
+                UserScope[UserScope.BUILDING]
+            "
+            [options]="mockBuildings"
+            optionLabel="name"
+            optionValue="id"
+            [ngClass]="{
+                'ng-dirty':
+                    formGroup.get('buildings')?.errors &&
+                    formGroup.get('buildings')?.touched,
+            }"
+            [placeholder]="
+                'enterprise.Users.placeholders.selectBuildings' | translate
+            "
+            lazy="true"
+            formControlName="buildings"
+            class="w-full md:col-span-3 col-span-12"
+        ></p-multiselect>
+    </div>
+    <div class="grid grid-cols-12 gap-4 items-center my-3">
+        <div
+            *ngIf="formGroup.get('scope')?.touched"
+            class="sm:col-span-3 col-span-12 sm:col-start-4"
+        >
+            <div
+                *ngIf="formGroup.get('scope')?.hasError('required')"
+                class="text-red-600"
+            >
+                {{ "validation.required" | translate }}
+            </div>
+        </div>
+        <div
+            *ngIf="formGroup.get('buildings')?.touched"
+            class="sm:col-span-3 col-span-12 col-start-1 sm:col-start-7"
+        >
+            <div
+                *ngIf="formGroup.get('buildings')?.hasError('required')"
+                class="text-red-600"
+            >
+                {{ "validation.required" | translate }}
+            </div>
+            <div
+                *ngIf="
+                    formGroup.get('buildings')?.hasError('buildings.invalid')
+                "
+                class="text-red-600"
+            >
+                {{ "validation.business.buildings.invalid" | translate }}
+            </div>
+        </div>
+    </div>
+    <div class="mt-10"></div>
+
+    <!-- Buttons -->
+    <div class="flex justify-end md:justify-start gap-4 *:min-w-24">
+        <!-- Create Button -->
+        <p-button
+            [label]="'common.create' | translate"
+            styleClass="w-full"
+            severity="primary"
+            [disabled]="disableSubmitButton"
+            (onClick)="submit()"
+        ></p-button>
+
+        <!-- Revert Button -->
+        <p-button
+            [label]="'common.revert' | translate"
+            styleClass="w-full"
+            severity="secondary"
+            (onClick)="onRevert()"
+        ></p-button>
+    </div>
+</form>

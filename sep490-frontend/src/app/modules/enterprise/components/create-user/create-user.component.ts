@@ -9,6 +9,8 @@ import {
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {MessageService} from 'primeng/api';
+import {takeUntil} from 'rxjs';
+import {v4 as uuidv4} from 'uuid';
 import {AppRoutingConstants} from '../../../../app-routing.constant';
 import {AbstractFormComponent} from '../../../shared/components/form/abstract-form-component';
 import {
@@ -17,9 +19,7 @@ import {
   PermissionRole,
   UserScope
 } from '../../../shared/models/business-model';
-import {EnumOptions} from '../../../shared/models/models';
-import {ModalProvider} from '../../../shared/services/modal-provider';
-import {v4 as uuidv4} from 'uuid';
+import {SelectableItem} from '../../../shared/models/models';
 import {UserService} from '../../services/user.service';
 
 @Component({
@@ -29,46 +29,46 @@ import {UserService} from '../../services/user.service';
 })
 export class CreateUserComponent extends AbstractFormComponent<NewEnterpriseUserDTO> {
   protected readonly UserScope = UserScope;
-  protected permissionRoleOptions: EnumOptions[] = [
+  protected permissionRoleOptions: SelectableItem<string>[] = [
     {
-      name: '',
-      code: PermissionRole[PermissionRole.MANAGER],
-      i18nCode: 'enum.permissionRole.MANAGER'
+      disabled: false,
+      value: PermissionRole[PermissionRole.MANAGER],
+      label: 'enum.permissionRole.MANAGER'
     },
     {
-      name: '',
-      code: PermissionRole[PermissionRole.STAFF],
-      i18nCode: 'enum.permissionRole.STAFF'
+      disabled: false,
+      value: PermissionRole[PermissionRole.STAFF],
+      label: 'enum.permissionRole.STAFF'
     },
     {
-      name: '',
-      code: PermissionRole[PermissionRole.AUDITOR],
-      i18nCode: 'enum.permissionRole.AUDITOR'
+      disabled: false,
+      value: PermissionRole[PermissionRole.AUDITOR],
+      label: 'enum.permissionRole.AUDITOR'
     }
   ];
-  protected readonly enterpriseUserForm = {
+  protected readonly enterpriseUserStructure = {
     email: new FormControl<string>('', [Validators.required, Validators.email]),
     firstName: new FormControl<string>('', [Validators.required]),
     lastName: new FormControl<string>('', [Validators.required]),
     permissionRole: new FormControl<string>('', [Validators.required]),
     scope: new FormControl<string>('', [Validators.required]),
-    buildings: new FormControl<string[]>([], [Validators.required])
+    buildings: new FormControl<string[]>([])
   };
 
-  protected scopeOptions: EnumOptions[] = [
+  protected scopeOptions: SelectableItem<string>[] = [
     {
-      name: '',
-      code: UserScope[UserScope.ENTERPRISE],
-      i18nCode: 'enum.scope.ENTERPRISE'
+      disabled: false,
+      value: UserScope[UserScope.ENTERPRISE],
+      label: 'enum.scope.ENTERPRISE'
     },
     {
-      name: '',
-      code: UserScope[UserScope.BUILDING],
-      i18nCode: 'enum.scope.BUILDING'
+      disabled: false,
+      value: UserScope[UserScope.BUILDING],
+      label: 'enum.scope.BUILDING'
     }
   ];
 
-  protected buildings: BuildingDTO[] = [
+  protected mockBuildings: BuildingDTO[] = [
     {id: uuidv4(), name: 'Building 1'},
     {id: uuidv4(), name: 'Building 2'},
     {id: uuidv4(), name: 'Building 3'}
@@ -78,70 +78,38 @@ export class CreateUserComponent extends AbstractFormComponent<NewEnterpriseUser
     httpClient: HttpClient,
     formBuilder: FormBuilder,
     notificationService: MessageService,
-    modalProvider: ModalProvider,
     translate: TranslateService,
     protected userService: UserService,
     private readonly router: Router
   ) {
-    super(
-      httpClient,
-      formBuilder,
-      notificationService,
-      modalProvider,
-      translate
-    );
+    super(httpClient, formBuilder, notificationService, translate);
   }
 
   onRevert(): void {
     this.formGroup.reset();
   }
 
-  onScopeChange(event: any): void {
-    if (event.value === UserScope[UserScope.BUILDING]) {
-      this.enterpriseUserForm.buildings.addValidators(Validators.required);
-      this.enterpriseUserForm.buildings.markAsUntouched();
-    } else {
-      this.enterpriseUserForm.buildings.removeValidators(Validators.required);
-      this.enterpriseUserForm.buildings.markAsUntouched();
-    }
-  }
-
-  onLangChange(): void {
-    this.updateOptionsLabel();
-    this.enterpriseUserForm.permissionRole.setValue('');
-    this.enterpriseUserForm.permissionRole.setErrors(null);
-    this.enterpriseUserForm.scope.setValue('');
-    this.enterpriseUserForm.scope.setErrors(null);
-    this.enterpriseUserForm.buildings.setValue([]);
-  }
-
-  updateOptionsLabel(): void {
-    this.permissionRoleOptions.forEach(
-      x => (x.name = this.translate.instant(x.i18nCode))
-    );
-    this.scopeOptions.forEach(
-      x => (x.name = this.translate.instant(x.i18nCode))
-    );
-  }
-
-  protected initializeData(): void {
-    this.updateOptionsLabel();
-    this.registerSubscription(
-      this.translate.onLangChange.subscribe(() => this.onLangChange())
-    );
-  }
+  protected initializeData(): void {}
 
   protected initializeFormControls(): {[p: string]: AbstractControl} {
-    return this.enterpriseUserForm;
+    this.enterpriseUserStructure.scope.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value: any): void => {
+        if (value === UserScope.BUILDING) {
+          this.enterpriseUserStructure.buildings.addValidators(
+            Validators.required
+          );
+        } else {
+          this.enterpriseUserStructure.buildings.removeValidators(
+            Validators.required
+          );
+          this.enterpriseUserStructure.buildings.reset();
+        }
+      });
+    return this.enterpriseUserStructure;
   }
 
-  protected override prepareDataBeforeSubmit(): void {
-    if (
-      this.enterpriseUserForm.scope.value === UserScope[UserScope.ENTERPRISE]
-    ) {
-      this.enterpriseUserForm.buildings.setValue([]);
-    }
-  }
+  protected override prepareDataBeforeSubmit(): void {}
 
   protected submitFormDataUrl(): string {
     return this.userService.createUserURL();
@@ -154,11 +122,5 @@ export class CreateUserComponent extends AbstractFormComponent<NewEnterpriseUser
       AppRoutingConstants.ENTERPRISE_PATH,
       AppRoutingConstants.USERS_PATH
     ]);
-  }
-
-  protected override onSubmitFormRequestError(error: any): void {
-    if (error.error.errorType === 'BUSINESS') {
-      this.enableSubmitBtn();
-    }
   }
 }

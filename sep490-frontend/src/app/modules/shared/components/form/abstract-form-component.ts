@@ -1,16 +1,15 @@
+import {HttpClient} from '@angular/common/http';
 import {Directive, OnInit} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
-import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {
   AbstractControl,
   FormArray,
   FormBuilder,
   FormGroup
 } from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
+import {TranslateService} from '@ngx-translate/core';
 import {MessageService} from 'primeng/api';
-import {ModalProvider} from '../../services/modal-provider';
-import {of, take} from 'rxjs';
+import {of, take, takeUntil} from 'rxjs';
+import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {BusinessErrorParam} from '../../models/models';
 
 @Directive()
@@ -45,16 +44,15 @@ export abstract class AbstractFormComponent<T>
     protected httpClient: HttpClient,
     protected formBuilder: FormBuilder,
     protected notificationService: MessageService,
-    protected modalProvider: ModalProvider,
     protected translate: TranslateService
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.initializeData();
     this.formControls = this.initializeFormControls();
     this.formGroup = this.formBuilder.group(this.formControls);
+    this.initializeData();
     this.updateFormControlsState(this.formGroup, [
       (ctr: AbstractControl): void =>
         this.registerSubscription(
@@ -139,20 +137,19 @@ export abstract class AbstractFormComponent<T>
         .request(this.submitFormMethod(), this.submitFormDataUrl(), {
           body: data || this.getSubmitFormData()
         })
+        .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: r => {
             this.showSaveSuccessNotification(r);
-            this.enableSubmitBtn();
             this.onSubmitFormDataSuccess(r);
+            this.enableSubmitBtn();
           },
           error: error => {
             this.displayFormResultErrors(error.error);
             this.onSubmitFormRequestError(error);
+            this.enableSubmitBtn();
           }
         });
-    } else {
-      this.enableSubmitBtn();
-      this.onSubmitFormDataSuccess(this.getSubmitFormData());
     }
   }
 

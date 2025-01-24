@@ -7,7 +7,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sep490.common.api.utils.SEPUtils;
+import sep490.common.api.utils.CommonUtils;
 
 import java.time.LocalDateTime;
 
@@ -31,7 +31,7 @@ public class UserOTP extends AbstractBaseEntity {
 
     public void updateOtp(UserEntity user) {
         this.user = user;
-        this.otpCode = SEPUtils.generateRandomOTP(6);
+        this.otpCode = CommonUtils.generateRandomOTP(6);
         this.expiredTime = LocalDateTime.now().plusMinutes(10);
     }
 
