@@ -26,7 +26,7 @@ public class UserContextData implements UserDetails {
         // TODO: [Thong DANG HOANG] implement authorities
         this.authorities = Collections.emptyList();
     }
-
+    
     public UserContextData(@NotNull UserEntity userEntity,
                            List<BuildingPermissionEntity> permissions) {
         this(userEntity);

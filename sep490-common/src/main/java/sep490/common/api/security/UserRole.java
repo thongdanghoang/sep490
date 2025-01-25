@@ -17,9 +17,9 @@ public enum UserRole implements BaseEnum {
 
     
     public static final class RoleNameConstant {
-        public static final String ENTERPRISE_OWNER = "sep490.EnterpriseOwner";
-        public static final String ENTERPRISE_EMPLOYEE = "sep490.EnterpriseEmployee";
-        public static final String SYSTEM_ADMIN = "sep490.SystemAdmin";
+        public static final String ENTERPRISE_OWNER = "ENTERPRISE_OWNER";
+        public static final String ENTERPRISE_EMPLOYEE = "ENTERPRISE_EMPLOYEE";
+        public static final String SYSTEM_ADMIN = "SYSTEM_ADMIN";
 
         private RoleNameConstant() {
         }

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import sep490.common.api.exceptions.BusinessErrorResponse;
@@ -17,9 +18,7 @@ import sep490.common.api.utils.MDCContext;
 public class StatelessExceptionHandler {
     
     private static TechnicalErrorResponse technicalError(Throwable exception, String errorMsg) {
-        var correlationId = MDC.get(MDCContext.CORRELATION_ID);
-        log.error("Unhandled exception occurred. Correlation ID: {}", correlationId, exception);
-        return new TechnicalErrorResponse(correlationId, errorMsg);
+        return new TechnicalErrorResponse(MDC.get(MDCContext.CORRELATION_ID), errorMsg);
     }
     
     private static BusinessErrorResponse businessError(BusinessException exception) {
@@ -33,6 +32,7 @@ public class StatelessExceptionHandler {
     
     @ExceptionHandler(Exception.class)
     public ResponseEntity<TechnicalErrorResponse> handleGenericException(Exception ex) {
+        log.error("Unhandled exception occurred. Correlation ID: {}", MDC.get(MDCContext.CORRELATION_ID), ex);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(technicalError(ex, ex.getMessage()));
@@ -50,5 +50,12 @@ public class StatelessExceptionHandler {
         return ResponseEntity
                 .status(ex.getHttpStatus())
                 .body(businessError(ex));
+    }
+    
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<TechnicalErrorResponse> handleAccessDeniedException(AuthorizationDeniedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(technicalError(ex, ex.getMessage()));
     }
 }
