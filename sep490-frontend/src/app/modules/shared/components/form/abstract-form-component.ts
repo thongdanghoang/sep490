@@ -53,13 +53,13 @@ export abstract class AbstractFormComponent<T>
     this.formControls = this.initializeFormControls();
     this.formGroup = this.formBuilder.group(this.formControls);
     this.initializeData();
+  }
+
+  reset(): void {
     this.updateFormControlsState(this.formGroup, [
-      (ctr: AbstractControl): void =>
-        this.registerSubscription(
-          ctr.valueChanges
-            .pipe(take(1))
-            .subscribe((): void => ctr.markAsTouched())
-        )
+      (ctr: AbstractControl): void => ctr.markAsUntouched(),
+      (ctr: AbstractControl): void => ctr.markAsPristine(),
+      (ctr: AbstractControl): void => ctr.updateValueAndValidity()
     ]);
   }
 

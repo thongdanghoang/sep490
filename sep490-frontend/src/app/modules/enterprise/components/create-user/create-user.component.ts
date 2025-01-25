@@ -4,12 +4,14 @@ import {
   AbstractControl,
   FormBuilder,
   FormControl,
+  ValidationErrors,
+  ValidatorFn,
   Validators
 } from '@angular/forms';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {MessageService} from 'primeng/api';
-import {takeUntil} from 'rxjs';
+import {filter, takeUntil} from 'rxjs';
 import {v4 as uuidv4} from 'uuid';
 import {AppRoutingConstants} from '../../../../app-routing.constant';
 import {AbstractFormComponent} from '../../../shared/components/form/abstract-form-component';
@@ -52,7 +54,10 @@ export class CreateUserComponent extends AbstractFormComponent<NewEnterpriseUser
     lastName: new FormControl<string>('', [Validators.required]),
     permissionRole: new FormControl<string>('', [Validators.required]),
     scope: new FormControl<string>('', [Validators.required]),
-    buildings: new FormControl<string[]>([])
+    buildings: new FormControl<string[]>(
+      [],
+      [this.buildingValidator().bind(this)]
+    )
   };
 
   protected scopeOptions: SelectableItem<string>[] = [
@@ -85,25 +90,23 @@ export class CreateUserComponent extends AbstractFormComponent<NewEnterpriseUser
     super(httpClient, formBuilder, notificationService, translate);
   }
 
-  onRevert(): void {
-    this.formGroup.reset();
-  }
-
   protected initializeData(): void {}
 
   protected initializeFormControls(): {[p: string]: AbstractControl} {
     this.enterpriseUserStructure.scope.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((value: any): void => {
-        if (value === UserScope.BUILDING) {
-          this.enterpriseUserStructure.buildings.addValidators(
-            Validators.required
-          );
-        } else {
-          this.enterpriseUserStructure.buildings.removeValidators(
-            Validators.required
-          );
-          this.enterpriseUserStructure.buildings.reset();
+      .pipe(
+        filter(
+          (): boolean =>
+            !(
+              this.enterpriseUserStructure.scope.untouched &&
+              this.enterpriseUserStructure.scope.pristine
+            )
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(value => {
+        if (value === UserScope[UserScope.ENTERPRISE]) {
+          this.enterpriseUserStructure.buildings.setValue([]);
         }
       });
     return this.enterpriseUserStructure;
@@ -122,5 +125,22 @@ export class CreateUserComponent extends AbstractFormComponent<NewEnterpriseUser
       AppRoutingConstants.ENTERPRISE_PATH,
       AppRoutingConstants.USERS_PATH
     ]);
+  }
+
+  private buildingValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!this.enterpriseUserStructure) {
+        return null;
+      }
+      if (
+        this.enterpriseUserStructure.scope.value ===
+        UserScope[UserScope.BUILDING]
+      ) {
+        if (control.value?.length === 0) {
+          return {required: true};
+        }
+      }
+      return null;
+    };
   }
 }
