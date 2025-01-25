@@ -29,8 +29,11 @@ import {ToastModule} from 'primeng/toast';
 import {ToggleSwitch} from 'primeng/toggleswitch';
 import {ConfirmDialogComponent} from './components/dialog/confirm-dialog/confirm-dialog.component';
 import {TableTemplateComponent} from './components/table-template/table-template.component';
+import {ErrorMessagesDirective} from './directives/error-messages.directive';
+import {FormFieldErrorDirective} from './directives/form-field-error.directive';
 import {TranslateParamsPipe} from './pipes/translate-params.pipe';
 import {ModalProvider} from './services/modal-provider';
+import {FormFieldErrorComponent} from './components/form/form-field-error/form-field-error.component';
 
 const primeNgModules = [
   AutoFocusModule,
@@ -72,7 +75,10 @@ const commons = [
   declarations: [
     ConfirmDialogComponent,
     TranslateParamsPipe,
-    TableTemplateComponent
+    TableTemplateComponent,
+    ErrorMessagesDirective,
+    FormFieldErrorDirective,
+    FormFieldErrorComponent
   ],
   imports: [...commons, ...primeNgModules],
   exports: [
@@ -80,7 +86,10 @@ const commons = [
     ...primeNgModules,
     ConfirmDialogComponent,
     TranslateParamsPipe,
-    TableTemplateComponent
+    TableTemplateComponent,
+    ErrorMessagesDirective,
+    FormFieldErrorDirective,
+    FormFieldErrorComponent
   ],
   providers: [DatePipe, ModalProvider]
 })

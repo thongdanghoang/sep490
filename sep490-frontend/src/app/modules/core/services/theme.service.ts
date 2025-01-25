@@ -1,10 +1,25 @@
 import {Injectable} from '@angular/core';
 import {definePreset} from '@primeng/themes';
-import Material from '@primeng/themes/material';
+import Aura from '@primeng/themes/aura';
 import {PrimeNG, ThemeType} from 'primeng/config';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 
-const MyPreset = definePreset(Material, {
+const MyPreset = definePreset(Aura, {
+  primitive: {
+    red: {
+      50: '#fef8f8',
+      100: '#fbdfdf',
+      200: '#f8c5c6',
+      300: '#f5acad',
+      400: '#f29293',
+      500: '#ef797a',
+      600: '#cb6768',
+      700: '#a75555',
+      800: '#834343',
+      900: '#603031',
+      950: '#3c1e1f'
+    }
+  },
   semantic: {
     primary: {
       50: '#f4fcfd',
@@ -18,40 +33,6 @@ const MyPreset = definePreset(Material, {
       800: '#107076',
       900: '#0c5156',
       950: '#073336'
-    },
-    colorScheme: {
-      light: {
-        surface: {
-          0: '#ffffff',
-          50: '{neutral.50}',
-          100: '{neutral.100}',
-          200: '{neutral.200}',
-          300: '{neutral.300}',
-          400: '{neutral.400}',
-          500: '{neutral.500}',
-          600: '{neutral.600}',
-          700: '{neutral.700}',
-          800: '{neutral.800}',
-          900: '{neutral.900}',
-          950: '{neutral.950}'
-        }
-      },
-      dark: {
-        surface: {
-          0: '#ffffff',
-          50: '{neutral.50}',
-          100: '{neutral.100}',
-          200: '{neutral.200}',
-          300: '{neutral.300}',
-          400: '{neutral.400}',
-          500: '{neutral.500}',
-          600: '{neutral.600}',
-          700: '{neutral.700}',
-          800: '{neutral.800}',
-          900: '{neutral.900}',
-          950: '{neutral.950}'
-        }
-      }
     }
   }
 });
