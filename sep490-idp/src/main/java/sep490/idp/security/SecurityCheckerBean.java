@@ -8,8 +8,6 @@ import java.util.UUID;
 
 @Component
 public class SecurityCheckerBean {
-
-
     public boolean checkIfUserHasPermission(UUID buildingId) {
         if (buildingId == null) {
             return false;

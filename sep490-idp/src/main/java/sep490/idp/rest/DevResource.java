@@ -1,8 +1,8 @@
 package sep490.idp.rest;
 
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sep490.common.api.exceptions.BusinessException;
 import sep490.common.api.exceptions.TechnicalException;
+import sep490.common.api.security.UserRole;
 import sep490.idp.dto.EnterpriseUserDTO;
 
 import java.security.Principal;
@@ -42,8 +43,11 @@ public class DevResource {
         throw new BusinessException("field", "i18nKey", Collections.emptyList());
     }
     
-    @GetMapping("/secure")
-    @PreAuthorize("@securityCheckerBean.checkIfUserHasPermission(buildingId)")
+    @GetMapping("/secure/{buildingId}")
+    @RolesAllowed({
+            UserRole.RoleNameConstant.ENTERPRISE_OWNER,
+            UserRole.RoleNameConstant.ENTERPRISE_EMPLOYEE
+    })
     public ResponseEntity<String> secure(@PathVariable UUID buildingId) {
         return ResponseEntity.ok(buildingId.toString());
     }
