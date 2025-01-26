@@ -118,7 +118,7 @@ export class TableTemplateComponent<
   onPageChange(value: PaginatorState): void {
     if (value.first !== undefined && value.rows !== undefined) {
       this.searchCriteria.page = {
-        pageNumber: value.first,
+        pageNumber: value.page!,
         pageSize: value.rows
       };
       this.search();
