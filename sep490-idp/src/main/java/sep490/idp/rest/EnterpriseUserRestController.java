@@ -1,5 +1,6 @@
 package sep490.idp.rest;
 
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sep490.common.api.dto.SearchCriteriaDTO;
 import sep490.common.api.dto.SearchResultDTO;
+import sep490.common.api.security.UserRole;
 import sep490.idp.dto.EnterpriseUserDTO;
 import sep490.idp.dto.NewEnterpriseUserDTO;
 import sep490.idp.dto.UserCriteriaDTO;
@@ -21,6 +23,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/enterprise-user")
 @RequiredArgsConstructor
+@RolesAllowed({UserRole.RoleNameConstant.ENTERPRISE_OWNER})
 public class EnterpriseUserRestController {
     
     private final UserService userService;

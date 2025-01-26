@@ -5,14 +5,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import sep490.idp.entity.BuildingPermissionEntity;
+import sep490.idp.entity.UserEntity;
 import sep490.idp.repository.BuildingPermissionRepository;
 import sep490.idp.security.PasskeyAuthenticationToken;
-import sep490.idp.entity.UserEntity;
 import sep490.idp.security.UserContextData;
 import sep490.idp.utils.SecurityUtils;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -24,8 +21,8 @@ public class LoginService {
     private final BuildingPermissionRepository buildingPermissionRepository;
 
     public void login(UserEntity user) {
-        List<BuildingPermissionEntity> permissions = buildingPermissionRepository.findAllByUserId(user.getId());
-        var auth = new PasskeyAuthenticationToken(new UserContextData(user, permissions));
+        var permissions = buildingPermissionRepository.findAllByUserId(user.getId());
+        var auth = new PasskeyAuthenticationToken(new UserContextData(user, SecurityUtils.getAuthoritiesFromUserRole(user), permissions));
         SecurityUtils.storeAuthenticationToContext(auth, request, response);
     }
 }

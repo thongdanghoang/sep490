@@ -21,6 +21,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/dev")
 @RequiredArgsConstructor
+@RolesAllowed({
+        UserRole.RoleNameConstant.SYSTEM_ADMIN
+})
 public class DevResource {
     
     @GetMapping("/test")
@@ -44,10 +47,6 @@ public class DevResource {
     }
     
     @GetMapping("/secure/{buildingId}")
-    @RolesAllowed({
-            UserRole.RoleNameConstant.ENTERPRISE_OWNER,
-            UserRole.RoleNameConstant.ENTERPRISE_EMPLOYEE
-    })
     public ResponseEntity<String> secure(@PathVariable UUID buildingId) {
         return ResponseEntity.ok(buildingId.toString());
     }

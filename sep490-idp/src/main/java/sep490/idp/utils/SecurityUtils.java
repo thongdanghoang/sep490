@@ -4,11 +4,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import sep490.idp.entity.BuildingPermissionEntity;
+import sep490.idp.entity.UserEntity;
 import sep490.idp.security.PasskeyAuthenticationToken;
 import sep490.idp.security.UserContextData;
 
@@ -60,5 +63,9 @@ public final class SecurityUtils {
             SecurityContextHolder.clearContext();
             throw new SecurityException("Failed to store authentication context", e);
         }
+    }
+    
+    public static List<GrantedAuthority> getAuthoritiesFromUserRole(UserEntity user) {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
     }
 }
