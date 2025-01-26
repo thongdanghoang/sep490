@@ -1,7 +1,6 @@
 package sep490.idp.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +25,12 @@ public class PasskeyController {
 
     @PostMapping("/passkey/login")
     public String login(@RequestBody CredentialsVerification verification, SessionStatus sessionStatus) {
-        var user = authenticatorService.authenticate(verification);
-        loginService.login(user);
+        try {
+            var user = authenticatorService.authenticate(verification);
+            loginService.login(user);
+        } catch (EntityNotFoundException ex) {
+            return "redirect:/login?message=login.error.noPasskey";
+        }
 
         sessionStatus.setComplete(); //Remove challenge in session
         return "redirect:/account";

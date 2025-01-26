@@ -20,12 +20,12 @@ import com.webauthn4j.data.client.Origin;
 import com.webauthn4j.data.client.challenge.DefaultChallenge;
 import com.webauthn4j.server.ServerProperty;
 import com.webauthn4j.verifier.exception.VerificationException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 import sep490.idp.dto.CredentialsRegistration;
@@ -68,9 +68,8 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
     
     @Override
     public UserEntity authenticate(CredentialsVerification verification) {
-        try {
             UserAuthenticator userAuthenticator = repository.findByCredentialId(verification.id()).orElseThrow(
-                    () -> new BadCredentialsException("Unknown credentials"));
+                    () -> new EntityNotFoundException("Unknown credentials"));
             AttestationObject attestation = attestationConverter.convert(userAuthenticator.getAttestationObject());
             CredentialRecordImpl authenticator = new CredentialRecordImpl(attestation, null, null, null);
             
@@ -83,10 +82,6 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
             
             checkSignCount(userAuthenticator, authenticationData.getAuthenticatorData().getSignCount());
             return user;
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new BadCredentialsException("Authentication failed", e);
-        }
     }
     
     public boolean deleteCredential(UserEntity user, String credentialId) {
