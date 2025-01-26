@@ -15,18 +15,21 @@ import java.util.Locale;
 @Configuration
 public class I18nConfig implements WebMvcConfigurer {
 
-    @Bean(name="stateful")
     public LocaleResolver statefulLocaleResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
         localeResolver.setDefaultLocale(Locale.ENGLISH);
         return localeResolver;
     }
     
-    @Bean(name="stateless")
     public LocaleResolver statelessLocaleResolver() {
         AcceptHeaderLocaleResolver resolver = new AcceptHeaderLocaleResolver();
         resolver.setDefaultLocale(Locale.ENGLISH);
         return resolver;
+    }
+    
+    @Bean
+    public LocaleResolver localeResolver() {
+        return new CustomLocaleResolver(statelessLocaleResolver(), statefulLocaleResolver());
     }
 
     @Bean
