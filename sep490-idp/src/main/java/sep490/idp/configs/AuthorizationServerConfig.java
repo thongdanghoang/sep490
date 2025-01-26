@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.encrypt.KeyStoreKeyFactory;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
@@ -23,7 +24,6 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
-import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
@@ -31,21 +31,21 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import sep490.idp.filters.BearerTokenAuthenticationConverterFilter;
 import sep490.idp.filters.MonitoringFilter;
-import sep490.idp.repository.UserRepository;
+import sep490.idp.security.JwtAuthenticationConverter;
 import sep490.idp.service.impl.UserInfoService;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.Map;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Configuration
 @RequiredArgsConstructor
 public class AuthorizationServerConfig {
     
-    private final UserRepository userRepository;
+    private final JwtAuthenticationConverter tokenToUserContextDataConverter;
     
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -86,9 +86,12 @@ public class AuthorizationServerConfig {
                 .securityMatcher("/api/**")
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer(resourceServer -> resourceServer.jwt(Customizer.withDefaults()))
-                .addFilterAfter(new MonitoringFilter(), SecurityContextHolderFilter.class)
-                .addFilterAfter(new BearerTokenAuthenticationConverterFilter(userRepository), BearerTokenAuthenticationFilter.class);
+                .oauth2ResourceServer(
+                        resourceServer -> resourceServer.jwt(
+                                jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(tokenToUserContextDataConverter)
+                                                            )
+                                     )
+                .addFilterAfter(new MonitoringFilter(), SecurityContextHolderFilter.class);
         return http.build();
     }
     
@@ -113,8 +116,16 @@ public class AuthorizationServerConfig {
                 OidcUserInfo oidcUserInfo = userInfoService.loadUser(context.getPrincipal().getName());
                 context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(oidcUserInfo.getClaims()));
             } else if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
-                Map<String, Object> customClaims = userInfoService.getCustomClaimsForJwtAuthenticationToken(context.getPrincipal().getName());
-                context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(customClaims));
+                var authorities = AuthorityUtils
+                        .authorityListToSet(context.getPrincipal().getAuthorities())
+                        .stream()
+                        .collect(Collectors.collectingAndThen(Collectors.toSet(), Collections::unmodifiableSet));
+                var customClaims = userInfoService
+                        .getCustomClaimsForJwtAuthenticationToken(context.getPrincipal().getName());
+                context.getClaims().claims(claimsConsumer -> {
+                    claimsConsumer.putAll(customClaims);
+                    claimsConsumer.put("authorities", authorities);
+                });
             }
         };
     }
