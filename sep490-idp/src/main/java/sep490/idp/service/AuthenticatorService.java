@@ -1,7 +1,7 @@
 package sep490.idp.service;
 
-import sep490.idp.dto.CredentialsRegistration;
-import sep490.idp.dto.CredentialsVerification;
+import sep490.idp.dto.passkeys.CredentialsRegistration;
+import sep490.idp.dto.passkeys.CredentialsVerification;
 import sep490.idp.entity.UserEntity;
 
 /**

@@ -1,0 +1,3 @@
+rootProject.name = 'enterprise'
+includeBuild("../sep490-commons/api")
+includeBuild("../sep490-commons/springfw-impl")

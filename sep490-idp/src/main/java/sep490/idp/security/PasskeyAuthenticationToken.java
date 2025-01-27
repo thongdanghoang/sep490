@@ -8,9 +8,9 @@ import java.io.Serializable;
 
 public class PasskeyAuthenticationToken extends AbstractAuthenticationToken implements Serializable {
 
-    private final UserContextData userContextData;
+    private final MvcUserContextData userContextData;
 
-    public PasskeyAuthenticationToken(UserContextData userContextData) {
+    public PasskeyAuthenticationToken(MvcUserContextData userContextData) {
         super(null);
         this.userContextData = userContextData;
         this.setAuthenticated(true);

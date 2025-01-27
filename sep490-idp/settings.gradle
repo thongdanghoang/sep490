@@ -6,4 +6,5 @@ pluginManagement {
 	}
 }
 rootProject.name = 'sep490-idp'
-includeBuild("../sep490-common")
+includeBuild("../sep490-commons/api")
+includeBuild("../sep490-commons/springfw-impl")

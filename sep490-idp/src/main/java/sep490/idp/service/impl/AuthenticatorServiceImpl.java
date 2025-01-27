@@ -28,8 +28,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
-import sep490.idp.dto.CredentialsRegistration;
-import sep490.idp.dto.CredentialsVerification;
+import sep490.idp.dto.passkeys.CredentialsRegistration;
+import sep490.idp.dto.passkeys.CredentialsVerification;
 import sep490.idp.entity.UserAuthenticator;
 import sep490.idp.entity.UserEntity;
 import sep490.idp.repository.UserAuthenticatorRepository;
@@ -68,8 +68,7 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
     
     @Override
     public UserEntity authenticate(CredentialsVerification verification) {
-            UserAuthenticator userAuthenticator = repository.findByCredentialId(verification.id()).orElseThrow(
-                    () -> new EntityNotFoundException("Unknown credentials"));
+            UserAuthenticator userAuthenticator = repository.findByCredentialId(verification.id()).orElseThrow();
             AttestationObject attestation = attestationConverter.convert(userAuthenticator.getAttestationObject());
             CredentialRecordImpl authenticator = new CredentialRecordImpl(attestation, null, null, null);
             

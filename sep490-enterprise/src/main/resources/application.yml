@@ -1,0 +1,40 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI}
+  application:
+    name: enterprise
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  flyway:
+    output-query-results: ${FLYWAY_OUTPUT_QUERIES:false}
+    create-schemas: false
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+        query:
+          fail_on_pagination_over_collection_fetch: true
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        security: ${SPRING_SECURITY_LOG_LEVEL:INFO}
+        web: ${SPRING_WEB_LOG_LEVEL:INFO}
+      hibernate:
+        SQL: ${HIBERNATE_SQL_LOG_LEVEL:TRACE}
+        type:
+          descriptor:
+            sql: ${HIBERNATE_SQL_PARAM_LOG_LEVEL:TRACE}

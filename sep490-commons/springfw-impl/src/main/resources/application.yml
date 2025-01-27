@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: sep490-commons-springfw-impl

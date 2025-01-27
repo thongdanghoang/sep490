@@ -1,0 +1,2 @@
+rootProject.name = 'commons-springfw-impl'
+includeBuild("../api")

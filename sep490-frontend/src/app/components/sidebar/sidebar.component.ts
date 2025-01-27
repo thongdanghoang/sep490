@@ -41,7 +41,7 @@ export class SidebarComponent implements OnInit {
           {
             label: 'Users',
             icon: 'pi pi-users',
-            route: `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.USERS_PATH}`
+            route: `/${AppRoutingConstants.AUTH_PATH}/${AppRoutingConstants.USERS_PATH}`
           },
           {
             label: 'Subscription',

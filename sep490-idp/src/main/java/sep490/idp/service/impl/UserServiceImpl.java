@@ -1,5 +1,7 @@
 package sep490.idp.service.impl;
 
+import commons.springfw.impl.mappers.CommonMapper;
+import commons.springfw.impl.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,7 +15,6 @@ import org.springframework.util.CollectionUtils;
 import sep490.common.api.dto.SearchCriteriaDTO;
 import sep490.common.api.exceptions.BusinessErrorParam;
 import sep490.common.api.exceptions.BusinessException;
-import sep490.common.api.exceptions.TechnicalException;
 import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
 import sep490.common.api.utils.CommonUtils;
@@ -23,7 +24,6 @@ import sep490.idp.dto.SignupResult;
 import sep490.idp.dto.UserCriteriaDTO;
 import sep490.idp.entity.BuildingPermissionEntity;
 import sep490.idp.entity.UserEntity;
-import sep490.idp.mapper.CommonMapper;
 import sep490.idp.mapper.EnterpriseUserMapper;
 import sep490.idp.repository.BuildingRepository;
 import sep490.idp.repository.UserRepository;
@@ -31,7 +31,6 @@ import sep490.idp.service.UserService;
 import sep490.idp.utils.IEmailUtil;
 import sep490.idp.utils.IMessageUtil;
 import sep490.idp.utils.SEPMailMessage;
-import sep490.idp.utils.SecurityUtils;
 import sep490.idp.validation.Validator;
 
 import java.util.Collections;
@@ -120,7 +119,7 @@ public class UserServiceImpl implements UserService {
         if (CollectionUtils.isEmpty(userIds)) {
             throw new BusinessException("userIds", "user.delete.no.ids", Collections.emptyList());
         }
-        var users = userRepo.findByIdInAndDeletedFalse(userIds);
+        var users = userRepo.findByIDs(userIds);
         if (users.size() != userIds.size()) {
             userIds.removeAll(users.stream().map(UserEntity::getId).collect(Collectors.toSet()));
             throw new BusinessException("userIds", "user.delete.not.found",
@@ -131,7 +130,7 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public void createNewUser(NewEnterpriseUserDTO dto) {
-        var user = userMapper.newEnterpriseUserDTOToEntity(dto);
+        var user = userMapper.createNewEnterpriseUser(dto);
         if (userRepo.existsByEmail(user.getEmail())) {
             throw new BusinessException("email", "email.exist");
         }
@@ -148,25 +147,24 @@ public class UserServiceImpl implements UserService {
     
     private void mappingUserPermission(NewEnterpriseUserDTO dto, UserEntity user) throws BusinessException {
         if (user.getScope() == UserScope.ENTERPRISE) {
-            String currentUserEmail = SecurityUtils.getUserEmail().orElseThrow(() -> new TechnicalException("No user in context"));
-            UserEntity owner = userRepo.findByEmail(currentUserEmail)
-                                       .orElseThrow(() -> new TechnicalException("Owner does not exist"));
-            Set<BuildingPermissionEntity> buildingPermissionEntitySet =
-                    owner.getPermissions()
-                         .stream()
-                         .map(p -> p.getId().getBuildingId())
-                         .map(bId -> new BuildingPermissionEntity(bId, user, dto.permissionRole()))
-                         .collect(Collectors.toSet());
+            var currentUserEmail = SecurityUtils.getCurrentUserEmail().orElseThrow();
+            var owner = userRepo.findByEmail(currentUserEmail).orElseThrow();
+            var buildingPermissionEntitySet = owner
+                    .getPermissions()
+                    .stream()
+                    .map(p -> p.getId().getBuildingId())
+                    .map(bId -> new BuildingPermissionEntity(bId, user, dto.buildingPermissionRole()))
+                    .collect(Collectors.toSet());
             
             user.setPermissions(buildingPermissionEntitySet);
         } else if (user.getScope() == UserScope.BUILDING) {
             if (CollectionUtils.isEmpty(dto.buildings()) || !buildingRepo.existsAllByIdIn(dto.buildings())) {
                 throw new BusinessException("buildings", "buildings.invalid");
             }
-            Set<BuildingPermissionEntity> buildingPermissionEntitySet =
+            var buildingPermissionEntitySet =
                     dto.buildings()
                        .stream()
-                       .map(bId -> new BuildingPermissionEntity(bId, user, dto.permissionRole()))
+                       .map(bId -> new BuildingPermissionEntity(bId, user, dto.buildingPermissionRole()))
                        .collect(Collectors.toSet());
             
             user.setPermissions(buildingPermissionEntitySet);

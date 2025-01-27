@@ -6,10 +6,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import sep490.common.api.dto.auth.BuildingPermissionDTO;
 import sep490.idp.repository.BuildingPermissionRepository;
 import sep490.idp.repository.UserRepository;
-import sep490.idp.security.UserContextData;
-import sep490.idp.utils.SecurityUtils;
+import sep490.idp.security.MvcUserContextData;
+import sep490.idp.utils.IdpSecurityUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -21,11 +22,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        var user = userRepository.findByEmail(email).orElse(null);
+        var user = userRepository.findByEmailWithBuildingPermissions(email).orElse(null);
         if (user == null) {
             throw new UsernameNotFoundException("User not found: " + email);
         }
         var permissions = buildingPermissionRepository.findAllByUserId(user.getId());
-        return new UserContextData(user, SecurityUtils.getAuthoritiesFromUserRole(user), permissions);
+        var buildingPermissions = permissions.stream()
+                .map(e -> new BuildingPermissionDTO(e.getId().getBuildingId(), e.getRole()))
+                .toList();
+        return new MvcUserContextData(user, IdpSecurityUtils.getAuthoritiesFromUserRole(user), buildingPermissions);
     }
 }

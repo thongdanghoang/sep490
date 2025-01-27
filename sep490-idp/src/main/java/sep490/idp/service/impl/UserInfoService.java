@@ -3,8 +3,9 @@ package sep490.idp.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.stereotype.Service;
-import sep490.common.api.exceptions.TechnicalException;
+import sep490.common.api.dto.auth.BuildingPermissionDTO;
 import sep490.idp.entity.UserEntity;
+import sep490.idp.repository.BuildingPermissionRepository;
 import sep490.idp.repository.UserRepository;
 
 import java.util.HashMap;
@@ -15,9 +16,10 @@ import java.util.Map;
 public class UserInfoService {
     
     private final UserRepository userRepository;
+    private final BuildingPermissionRepository buildingPermissionRepository;
     
     public OidcUserInfo loadUser(String email) {
-        UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new TechnicalException("User not exist"));
+        UserEntity user = userRepository.findByEmail(email).orElseThrow();
         return new OidcUserInfo(buildUserClaims(user));
     }
     
@@ -37,11 +39,16 @@ public class UserInfoService {
     
     public Map<String, Object> getCustomClaimsForJwtAuthenticationToken(String email) {
         Map<String, Object> claims = new HashMap<>();
-        // UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new TechnicalException("User not exist"));
-        
-        claims.put("permissions", "only string accept here");
-        // TODO: should we store user's permission in token
-        
+        var user = userRepository.findByEmail(email).orElseThrow();
+        var buildingPermissions = buildingPermissionRepository
+                .findAllByUserId(user.getId())
+                .stream()
+                .map(buildingPermission -> new BuildingPermissionDTO(
+                        buildingPermission.getId().getBuildingId(),
+                        buildingPermission.getRole()
+                ))
+                .toList();
+        claims.put("permissions", buildingPermissions);
         return claims;
     }
 }

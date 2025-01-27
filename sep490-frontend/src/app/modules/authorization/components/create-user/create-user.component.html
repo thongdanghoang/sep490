@@ -1,0 +1,177 @@
+<div class="px-5">
+    <h1 class="font-bold text-lg">
+        {{ "enterprise.Users.create" | translate }}
+    </h1>
+    <p class="font-light">
+        {{ "enterprise.Users.description" | translate }}
+    </p>
+</div>
+<form [formGroup]="formGroup" class="sm:mt-5 p-5">
+    <!-- Email -->
+    <div class="grid grid-cols-12 gap-4 items-center my-3" errorMessages>
+        <label for="email" class="font-normal md:col-span-3 col-span-12">{{
+            "enterprise.Users.email" | translate
+        }}</label>
+        <div class="md:col-span-6 col-span-12">
+            <input
+                formControlName="email"
+                class="w-full"
+                type="text"
+                id="email"
+                pInputText
+                [placeholder]="
+                    'enterprise.Users.placeholders.enterEmail' | translate
+                "
+            />
+            <form-field-error></form-field-error>
+        </div>
+    </div>
+
+    <!-- First Name -->
+    <div class="grid grid-cols-12 gap-4 items-center my-3" errorMessages>
+        <label for="firstName" class="font-normal md:col-span-3 col-span-12">{{
+            "enterprise.Users.firstName" | translate
+        }}</label>
+        <div class="md:col-span-6 col-span-12">
+            <input
+                formControlName="firstName"
+                class="w-full"
+                type="text"
+                id="firstName"
+                pInputText
+                [placeholder]="
+                    'enterprise.Users.placeholders.enterFirstName' | translate
+                "
+            />
+            <form-field-error></form-field-error>
+        </div>
+    </div>
+
+    <!-- Last Name -->
+    <div class="grid grid-cols-12 gap-4 items-center my-3" errorMessages>
+        <label for="lastName" class="font-normal md:col-span-3 col-span-12">{{
+            "enterprise.Users.lastName" | translate
+        }}</label>
+        <div class="md:col-span-6 col-span-12">
+            <input
+                formControlName="lastName"
+                class="w-full"
+                type="text"
+                id="lastName"
+                pInputText
+                [placeholder]="
+                    'enterprise.Users.placeholders.enterLastName' | translate
+                "
+            />
+            <form-field-error></form-field-error>
+        </div>
+    </div>
+
+    <!-- Role -->
+    <h2 class="font-semibold text-xl">
+        {{ "enterprise.Users.role" | translate }}
+    </h2>
+    <div class="grid grid-cols-12 gap-4 items-center my-3" errorMessages>
+        <label
+            for="buildingPermissionRole"
+            class="font-normal md:col-span-3 col-span-12"
+            >{{ "enterprise.Users.role" | translate }}</label
+        >
+        <div class="md:col-span-6 col-span-12">
+            <p-select
+                formControlName="buildingPermissionRole"
+                id="buildingPermissionRole"
+                optionValue="value"
+                [options]="permissionRoleOptions"
+                optionLabel="label"
+                [placeholder]="
+                    'enterprise.Users.placeholders.selectRole' | translate
+                "
+                class="w-full"
+            >
+                <ng-template #selectedItem let-selectedOption>
+                    <div>
+                        {{ selectedOption.label | translate }}
+                    </div></ng-template
+                >
+                <ng-template #item let-item
+                    ><div>{{ item.label | translate }}</div></ng-template
+                >
+            </p-select>
+            <form-field-error></form-field-error>
+        </div>
+    </div>
+
+    <h2 class="font-semibold text-xl">
+        {{ "enterprise.Users.scope" | translate }}
+    </h2>
+    <div class="grid grid-cols-12 gap-4 items-center my-3">
+        <label for="scope" class="font-normal md:col-span-3 col-span-12">
+            {{ "enterprise.Users.scope" | translate }}
+        </label>
+        <div class="md:col-span-3 col-span-12" errorMessages>
+            <p-select
+                formControlName="scope"
+                id="scope"
+                [options]="scopeOptions"
+                optionLabel="label"
+                [placeholder]="
+                    'enterprise.Users.placeholders.selectScope' | translate
+                "
+                optionValue="value"
+                class="w-full"
+            >
+                <ng-template #selectedItem let-selectedOption>
+                    <div>
+                        {{ selectedOption.label | translate }}
+                    </div></ng-template
+                >
+                <ng-template #item let-item
+                    ><div>{{ item.label | translate }}</div></ng-template
+                >
+            </p-select>
+            <form-field-error></form-field-error>
+        </div>
+        <div
+            class="md:col-span-3 col-span-12"
+            *ngIf="
+                enterpriseUserStructure.scope.value ===
+                UserScope[UserScope.BUILDING]
+            "
+            errorMessages
+        >
+            <p-multiselect
+                class="w-full"
+                [options]="mockBuildings"
+                optionLabel="name"
+                optionValue="id"
+                [placeholder]="
+                    'enterprise.Users.placeholders.selectBuildings' | translate
+                "
+                lazy="true"
+                formControlName="buildings"
+            ></p-multiselect>
+            <form-field-error></form-field-error>
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-end md:justify-start gap-4 *:min-w-24">
+        <!-- Create Button -->
+        <p-button
+            [label]="'common.create' | translate"
+            styleClass="w-full"
+            severity="primary"
+            [disabled]="disableSubmitButton"
+            (onClick)="submit()"
+        ></p-button>
+
+        <!-- Revert Button -->
+        <p-button
+            [label]="'common.revert' | translate"
+            styleClass="w-full"
+            severity="secondary"
+            (onClick)="reset()"
+        ></p-button>
+    </div>
+</form>

@@ -14,7 +14,16 @@ public interface EnterpriseUserMapper {
     @Mapping(target = "name", source = ".", qualifiedByName = "toFullName")
     EnterpriseUserDTO userEntityToEnterpriseUserDTO(UserEntity user);
     
-    UserEntity newEnterpriseUserDTOToEntity(NewEnterpriseUserDTO dto);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "transientHashCodeLeaked", ignore = true)
+    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "permissions", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "emailVerified", ignore = true)
+    @Mapping(target = "phone", ignore = true)
+    @Mapping(target = "phoneVerified", ignore = true)
+    UserEntity createNewEnterpriseUser(NewEnterpriseUserDTO dto);
 
 
     @Named("toFullName")
