@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {AutoLoginPartialRoutesGuard} from 'angular-auth-oidc-client';
 import {AppRoutingConstants} from './app-routing.constant';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {ForbiddenComponent} from './components/forbidden/forbidden.component';
-import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
-import {NotFoundComponent} from './components/not-found/not-found.component';
-import {AutoLoginPartialRoutesGuard} from 'angular-auth-oidc-client';
 import {HomeComponent} from './components/home/home.component';
+import {NotFoundComponent} from './components/not-found/not-found.component';
+import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
 
 const routes: Routes = [
   {
@@ -21,6 +21,14 @@ const routes: Routes = [
     path: AppRoutingConstants.DEV_PATH,
     loadChildren: () =>
       import('./modules/dev/dev.module').then(m => m.DevModule)
+  },
+  {
+    path: AppRoutingConstants.AUTH_PATH,
+    loadChildren: () =>
+      import('./modules/authorization/authorization.module').then(
+        m => m.AuthorizationModule
+      ),
+    canActivate: [AutoLoginPartialRoutesGuard]
   },
   {
     path: AppRoutingConstants.ENTERPRISE_PATH,

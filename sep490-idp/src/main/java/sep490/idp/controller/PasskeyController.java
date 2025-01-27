@@ -9,9 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import sep490.idp.dto.CredentialsRegistration;
-import sep490.idp.dto.CredentialsVerification;
-import sep490.idp.security.UserContextData;
+import sep490.idp.dto.passkeys.CredentialsRegistration;
+import sep490.idp.dto.passkeys.CredentialsVerification;
+import sep490.idp.security.MvcUserContextData;
 import sep490.idp.service.AuthenticatorService;
 import sep490.idp.service.impl.LoginService;
 
@@ -38,13 +38,13 @@ public class PasskeyController {
 
     @PostMapping("/passkey/register")
     public String register(@RequestBody CredentialsRegistration credentials,
-                           @AuthenticationPrincipal UserContextData user) {
+                           @AuthenticationPrincipal MvcUserContextData user) {
         authenticatorService.saveCredentials(credentials, user.getUserEntity());
         return "redirect:/account";
     }
 
     @PostMapping("/passkey/delete")
-    public String login(@NotNull @RequestParam("credential-id") String credentialId, @AuthenticationPrincipal UserContextData userContextData,
+    public String login(@NotNull @RequestParam("credential-id") String credentialId, @AuthenticationPrincipal MvcUserContextData userContextData,
                         RedirectAttributes redirectAttributes) {
         if (authenticatorService.deleteCredential(userContextData.getUserEntity(), credentialId)) {
             redirectAttributes.addFlashAttribute("alert", "Passkey deleted.");

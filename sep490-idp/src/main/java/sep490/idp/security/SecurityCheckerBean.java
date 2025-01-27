@@ -1,8 +1,9 @@
 package sep490.idp.security;
 
+import commons.springfw.impl.utils.SecurityUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
-import sep490.idp.utils.SecurityUtils;
+import sep490.common.api.dto.auth.BuildingPermissionDTO;
 
 import java.util.UUID;
 
@@ -12,12 +13,13 @@ public class SecurityCheckerBean {
         if (buildingId == null) {
             return false;
         }
-        var permissions = SecurityUtils.getPermissions();
-        if (CollectionUtils.isEmpty(permissions)) {
+        var buildingPermissions = SecurityUtils.getPermissions();
+        if (CollectionUtils.isEmpty(buildingPermissions)) {
             return false;
         }
-        return permissions.stream()
-            .map(permission -> permission.getId().getBuildingId())
-            .anyMatch(id -> id.equals(buildingId));
+        return buildingPermissions
+                .stream()
+                .map(BuildingPermissionDTO::id)
+                .anyMatch(id -> id.equals(buildingId));
     }
 }

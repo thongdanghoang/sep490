@@ -59,7 +59,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         if (!resetPasswordDTO.getPassword().equals(resetPasswordDTO.getConfirmPassword()) || StringUtils.isEmpty(email)) {
             return false;
         }
-        UserOTP userOTP = otpRepo.findByUserEmail(email).orElseThrow(() -> new TechnicalException("OTP not exists"));
+        UserOTP userOTP = otpRepo.findByUserEmail(email).orElseThrow();
         UserEntity user = userOTP.getUser();
 
         user.setPassword(passwordEncoder.encode(resetPasswordDTO.getPassword()));

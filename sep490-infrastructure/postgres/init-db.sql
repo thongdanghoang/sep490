@@ -1,1 +1,2 @@
 CREATE DATABASE sep490_idp;
+CREATE DATABASE sep490_enterprise;

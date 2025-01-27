@@ -8,7 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sep490.common.api.security.PermissionRole;
+import sep490.common.api.security.BuildingPermissionRole;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -24,9 +24,9 @@ public class BuildingPermissionEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private PermissionRole role;
+    private BuildingPermissionRole role;
     
-    public BuildingPermissionEntity(UUID buildingId, UserEntity user, PermissionRole role) {
+    public BuildingPermissionEntity(UUID buildingId, UserEntity user, BuildingPermissionRole role) {
         this.id = new BuildingPermissionId(buildingId, user);
         this.role = role;
     }

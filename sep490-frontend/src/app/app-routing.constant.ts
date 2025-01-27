@@ -6,11 +6,13 @@ export class AppRoutingConstants {
   // To be remove
   public static readonly DEV_PATH = 'dev';
 
+  public static readonly AUTH_PATH = 'authorization';
+  public static readonly USERS_PATH = 'users';
+  public static readonly USER_DETAILS = 'create-user';
+
   // Enterprise Module
   public static readonly ENTERPRISE_PATH = 'enterprise';
   public static readonly BUILDING_PATH = 'buildings';
-  public static readonly USERS_PATH = 'users';
-  public static readonly CREATE_USER_PATH = 'create-user';
   public static readonly PLAN_PATH = 'plan';
   public static readonly PAYMENT_PATH = 'payments';
 

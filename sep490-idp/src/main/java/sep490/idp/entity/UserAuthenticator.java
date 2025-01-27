@@ -1,5 +1,6 @@
 package sep490.idp.entity;
 
+import commons.springfw.impl.entities.AbstractBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

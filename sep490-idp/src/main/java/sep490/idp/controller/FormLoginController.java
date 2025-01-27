@@ -16,7 +16,7 @@ import sep490.idp.dto.LoginDTO;
 import sep490.idp.dto.SignupDTO;
 import sep490.idp.dto.SignupResult;
 import sep490.idp.repository.UserAuthenticatorRepository;
-import sep490.idp.security.UserContextData;
+import sep490.idp.security.MvcUserContextData;
 import sep490.idp.service.UserService;
 import sep490.idp.utils.IMessageUtil;
 
@@ -77,7 +77,7 @@ public class FormLoginController {
     }
     
     @GetMapping("/account")
-    public String accountPage(@AuthenticationPrincipal UserContextData userContextData, Model model) {
+    public String accountPage(@AuthenticationPrincipal MvcUserContextData userContextData, Model model) {
         model.addAttribute("challenge", UUID.randomUUID().toString());
         var authenticators = authenticatorRepository.findUserAuthenticatorByUser(userContextData.getUserEntity());
         model.addAttribute("userId", userContextData.getUserEntity().getId());

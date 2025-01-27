@@ -1,9 +1,9 @@
 package sep490.idp.repository;
 
+import commons.springfw.impl.repositories.AbstractBaseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import sep490.idp.entity.UserEntity;
@@ -14,37 +14,42 @@ import java.util.Set;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, UUID> {
+public interface UserRepository extends AbstractBaseRepository<UserEntity> {
     
     boolean existsByEmail(String email);
     
-    @EntityGraph(UserEntity.USER_PERMISSIONS_ENTITY_GRAPH)
     Optional<UserEntity> findByEmail(String email);
     
     @EntityGraph(UserEntity.USER_PERMISSIONS_ENTITY_GRAPH)
-    @Query(value = """
+    @Query("""
+            SELECT u
+            FROM UserEntity u
+            WHERE u.email = :email
+            """)
+    Optional<UserEntity> findByEmailWithBuildingPermissions(String email);
+    
+    @EntityGraph(UserEntity.USER_PERMISSIONS_ENTITY_GRAPH)
+    @Query("""
                 SELECT u
                 FROM UserEntity u
                 WHERE u.id IN (:ids)
             """)
     List<UserEntity> findByIDsWithPermissions(Set<UUID> ids);
     
-    @Query(
+    @Query("""
+            SELECT u.id
+            FROM UserEntity u
+            WHERE LOWER(u.firstName) LIKE LOWER(CONCAT('%', :name, '%'))
+            OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :name, '%'))
             """
-                    SELECT u.id
-                    FROM UserEntity u
-                    WHERE LOWER(u.firstName) LIKE LOWER(CONCAT('%', :name, '%'))
-                    OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :name, '%'))
-                    """
     )
     Page<UUID> findByName(String name, Pageable pageable);
     
-    @Query(
+    @Query("""
+            SELECT u
+            FROM UserEntity u
+            WHERE u.id IN :ids
             """
-                    SELECT u
-                    FROM UserEntity u
-                    WHERE u.id IN :ids
-                    """
     )
-    List<UserEntity> findByIdInAndDeletedFalse(Set<UUID> ids);
+    List<UserEntity> findByIDs(Set<UUID> ids);
 }

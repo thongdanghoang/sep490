@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        module: [ 'sep490-common', 'sep490-idp' ]
+        module: ['sep490-idp', 'sep490-enterprise' ]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4

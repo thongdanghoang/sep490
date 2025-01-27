@@ -23,7 +23,7 @@ export interface NewEnterpriseUserDTO {
   email: string;
   firstName: string;
   lastName: string;
-  permissionRole: string;
+  buildingPermissionRole: string;
   scope: string;
   buildingIds: string[];
 }

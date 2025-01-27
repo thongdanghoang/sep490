@@ -31,8 +31,8 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import sep490.idp.filters.MonitoringFilter;
-import sep490.idp.security.JwtAuthenticationConverter;
+import commons.springfw.impl.filters.MonitoringFilter;
+import commons.springfw.impl.securities.JwtAuthenticationConverter;
 import sep490.idp.service.impl.UserInfoService;
 
 import java.security.NoSuchAlgorithmException;
@@ -42,10 +42,7 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Configuration
-@RequiredArgsConstructor
 public class AuthorizationServerConfig {
-    
-    private final JwtAuthenticationConverter tokenToUserContextDataConverter;
     
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -88,11 +85,16 @@ public class AuthorizationServerConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(
                         resourceServer -> resourceServer.jwt(
-                                jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(tokenToUserContextDataConverter)
+                                jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(tokenToUserContextDataConverter())
                                                             )
                                      )
                 .addFilterAfter(new MonitoringFilter(), SecurityContextHolderFilter.class);
         return http.build();
+    }
+    
+    @Bean
+    public JwtAuthenticationConverter tokenToUserContextDataConverter() {
+        return new JwtAuthenticationConverter();
     }
     
     @Bean
@@ -113,7 +115,7 @@ public class AuthorizationServerConfig {
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer(UserInfoService userInfoService) {
         return context -> {
             if (OidcParameterNames.ID_TOKEN.equals(context.getTokenType().getValue())) {
-                OidcUserInfo oidcUserInfo = userInfoService.loadUser(context.getPrincipal().getName());
+                var oidcUserInfo = userInfoService.loadUser(context.getPrincipal().getName());
                 context.getClaims().claims(claimsConsumer -> claimsConsumer.putAll(oidcUserInfo.getClaims()));
             } else if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
                 var authorities = AuthorityUtils
