@@ -8,7 +8,8 @@
     "accept": "Yes",
     "reject": "No",
     "create": "Create",
-    "revert": "Revert"
+    "revert": "Revert",
+    "update": "Update"
   },
   "validation": {
     "email": "Invalid format: please enter a valid email address",
@@ -61,6 +62,8 @@
       "lastName": "Last Name",
       "role": "Role",
       "scope": "Scope",
+      "createdDate": "Created at",
+      "detail": "Detail",
       "deleteWithCount": "Delete ({{count}}) users",
       "placeholders": {
         "enterEmail": "Enter email",

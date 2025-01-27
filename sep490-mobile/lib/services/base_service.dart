@@ -3,7 +3,6 @@ import 'package:sep490_mobile/exceptions/custom_exception.dart';
 import 'package:sep490_mobile/enums/http_method.dart';
 import 'package:sep490_mobile/repositories/auth_repository.dart';
 import 'package:sep490_mobile/repositories/token_repository.dart';
-import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:sep490_mobile/extensions/custom_string.dart';

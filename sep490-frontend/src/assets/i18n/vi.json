@@ -8,7 +8,8 @@
     "success": "Thành công",
     "saveSuccess": "Lưu thành công!",
     "create": "Tạo",
-    "revert": "Hoàn tác"
+    "revert": "Hoàn tác",
+    "update": "Cập nhật"
   },
   "validation": {
     "email": "Định dạng không đúng: vui lòng nhập địa chỉ email hợp lệ",
@@ -62,6 +63,8 @@
       "lastName": "Họ",
       "role": "Vai trò",
       "scope": "Phạm vi",
+      "createdDate": "Ngày tạo",
+      "detail": "Chi tiết",
       "placeholders": {
         "enterEmail": "Nhập email",
         "enterFirstName": "Nhập tên",

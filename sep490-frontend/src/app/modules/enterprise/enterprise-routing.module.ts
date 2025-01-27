@@ -7,7 +7,7 @@ import {PlanComponent} from './components/plan/plan.component';
 import {UsersComponent} from './components/users/users.component';
 import {EnterpriseComponent} from './enterprise.component';
 import {CreateUserComponent} from './components/create-user/create-user.component';
-
+import {UpdateUserComponent} from './components/update-user/update-user.component';
 const routes: Routes = [
   {
     path: '',
@@ -18,6 +18,10 @@ const routes: Routes = [
       {
         path: AppRoutingConstants.CREATE_USER_PATH,
         component: CreateUserComponent
+      },
+      {
+        path: `${AppRoutingConstants.UPDATE_USER_PATH}/:id`,
+        component: UpdateUserComponent
       },
       {
         path: AppRoutingConstants.PLAN_PATH,

@@ -8,6 +8,18 @@ export interface EnterpriseUserDTO extends BaseDTO {
   scope: UserScope;
 }
 
+export interface EnterpriseUserDetailDTO {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  permissionRole: string;
+  scope: string;
+  createdDate: Date;
+  buildingIds: string[];
+  version: number;
+}
+
 export enum UserScope {
   BUILDING,
   ENTERPRISE

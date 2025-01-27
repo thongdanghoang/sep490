@@ -47,4 +47,12 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
                     """
     )
     List<UserEntity> findByIdInAndDeletedFalse(Set<UUID> ids);
+    
+    @EntityGraph(UserEntity.USER_PERMISSIONS_ENTITY_GRAPH)
+    @Query(value = """
+                SELECT u
+                FROM UserEntity u
+                WHERE u.id = :id AND u.isDeleted = false
+            """)
+    Optional<UserEntity> getDetailUser(UUID id);
 }

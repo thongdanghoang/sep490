@@ -12,6 +12,7 @@ import {PlanComponent} from './components/plan/plan.component';
 import {PaymentComponent} from './components/payment/payment.component';
 import {BuildingsComponent} from './components/buildings/buildings.component';
 import {UserService} from './services/user.service';
+import {UpdateUserComponent} from './components/update-user/update-user.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {UserService} from './services/user.service';
     PlanComponent,
     PaymentComponent,
     BuildingsComponent,
-    CreateUserComponent
+    CreateUserComponent,
+    UpdateUserComponent
   ],
   imports: [SharedModule, EnterpriseRoutingModule],
   providers: [MarkerService, PopupService, RegionService, UserService]

@@ -3,7 +3,8 @@ import {
   EventEmitter,
   OnInit,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  inject
 } from '@angular/core';
 import {Observable, takeUntil} from 'rxjs';
 import {UUID} from '../../../../../types/uuid';
@@ -20,6 +21,7 @@ import {ModalProvider} from '../../../shared/services/modal-provider';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {TranslateService} from '@ngx-translate/core';
 import {AppRoutingConstants} from '../../../../app-routing.constant';
+import {Router} from '@angular/router';
 
 export interface UserCriteria {
   criteria: string;
@@ -47,6 +49,7 @@ export class UsersComponent
   protected readonly searchEvent: EventEmitter<void> = new EventEmitter();
   protected selected: EnterpriseUserDTO[] = [];
   protected searchCriteria: UserCriteria = {criteria: ''};
+  private readonly router = inject(Router);
 
   constructor(
     protected readonly applicationService: ApplicationService,
@@ -160,6 +163,13 @@ export class UsersComponent
     this.confirmDelete();
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/no-unused-vars,@typescript-eslint/member-ordering
-  onEdit(rowData: TableTemplateColumn) {}
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/member-ordering
+  async onEdit(rowData: EnterpriseUserDTO) {
+    this.selected = [rowData];
+    const userId = this.selected[0].id; // Retrieve the selected user's ID.
+    await this.router.navigate([
+      `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.UPDATE_USER_PATH}`,
+      userId
+    ]); // Navigate to the update component.
+  }
 }

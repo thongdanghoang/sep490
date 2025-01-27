@@ -16,7 +16,8 @@ import sep490.common.api.exceptions.BusinessException;
 import sep490.common.api.exceptions.TechnicalException;
 import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
-import sep490.common.api.utils.CommonUtils;
+import sep490.common.api.utils.SEPUtils;
+import sep490.idp.dto.EnterpriseUserDetailDTO;
 import sep490.idp.dto.NewEnterpriseUserDTO;
 import sep490.idp.dto.SignupDTO;
 import sep490.idp.dto.SignupResult;
@@ -25,6 +26,7 @@ import sep490.idp.entity.BuildingPermissionEntity;
 import sep490.idp.entity.UserEntity;
 import sep490.idp.mapper.CommonMapper;
 import sep490.idp.mapper.EnterpriseUserMapper;
+import sep490.idp.repository.BuildingPermissionRepository;
 import sep490.idp.repository.BuildingRepository;
 import sep490.idp.repository.UserRepository;
 import sep490.idp.service.UserService;
@@ -36,6 +38,8 @@ import sep490.idp.validation.Validator;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
@@ -116,34 +120,37 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public void deleteUsers(Set<UUID> userIds) {
+    public void deleteUsers(Set<UUID> userIds) throws BusinessException {
         if (CollectionUtils.isEmpty(userIds)) {
             throw new BusinessException("userIds", "user.delete.no.ids", Collections.emptyList());
         }
-        var users = userRepo.findByIdInAndDeletedFalse(userIds);
+        List<UserEntity> users = userRepo.findByIdInAndDeletedFalse(userIds);
         if (users.size() != userIds.size()) {
-            userIds.removeAll(users.stream().map(UserEntity::getId).collect(Collectors.toSet()));
+            Set<UUID> foundIds = users.stream().map(UserEntity::getId).collect(Collectors.toSet());
+            userIds.removeAll(foundIds);
             throw new BusinessException("userIds", "user.delete.not.found",
                                         List.of(new BusinessErrorParam("ids", userIds)));
         }
-        userRepo.deleteAll(users);
+        users.forEach(user -> user.setDeleted(true));
+        userRepo.saveAll(users);
+        
     }
     
     @Override
-    public void createNewUser(NewEnterpriseUserDTO dto) {
+    public UserEntity createNewUser(NewEnterpriseUserDTO dto) throws BusinessException {
         var user = userMapper.newEnterpriseUserDTOToEntity(dto);
         if (userRepo.existsByEmail(user.getEmail())) {
             throw new BusinessException("email", "email.exist");
         }
         mappingUserPermission(dto, user);
-        String password = CommonUtils.alphaNumericString(12);
+        String password = SEPUtils.alphaNumericString(12);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(UserRole.ENTERPRISE_EMPLOYEE);
         
         SEPMailMessage message = populateNewUserMailMessage(user.getEmail(), password);
         emailUtil.sendMail(message);
         
-        userRepo.save(user);
+        return userRepo.save(user);
     }
     
     private void mappingUserPermission(NewEnterpriseUserDTO dto, UserEntity user) throws BusinessException {
@@ -186,4 +193,52 @@ public class UserServiceImpl implements UserService {
         
         return message;
     }
+    
+    @Override
+    public UserEntity getEnterpriseUserDetail(UUID id) {
+        Optional<UserEntity> optionalUserEntity = userRepo.getDetailUser(id);
+        if (optionalUserEntity.isPresent()) {
+            return optionalUserEntity.get();
+        }
+        throw new TechnicalException("Cannot find user with id =" + id);
+    }
+    
+    @Override
+    public void updateEnterpriseUser(UUID id, EnterpriseUserDetailDTO enterpriseUserDTO) throws BusinessException {
+        UserEntity existingUserEntity = getEnterpriseUserDetail(id);
+        if (existingUserEntity == null) {
+            throw new TechnicalException("Cannot find user with id = " + id);
+        }
+        if (enterpriseUserDTO.version() != null && enterpriseUserDTO.version() != existingUserEntity.getVersion()) {
+            throw new BusinessException("version", "entity.version.mismatch");
+        }
+        
+        if (!Objects.equals(existingUserEntity.getEmail(), enterpriseUserDTO.email())) {
+            validateEmailUniqueness(enterpriseUserDTO.email());
+        }
+        
+        updateUserProperties(existingUserEntity, enterpriseUserDTO);
+        userRepo.save(existingUserEntity);
+    }
+    
+    private void validateEmailUniqueness(String email) throws BusinessException {
+        if (email != null && !email.trim().isEmpty() && userRepo.existsByEmail(email.trim())) {
+            throw new BusinessException("email", "email.exist");
+        }
+    }
+    
+    private void updateUserProperties(UserEntity existingUserEntity, EnterpriseUserDetailDTO enterpriseUserDTO) throws BusinessException {
+        if (enterpriseUserDTO.email() != null && !enterpriseUserDTO.email().trim().isEmpty()) {
+            existingUserEntity.setEmail(enterpriseUserDTO.email().trim());
+        }
+        if (enterpriseUserDTO.firstName() != null && !enterpriseUserDTO.firstName().trim().isEmpty()) {
+            existingUserEntity.setFirstName(enterpriseUserDTO.firstName().trim());
+        }
+        if (enterpriseUserDTO.lastName() != null && !enterpriseUserDTO.lastName().trim().isEmpty()) {
+            existingUserEntity.setLastName(enterpriseUserDTO.lastName().trim());
+        }
+        existingUserEntity.setScope(enterpriseUserDTO.scope());
+    }
+
+    
 }

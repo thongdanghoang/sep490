@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:flutter_localization/flutter_localization.dart';
 
 class AppLocale {
   // Localization keys
