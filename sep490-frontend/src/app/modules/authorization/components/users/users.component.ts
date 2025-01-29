@@ -3,23 +3,25 @@ import {
   EventEmitter,
   OnInit,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  inject
 } from '@angular/core';
+import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
+import {MessageService} from 'primeng/api';
 import {Observable, takeUntil} from 'rxjs';
 import {UUID} from '../../../../../types/uuid';
+import {AppRoutingConstants} from '../../../../app-routing.constant';
 import {ApplicationService} from '../../../core/services/application.service';
+import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {TableTemplateColumn} from '../../../shared/components/table-template/table-template.component';
-import {EnterpriseUserDTO} from '../../../shared/models/business-model';
 import {
   SearchCriteriaDto,
   SearchResultDto
 } from '../../../shared/models/models';
-import {UserService} from '../../services/user.service';
-import {MessageService} from 'primeng/api';
 import {ModalProvider} from '../../../shared/services/modal-provider';
-import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
-import {TranslateService} from '@ngx-translate/core';
-import {AppRoutingConstants} from '../../../../app-routing.constant';
+import {EnterpriseUserDTO} from '../../models/enterprise-user';
+import {UserService} from '../../services/user.service';
 
 export interface UserCriteria {
   criteria: string;
@@ -47,6 +49,7 @@ export class UsersComponent
   protected readonly searchEvent: EventEmitter<void> = new EventEmitter();
   protected selected: EnterpriseUserDTO[] = [];
   protected searchCriteria: UserCriteria = {criteria: ''};
+  private readonly router = inject(Router);
 
   constructor(
     protected readonly applicationService: ApplicationService,
@@ -92,6 +95,20 @@ export class UsersComponent
       header: '',
       templateRef: this.actionsTemplate
     });
+  }
+
+  onDelete(rowData: EnterpriseUserDTO): void {
+    this.selected = [rowData];
+    this.confirmDelete();
+  }
+
+  onEdit(rowData: EnterpriseUserDTO): void {
+    this.selected = [rowData];
+    const userId = this.selected[0].id; // Retrieve the selected user's ID.
+    void this.router.navigate([
+      `/${AppRoutingConstants.AUTH_PATH}/${AppRoutingConstants.UPDATE_USER_PATH}`,
+      userId
+    ]);
   }
 
   onSelectionChange(selectedUsers: EnterpriseUserDTO[]): void {
@@ -153,13 +170,4 @@ export class UsersComponent
       }
     });
   }
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  onDelete(rowData: EnterpriseUserDTO): void {
-    this.selected = [rowData];
-    this.confirmDelete();
-  }
-
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/no-unused-vars,@typescript-eslint/member-ordering
-  onEdit(rowData: TableTemplateColumn) {}
 }

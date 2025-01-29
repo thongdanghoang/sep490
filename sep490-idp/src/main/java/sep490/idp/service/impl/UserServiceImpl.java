@@ -146,6 +146,7 @@ public class UserServiceImpl implements UserService {
     }
     
     private void mappingUserPermission(NewEnterpriseUserDTO dto, UserEntity user) throws BusinessException {
+        // TODO: [TRAB] move this logic to mapper in controller
         if (user.getScope() == UserScope.ENTERPRISE) {
             var currentUserEmail = SecurityUtils.getCurrentUserEmail().orElseThrow();
             var owner = userRepo.findByEmail(currentUserEmail).orElseThrow();
@@ -184,4 +185,15 @@ public class UserServiceImpl implements UserService {
         
         return message;
     }
+    
+    @Override
+    public UserEntity getEnterpriseUserDetail(UUID id) {
+        return userRepo.findByIdWithBuildingPermissions(id).orElseThrow();
+    }
+    
+    @Override
+    public void updateEnterpriseUser(UserEntity user) {
+        userRepo.save(user);
+    }
+    
 }

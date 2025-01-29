@@ -15,13 +15,10 @@ import {filter, takeUntil} from 'rxjs';
 import {v4 as uuidv4} from 'uuid';
 import {AppRoutingConstants} from '../../../../app-routing.constant';
 import {AbstractFormComponent} from '../../../shared/components/form/abstract-form-component';
-import {
-  BuildingDTO,
-  NewEnterpriseUserDTO,
-  PermissionRole,
-  UserScope
-} from '../../../shared/models/business-model';
 import {SelectableItem} from '../../../shared/models/models';
+import {PermissionRole} from '../../enums/building-permission-role.enum';
+import {UserScope} from '../../enums/user-scope.enum';
+import {BuildingDTO, NewEnterpriseUserDTO} from '../../models/enterprise-user';
 import {UserService} from '../../services/user.service';
 
 @Component({

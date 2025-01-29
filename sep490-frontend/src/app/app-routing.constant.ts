@@ -9,6 +9,7 @@ export class AppRoutingConstants {
   public static readonly AUTH_PATH = 'authorization';
   public static readonly USERS_PATH = 'users';
   public static readonly USER_DETAILS = 'create-user';
+  public static readonly UPDATE_USER_PATH = 'update-user';
 
   // Enterprise Module
   public static readonly ENTERPRISE_PATH = 'enterprise';

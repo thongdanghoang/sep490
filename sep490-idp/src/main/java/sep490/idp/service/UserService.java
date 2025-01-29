@@ -20,4 +20,8 @@ public interface UserService {
     void deleteUsers(Set<UUID> userIds);
     
     void createNewUser(NewEnterpriseUserDTO dto);
+    
+    UserEntity getEnterpriseUserDetail(UUID id);
+    
+    void updateEnterpriseUser(UserEntity user);
 }
