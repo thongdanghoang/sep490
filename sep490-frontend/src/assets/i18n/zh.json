@@ -8,7 +8,8 @@
     "accept": "是",
     "reject": "否",
     "create": "创建",
-    "revert": "撤销"
+    "revert": "撤销",
+    "update": "更新"
   },
   "validation": {
     "email": "格式无效：请输入有效的电子邮件地址",
@@ -62,6 +63,8 @@
       "lastName": "姓氏",
       "role": "角色",
       "scope": "范围",
+      "createdDate": "创建于",
+      "detail": "详细信息",
       "placeholders": {
         "enterEmail": "输入电子邮件",
         "enterFirstName": "输入名字",

@@ -3,7 +3,10 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {UUID} from '../../../../types/uuid';
 import {AppRoutingConstants} from '../../../app-routing.constant';
-import {EnterpriseUserDTO} from '../../shared/models/business-model';
+import {
+  EnterpriseUserDTO,
+  EnterpriseUserDetailDTO
+} from '../../shared/models/business-model';
 import {SearchCriteriaDto, SearchResultDto} from '../../shared/models/models';
 import {UserCriteria} from '../components/users/users.component';
 
@@ -29,5 +32,14 @@ export class UserService {
       `${AppRoutingConstants.IDP_API_URL}/enterprise-user/delete`,
       userIds
     );
+  }
+
+  public getUserById(userId: string): Observable<EnterpriseUserDetailDTO> {
+    return this.httpClient.get<EnterpriseUserDetailDTO>(
+      `${AppRoutingConstants.IDP_API_URL}/api/enterprise-user/${userId}`
+    );
+  }
+  public updateUserURL(userId: string): string {
+    return `${AppRoutingConstants.IDP_API_URL}/api/enterprise-user/update/${userId}`;
   }
 }

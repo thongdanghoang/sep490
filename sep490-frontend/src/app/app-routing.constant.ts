@@ -15,6 +15,7 @@ export class AppRoutingConstants {
   public static readonly BUILDING_PATH = 'buildings';
   public static readonly PLAN_PATH = 'plan';
   public static readonly PAYMENT_PATH = 'payments';
+  public static readonly UPDATE_USER_PATH = 'update-user';
 
   // Emissions Module
   public static readonly EMISSIONS_PATH = 'emissions';

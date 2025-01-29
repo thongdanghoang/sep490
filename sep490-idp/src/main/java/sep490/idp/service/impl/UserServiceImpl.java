@@ -18,6 +18,7 @@ import sep490.common.api.exceptions.BusinessException;
 import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
 import sep490.common.api.utils.CommonUtils;
+import sep490.idp.dto.EnterpriseUserDetailDTO;
 import sep490.idp.dto.NewEnterpriseUserDTO;
 import sep490.idp.dto.SignupDTO;
 import sep490.idp.dto.SignupResult;
@@ -35,6 +36,8 @@ import sep490.idp.validation.Validator;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
@@ -183,5 +186,37 @@ public class UserServiceImpl implements UserService {
         message.addTemplateModel("homepage", homepage);
         
         return message;
+    }
+    
+    @Override
+    public UserEntity getEnterpriseUserDetail(UUID id) {
+        Optional<UserEntity> optionalUserEntity = userRepo.findDetailUser(id);
+        if (optionalUserEntity.isPresent()) {
+            return optionalUserEntity.get();
+        }
+        throw new TechnicalException("Cannot find user with id =" + id);
+    }
+    
+    @Override
+    public void updateEnterpriseUser(UUID id, EnterpriseUserDetailDTO enterpriseUserDTO){
+        UserEntity existingUserEntity = getEnterpriseUserDetail(id);
+        
+        if (enterpriseUserDTO.version() != existingUserEntity.getVersion()) {
+            throw new BusinessException("version", "entity.version.mismatch");
+        }
+        
+        if (!existingUserEntity.getEmail().equals(enterpriseUserDTO.email()) && userRepo.existsByEmail(enterpriseUserDTO.email())) {
+            throw new BusinessException("email", "email.exist");
+        }
+        
+        updateUserProperties(existingUserEntity, enterpriseUserDTO);
+        userRepo.save(existingUserEntity);
+    }
+    
+    private void updateUserProperties(UserEntity existingUserEntity, EnterpriseUserDetailDTO dto){
+        existingUserEntity.setEmail(dto.email().trim());
+        existingUserEntity.setFirstName(dto.firstName().trim());
+        existingUserEntity.setLastName(dto.lastName().trim());
+        existingUserEntity.setScope(dto.scope());
     }
 }
