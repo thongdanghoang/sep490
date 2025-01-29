@@ -10,12 +10,15 @@ import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SoftDelete;
+import sep490.common.api.security.BuildingPermissionRole;
 import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
 import sep490.common.api.utils.CommonConstant;
@@ -40,18 +43,22 @@ public class UserEntity extends AbstractAuditableEntity {
     
     public static final String USER_PERMISSIONS_ENTITY_GRAPH = "user-permissions-entity-graph";
     
+    @NotNull
     @Pattern(regexp = CommonConstant.EMAIL_PATTERN)
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role")
     private UserRole role;
     
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "user_scope")
     private UserScope scope;
     
+    @NotEmpty
     @OneToMany(mappedBy = "id.user", cascade = CascadeType.PERSIST)
     private Set<BuildingPermissionEntity> permissions = new HashSet<>();
     
@@ -67,9 +74,11 @@ public class UserEntity extends AbstractAuditableEntity {
     @Column(name = "phone_verified")
     private boolean phoneVerified;
     
+    @NotNull
     @Column(name = "first_name", length = 50)
     private String firstName;
     
+    @NotNull
     @Column(name = "last_name", length = 100)
     private String lastName;
     

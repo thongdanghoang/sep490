@@ -67,41 +67,7 @@
         </div>
     </div>
 
-    <!-- Role -->
-    <h2 class="font-semibold text-xl">
-        {{ "enterprise.Users.role" | translate }}
-    </h2>
-    <div class="grid grid-cols-12 gap-4 items-center my-3" errorMessages>
-        <label
-            for="buildingPermissionRole"
-            class="font-normal md:col-span-3 col-span-12"
-            >{{ "enterprise.Users.role" | translate }}</label
-        >
-        <div class="md:col-span-6 col-span-12">
-            <p-select
-                formControlName="buildingPermissionRole"
-                id="buildingPermissionRole"
-                optionValue="value"
-                [options]="permissionRoleOptions"
-                optionLabel="label"
-                [placeholder]="
-                    'enterprise.Users.placeholders.selectRole' | translate
-                "
-                class="w-full"
-            >
-                <ng-template #selectedItem let-selectedOption>
-                    <div>
-                        {{ selectedOption.label | translate }}
-                    </div></ng-template
-                >
-                <ng-template #item let-item
-                    ><div>{{ item.label | translate }}</div></ng-template
-                >
-            </p-select>
-            <form-field-error></form-field-error>
-        </div>
-    </div>
-
+    <!-- Scope -->
     <h2 class="font-semibold text-xl">
         {{ "enterprise.Users.scope" | translate }}
     </h2>
@@ -109,7 +75,16 @@
         <label for="scope" class="font-normal md:col-span-3 col-span-12">
             {{ "enterprise.Users.scope" | translate }}
         </label>
-        <div class="md:col-span-3 col-span-12" errorMessages>
+        <div
+            class="md:col-span-3 col-span-12"
+            [ngClass]="
+                enterpriseUserStructure.scope.value ===
+                UserScope[UserScope.BUILDING]
+                    ? 'md:col-span-3'
+                    : 'md:col-span-6'
+            "
+            errorMessages
+        >
             <p-select
                 formControlName="scope"
                 id="scope"
@@ -133,27 +108,118 @@
             <form-field-error></form-field-error>
         </div>
         <div
-            class="md:col-span-3 col-span-12"
+            class="md:col-span-3 col-span-12 *:w-full"
             *ngIf="
                 enterpriseUserStructure.scope.value ===
                 UserScope[UserScope.BUILDING]
             "
-            errorMessages
         >
             <p-multiselect
-                class="w-full"
                 [options]="mockBuildings"
+                [(ngModel)]="selectedBuilding"
+                [ngModelOptions]="{ standalone: true }"
                 optionLabel="name"
-                optionValue="id"
                 [placeholder]="
                     'enterprise.Users.placeholders.selectBuildings' | translate
                 "
                 lazy="true"
-                formControlName="buildings"
             ></p-multiselect>
             <form-field-error></form-field-error>
         </div>
     </div>
+
+    <!-- Role -->
+    @if (
+        enterpriseUserStructure.scope.value === UserScope[UserScope.BUILDING]
+    ) {
+        <h2 class="font-semibold text-xl">
+            {{ "enterprise.Users.role" | translate }}
+        </h2>
+
+        <div class="grid grid-cols-12 gap-4 items-center my-3">
+            <div class="md:col-span-3 col-span-12 flex items-start h-full">
+                <label class="font-normal">{{
+                    "enterprise.Users.role" | translate
+                }}</label>
+            </div>
+            <div class="md:col-span-6 col-span-12">
+                @if (selectedBuilding?.length === 0) {
+                    PLEASE SELECT BUILDINGS TO ASSIGN ROLE FOR THIS USER
+                } @else {
+                    @for (building of selectedBuilding; track building) {
+                        <div
+                            class="flex justify-between items-center *:w-full gap-4 mb-4"
+                        >
+                            <div>{{ building.name }}</div>
+                            <p-select
+                                (onChange)="
+                                    onBuildingPermissionChange(
+                                        building.id,
+                                        $event
+                                    )
+                                "
+                                [options]="permissionRoleOptions"
+                                optionValue="value"
+                                optionLabel="label"
+                                [placeholder]="
+                                    'enterprise.Users.placeholders.selectRole'
+                                        | translate
+                                "
+                            >
+                                <ng-template #selectedItem let-selectedOption>
+                                    <div>
+                                        {{ selectedOption.label | translate }}
+                                    </div></ng-template
+                                >
+                                <ng-template #item let-item
+                                    ><div>
+                                        {{ item.label | translate }}
+                                    </div></ng-template
+                                >
+                            </p-select>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+    @if (
+        enterpriseUserStructure.scope.value === UserScope[UserScope.ENTERPRISE]
+    ) {
+        <h2 class="font-semibold text-xl">
+            {{ "enterprise.Users.role" | translate }}
+        </h2>
+        <div class="grid grid-cols-12 gap-4 items-center my-3" errorMessages>
+            <label
+                for="buildingPermissions"
+                class="font-normal md:col-span-3 col-span-12"
+                >{{ "enterprise.Users.role" | translate }}</label
+            >
+            <div class="md:col-span-6 col-span-12">
+                <p-select
+                    formControlName="buildingPermissions"
+                    id="buildingPermissions"
+                    optionValue="value"
+                    [options]="buildingPermissionScopeEnterprise"
+                    optionLabel="label"
+                    [placeholder]="
+                        'enterprise.Users.placeholders.selectRole' | translate
+                    "
+                    class="w-full"
+                >
+                    <ng-template #selectedItem let-selectedOption>
+                        <div>
+                            {{ selectedOption.label | translate }}
+                        </div></ng-template
+                    >
+                    <ng-template #item let-item
+                        ><div>{{ item.label | translate }}</div></ng-template
+                    >
+                </p-select>
+                <form-field-error></form-field-error>
+            </div>
+        </div>
+    }
 
     <!-- Buttons -->
     <div class="flex justify-end md:justify-start gap-4 *:min-w-24">

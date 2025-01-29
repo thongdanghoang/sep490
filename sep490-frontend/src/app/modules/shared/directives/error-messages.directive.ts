@@ -28,6 +28,9 @@ export class ErrorMessagesDirective
   private readonly errors = new Subject<ValidationErrors | null>();
   private readonly form: NgForm | FormGroupDirective;
 
+  private readonly INVALID_STYLE = 'ng-invalid';
+  private readonly DIRTY_STYLE = 'ng-dirty';
+
   constructor(
     @Optional() ngForm: NgForm,
     @Optional() formGroupDirective: FormGroupDirective,
@@ -76,9 +79,11 @@ export class ErrorMessagesDirective
     const element = this.findFormControlElement();
     if (element) {
       if (errors && !(this.ngControl?.untouched && this.ngControl?.pristine)) {
-        this.renderer.addClass(element, 'ng-dirty');
+        this.renderer.addClass(element, this.INVALID_STYLE);
+        this.renderer.addClass(element, this.DIRTY_STYLE);
       } else {
-        this.renderer.removeClass(element, 'ng-dirty');
+        this.renderer.removeClass(element, this.INVALID_STYLE);
+        this.renderer.removeClass(element, this.DIRTY_STYLE);
       }
     }
   }

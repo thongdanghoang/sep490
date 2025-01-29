@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AppRoutingConstants} from '../../app-routing.constant';
 import {AuthorizationComponent} from './authorization.component';
-import {CreateUserComponent} from './components/create-user/create-user.component';
+import {EnterpriseUserDetailsComponent} from './components/create-user/enterprise-user-details.component';
 import {UsersComponent} from './components/users/users.component';
 
 const routes: Routes = [
@@ -12,8 +12,12 @@ const routes: Routes = [
     children: [
       {path: AppRoutingConstants.USERS_PATH, component: UsersComponent},
       {
-        path: AppRoutingConstants.USER_DETAILS,
-        component: CreateUserComponent
+        path: `${AppRoutingConstants.USER_DETAILS}`,
+        component: EnterpriseUserDetailsComponent
+      },
+      {
+        path: `${AppRoutingConstants.USER_DETAILS}/:id`,
+        component: EnterpriseUserDetailsComponent
       }
     ]
   }

@@ -1,4 +1,4 @@
-export enum Role {
+export enum UserRole {
   ENTERPRISE_OWNER,
   ENTERPRISE_EMPLOYEE,
   SYSTEM_ADMIN

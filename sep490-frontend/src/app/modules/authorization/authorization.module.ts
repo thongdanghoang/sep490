@@ -3,12 +3,16 @@ import {SharedModule} from '../shared/shared.module';
 
 import {AuthorizationRoutingModule} from './authorization-routing.module';
 import {AuthorizationComponent} from './authorization.component';
-import {CreateUserComponent} from './components/create-user/create-user.component';
+import {EnterpriseUserDetailsComponent} from './components/create-user/enterprise-user-details.component';
 import {UsersComponent} from './components/users/users.component';
 import {UserService} from './services/user.service';
 
 @NgModule({
-  declarations: [AuthorizationComponent, CreateUserComponent, UsersComponent],
+  declarations: [
+    AuthorizationComponent,
+    EnterpriseUserDetailsComponent,
+    UsersComponent
+  ],
   imports: [SharedModule, AuthorizationRoutingModule],
   providers: [UserService]
 })

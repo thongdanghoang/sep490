@@ -1,7 +1,6 @@
 package sep490.idp.service.impl;
 
 import commons.springfw.impl.mappers.CommonMapper;
-import commons.springfw.impl.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,14 +17,10 @@ import sep490.common.api.exceptions.BusinessException;
 import sep490.common.api.security.UserRole;
 import sep490.common.api.security.UserScope;
 import sep490.common.api.utils.CommonUtils;
-import sep490.idp.dto.NewEnterpriseUserDTO;
 import sep490.idp.dto.SignupDTO;
 import sep490.idp.dto.SignupResult;
 import sep490.idp.dto.UserCriteriaDTO;
-import sep490.idp.entity.BuildingPermissionEntity;
 import sep490.idp.entity.UserEntity;
-import sep490.idp.mapper.EnterpriseUserMapper;
-import sep490.idp.repository.BuildingRepository;
 import sep490.idp.repository.UserRepository;
 import sep490.idp.service.UserService;
 import sep490.idp.utils.IEmailUtil;
@@ -50,8 +45,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     @Qualifier("signupValidator")
     private final Validator<SignupDTO> validator;
-    private final EnterpriseUserMapper userMapper;
-    private final BuildingRepository buildingRepo;
     private final IMessageUtil messageUtil;
     private final IEmailUtil emailUtil;
     @Value("${spring.application.homepage}")
@@ -129,46 +122,21 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public void createNewUser(NewEnterpriseUserDTO dto) {
-        var user = userMapper.createNewEnterpriseUser(dto);
+    public void createOrUpdateEnterpriseUser(UserEntity user) {
+        // TODO: [TRAB] need call adapter to validate?
+        
         if (userRepo.existsByEmail(user.getEmail())) {
             throw new BusinessException("email", "email.exist");
         }
-        mappingUserPermission(dto, user);
-        String password = CommonUtils.alphaNumericString(12);
+        
+        var password = CommonUtils.alphaNumericString(12);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(UserRole.ENTERPRISE_EMPLOYEE);
         
-        SEPMailMessage message = populateNewUserMailMessage(user.getEmail(), password);
-        emailUtil.sendMail(message);
-        
         userRepo.save(user);
-    }
-    
-    private void mappingUserPermission(NewEnterpriseUserDTO dto, UserEntity user) throws BusinessException {
-        if (user.getScope() == UserScope.ENTERPRISE) {
-            var currentUserEmail = SecurityUtils.getCurrentUserEmail().orElseThrow();
-            var owner = userRepo.findByEmail(currentUserEmail).orElseThrow();
-            var buildingPermissionEntitySet = owner
-                    .getPermissions()
-                    .stream()
-                    .map(p -> p.getId().getBuildingId())
-                    .map(bId -> new BuildingPermissionEntity(bId, user, dto.buildingPermissionRole()))
-                    .collect(Collectors.toSet());
-            
-            user.setPermissions(buildingPermissionEntitySet);
-        } else if (user.getScope() == UserScope.BUILDING) {
-            if (CollectionUtils.isEmpty(dto.buildings()) || !buildingRepo.existsAllByIdIn(dto.buildings())) {
-                throw new BusinessException("buildings", "buildings.invalid");
-            }
-            var buildingPermissionEntitySet =
-                    dto.buildings()
-                       .stream()
-                       .map(bId -> new BuildingPermissionEntity(bId, user, dto.buildingPermissionRole()))
-                       .collect(Collectors.toSet());
-            
-            user.setPermissions(buildingPermissionEntitySet);
-        }
+        
+        var message = populateNewUserMailMessage(user.getEmail(), password);
+        emailUtil.sendMail(message);
     }
     
     private SEPMailMessage populateNewUserMailMessage(String email, String password) {
@@ -184,4 +152,16 @@ public class UserServiceImpl implements UserService {
         
         return message;
     }
+    
+    @Override
+    public UserEntity getEnterpriseUserDetail(UUID id) {
+        return userRepo.findByIdWithBuildingPermissions(id).orElseThrow();
+    }
+    
+    @Override
+    public void updateEnterpriseUser(UserEntity user) {
+        // TODO: [TRAB] need call adapter to validate?
+        userRepo.save(user);
+    }
+    
 }
