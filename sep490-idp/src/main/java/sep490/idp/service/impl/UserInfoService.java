@@ -42,6 +42,7 @@ public class UserInfoService {
     
     public Map<String, Object> getCustomClaimsForJwtAuthenticationToken(String email) {
         Map<String, Object> claims = new HashMap<>();
+        // TODO: [TRAB] check if user already login, why not get user entity from security context instead of use repository ?
         var user = userRepository.findByEmail(email).orElseThrow();
         var buildingPermissions = buildingPermissionRepository
                 .findAllByUserId(user.getId())

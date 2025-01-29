@@ -19,12 +19,39 @@ const iconDefault = L.icon({
 });
 L.Marker.prototype.options.icon = iconDefault;
 
+export enum ViewMode {
+  LIST = 'list',
+  MAP = 'map'
+}
+
+export interface Building {
+  name: string;
+  floors: number;
+  squareMeters: number;
+  status: string; // 'active' | 'inactive'
+  validFromInclusive?: Date;
+  validToInclusive?: Date;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
+}
+
 @Component({
   selector: 'app-building',
   templateUrl: './buildings.component.html',
   styleUrl: './buildings.component.css'
 })
 export class BuildingsComponent implements AfterViewInit {
+  viewMode: ViewMode = ViewMode.MAP;
+
+  justifyOptions: any[] = [
+    {icon: 'pi pi-map', value: ViewMode.MAP},
+    {icon: 'pi pi-list', value: ViewMode.LIST}
+  ];
+
+  mockBuildings: Building[] = [];
+
   private map!: L.Map;
   private states!: geojson.GeoJsonObject | geojson.GeoJsonObject[] | null;
 
@@ -44,6 +71,14 @@ export class BuildingsComponent implements AfterViewInit {
       this.states = states;
       this.initStatesLayer();
     });
+  }
+
+  get mapView(): boolean {
+    return this.viewMode === ViewMode.MAP;
+  }
+
+  get listView(): boolean {
+    return this.viewMode === ViewMode.LIST;
   }
 
   private initMap(): void {

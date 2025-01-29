@@ -23,6 +23,7 @@ import {PaginatorModule} from 'primeng/paginator';
 import {PasswordModule} from 'primeng/password';
 import {RippleModule} from 'primeng/ripple';
 import {Select} from 'primeng/select';
+import {SelectButtonModule} from 'primeng/selectbutton';
 import {TableModule} from 'primeng/table';
 import {TabMenuModule} from 'primeng/tabmenu';
 import {ToastModule} from 'primeng/toast';
@@ -35,6 +36,7 @@ import {TranslateParamsPipe} from './pipes/translate-params.pipe';
 import {ModalProvider} from './services/modal-provider';
 import {FormFieldErrorComponent} from './components/form/form-field-error/form-field-error.component';
 import {PaymentStatusComponent} from './components/payment-status/payment-status.component';
+import {CardTemplateComponent} from './components/card/card-template/card-template.component';
 
 const primeNgModules = [
   AutoFocusModule,
@@ -52,6 +54,7 @@ const primeNgModules = [
   MenuModule,
   MenubarModule,
   Select,
+  SelectButtonModule,
   TableModule,
   TabMenuModule,
   ToastModule,
@@ -80,7 +83,8 @@ const commons = [
     ErrorMessagesDirective,
     FormFieldErrorDirective,
     FormFieldErrorComponent,
-    PaymentStatusComponent
+    PaymentStatusComponent,
+    CardTemplateComponent
   ],
   imports: [...commons, ...primeNgModules],
   exports: [
@@ -92,7 +96,8 @@ const commons = [
     ErrorMessagesDirective,
     FormFieldErrorDirective,
     FormFieldErrorComponent,
-    PaymentStatusComponent
+    PaymentStatusComponent,
+    CardTemplateComponent
   ],
   providers: [DatePipe, ModalProvider]
 })

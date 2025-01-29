@@ -1,0 +1,21 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="EnterpriseApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <envs>
+      <env name="DB_HOST" value="localhost" />
+      <env name="DB_NAME" value="sep490_enterprise" />
+      <env name="DB_PORT" value="5432" />
+      <env name="FLYWAY_OUTPUT_QUERIES" value="true" />
+      <env name="HIBERNATE_SQL_LOG_LEVEL" value="DEBUG" />
+      <env name="HIBERNATE_SQL_PARAM_LOG_LEVEL" value="DEBUG" />
+      <env name="ISSUER_URI" value="http://localhost:8180" />
+      <env name="POSTGRES_PASSWORD" value="postgres" />
+      <env name="POSTGRES_USER" value="postgres" />
+      <env name="SPRING_SECURITY_LOG_LEVEL" value="DEBUG" />
+    </envs>
+    <module name="enterprise.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="enterprise.EnterpriseApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
