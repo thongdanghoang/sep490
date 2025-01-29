@@ -16,8 +16,11 @@ public class MvcUserContextData extends UserContextData {
     public MvcUserContextData(@NotNull UserEntity userEntity,
                               List<GrantedAuthority> authorities,
                               List<BuildingPermissionDTO> permissions) {
-        super(userEntity.getEmail(), userEntity.getEnterprise().getId(),
-                userEntity.getPassword(), List.copyOf(authorities), List.copyOf(permissions));
+        super(userEntity.getEmail(),
+              userEntity.getEnterprise().getId(),
+                userEntity.getPassword(),
+              List.copyOf(authorities),
+              List.copyOf(permissions));
         this.userEntity = userEntity;
     }
 }

@@ -1,9 +1,11 @@
 package enterprise.securities;
 
+import commons.springfw.impl.audit.AuditorAwareImpl;
 import commons.springfw.impl.filters.MonitoringFilter;
 import commons.springfw.impl.securities.JwtAuthenticationConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableMethodSecurity(jsr250Enabled = true)
@@ -23,8 +26,18 @@ public class ResourceServerConfig {
     }
     
     @Bean
+    public AuditorAware<String> auditorAware() {
+        return new AuditorAwareImpl();
+    }
+    
+    @Bean
     public JwtAuthenticationConverter converter() {
         return new JwtAuthenticationConverter();
+    }
+    
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
     
     @Bean

@@ -1,3 +1,7 @@
+exchangerate-api:
+  key: ${EXCHANGERATE_API_KEY}
+  url: https://v6.exchangerate-api.com/v6/
+
 spring:
   security:
     oauth2:

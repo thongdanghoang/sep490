@@ -1,7 +1,23 @@
-<div class="relative h-screen *:z-0">
-    <div class="absolute top-0 left-0 right-0 bottom-0">
-        <div class="border-black border-2 border-solid h-full">
-            <div class="h-full" id="map"></div>
-        </div>
-    </div>
+<div class="">
+    <p-selectbutton
+        [options]="justifyOptions"
+        [(ngModel)]="viewMode"
+        optionValue="value"
+    >
+        <ng-template #item let-item>
+            <i [class]="item.icon"></i>
+        </ng-template>
+    </p-selectbutton>
 </div>
+
+<div [hidden]="listView" class="border-black border-2 border-solid h-svh">
+    <div class="h-full" id="map"></div>
+</div>
+
+@if (listView) {
+    <card-template>
+        <div header>header</div>
+        <div body>body</div>
+        <div footer>footer</div>
+    </card-template>
+}

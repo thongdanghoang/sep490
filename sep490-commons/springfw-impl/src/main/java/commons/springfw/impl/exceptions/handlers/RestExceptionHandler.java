@@ -19,12 +19,10 @@ import java.util.NoSuchElementException;
 public class RestExceptionHandler {
     
     private static TechnicalErrorResponse technicalError(Throwable exception, String errorMsg) {
-        log.error("Debug only. Correlation ID: {}", MDC.get(MDCContext.CORRELATION_ID), exception);
         return new TechnicalErrorResponse(MDC.get(MDCContext.CORRELATION_ID), errorMsg);
     }
     
     private static BusinessErrorResponse businessError(BusinessException exception) {
-        log.error("Debug only. Correlation ID: {}", MDC.get(MDCContext.CORRELATION_ID), exception);
         return new BusinessErrorResponse(
                 MDC.get(MDCContext.CORRELATION_ID),
                 exception.getField(),
