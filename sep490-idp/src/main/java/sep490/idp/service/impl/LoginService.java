@@ -24,7 +24,7 @@ public class LoginService {
     public void login(UserEntity user) {
         var permissions = buildingPermissionRepository.findAllByUserId(user.getId());
         var buildingPermissions = permissions.stream()
-                                             .map(e -> new BuildingPermissionDTO(e.getId().getBuildingId(), e.getRole()))
+                                             .map(e -> new BuildingPermissionDTO(e.getBuilding(), e.getRole()))
                                              .toList();
         var auth = new PasskeyAuthenticationToken(new MvcUserContextData(user, IdpSecurityUtils.getAuthoritiesFromUserRole(user), buildingPermissions));
         IdpSecurityUtils.storeAuthenticationToContext(auth, request, response);

@@ -81,13 +81,11 @@ export class UsersComponent
     this.cols.push({
       field: 'role',
       header: 'enterprise.Users.table.role',
-      sortable: true,
       templateRef: this.roleTemplate
     });
     this.cols.push({
       field: 'scope',
       header: 'enterprise.Users.table.scope',
-      sortable: true,
       templateRef: this.scopeTemplate
     });
     this.cols.push({

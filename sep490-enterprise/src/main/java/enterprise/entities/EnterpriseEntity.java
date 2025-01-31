@@ -3,6 +3,7 @@ package enterprise.entities;
 import commons.springfw.impl.entities.AbstractAuditableEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;

@@ -1,45 +1,49 @@
 package sep490.idp.entity;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import sep490.common.api.security.BuildingPermissionRole;
 
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "building_permission")
-@Getter
+@Table(name = "enterprise_user_building_permissions")
+@AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class BuildingPermissionEntity {
-
-    @EmbeddedId
-    private BuildingPermissionId id;
-
+    
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    
+    @NotNull
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
+    
+    @Column(name = "building_id")
+    private UUID building;
+    
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
+    @Column(name = "permission")
     private BuildingPermissionRole role;
     
-    public BuildingPermissionEntity(UUID buildingId, UserEntity user, BuildingPermissionRole role) {
-        this.id = new BuildingPermissionId(buildingId, user);
-        this.role = role;
-    }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (!(o instanceof BuildingPermissionEntity that)) { return false; }
-        return Objects.equals(id, that.id) && role == that.role;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, role);
-    }
 }

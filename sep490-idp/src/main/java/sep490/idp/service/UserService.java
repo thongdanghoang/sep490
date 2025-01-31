@@ -21,6 +21,4 @@ public interface UserService {
     void createOrUpdateEnterpriseUser(UserEntity user);
     
     UserEntity getEnterpriseUserDetail(UUID id);
-    
-    void updateEnterpriseUser(UserEntity user);
 }

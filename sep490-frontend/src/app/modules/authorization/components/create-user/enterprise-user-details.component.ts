@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Component} from '@angular/core';
 import {
   AbstractControl,
+  FormArray,
   FormBuilder,
   FormControl,
   ValidationErrors,
@@ -11,14 +12,13 @@ import {
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {MessageService} from 'primeng/api';
-import {SelectChangeEvent} from 'primeng/select';
 import {filter, map, switchMap, takeUntil, tap} from 'rxjs';
-import {v4 as uuidv4} from 'uuid';
 import {UUID} from '../../../../../types/uuid';
 import {AppRoutingConstants} from '../../../../app-routing.constant';
 import {AbstractFormComponent} from '../../../shared/components/form/abstract-form-component';
 import {SelectableItem} from '../../../shared/models/models';
 import {BuildingPermissionRole} from '../../enums/building-permission-role';
+import {UserRole} from '../../enums/role-names';
 import {UserScope} from '../../enums/user-scope';
 import {
   Building,
@@ -26,6 +26,8 @@ import {
   EnterpriseUserDetails
 } from '../../models/enterprise-user';
 import {UserService} from '../../services/user.service';
+import {MultiSelectChangeEvent} from 'primeng/multiselect';
+import {SelectChangeEvent} from 'primeng/select';
 
 @Component({
   selector: 'app-create-user',
@@ -39,13 +41,19 @@ export class EnterpriseUserDetailsComponent extends AbstractFormComponent<Enterp
     email: new FormControl<string>('', [Validators.required, Validators.email]),
     firstName: new FormControl<string>('', [Validators.required]),
     lastName: new FormControl<string>('', [Validators.required]),
+    role: new FormControl(UserRole[UserRole.ENTERPRISE_EMPLOYEE], {
+      nonNullable: true
+    }),
     scope: new FormControl<string>('', [Validators.required]),
-    buildingPermissions: new FormControl<BuildingPermission[]>(
+    buildingPermissions: new FormArray([]),
+    selectedBuildingIds: new FormControl<UUID[]>(
       [],
-      [this.buildingValidator().bind(this)]
-    )
+      [this.selectedBuildingIdsValidator().bind(this)]
+    ),
+    enterprisePermission: new FormControl<BuildingPermissionRole | null>(null, [
+      this.enterprisePermissionValidator().bind(this)
+    ])
   };
-  protected readonly UserScope = UserScope;
   protected permissionRoleOptions: SelectableItem<string>[] = [
     {
       disabled: false,
@@ -63,68 +71,54 @@ export class EnterpriseUserDetailsComponent extends AbstractFormComponent<Enterp
       label: 'enum.permissionRole.AUDITOR'
     }
   ];
-  protected buildingPermissionScopeEnterprise: SelectableItem<
-    BuildingPermission[]
-  >[] = [
+  protected buildingPermissionScopeEnterprise: SelectableItem<string>[] = [
     {
       disabled: false,
-      value: [
-        {
-          role: BuildingPermissionRole[
-            BuildingPermissionRole.MANAGER
-          ] as keyof typeof BuildingPermissionRole
-        }
-      ],
+      value: BuildingPermissionRole[
+        BuildingPermissionRole.MANAGER
+      ] as keyof typeof BuildingPermissionRole,
       label: 'enum.permissionRole.MANAGER'
     },
     {
       disabled: false,
-      value: [
-        {
-          role: BuildingPermissionRole[
-            BuildingPermissionRole.STAFF
-          ] as keyof typeof BuildingPermissionRole
-        }
-      ],
+      value: BuildingPermissionRole[
+        BuildingPermissionRole.STAFF
+      ] as keyof typeof BuildingPermissionRole,
       label: 'enum.permissionRole.STAFF'
     },
     {
       disabled: false,
-      value: [
-        {
-          role: BuildingPermissionRole[
-            BuildingPermissionRole.AUDITOR
-          ] as keyof typeof BuildingPermissionRole
-        }
-      ],
+      value: BuildingPermissionRole[
+        BuildingPermissionRole.AUDITOR
+      ] as keyof typeof BuildingPermissionRole,
       label: 'enum.permissionRole.AUDITOR'
     }
   ];
-  protected scopeOptions: SelectableItem<
-    keyof typeof BuildingPermissionRole
-  >[] = [
+  protected scopeOptions: SelectableItem<keyof typeof UserScope>[] = [
     {
       disabled: false,
-      value: UserScope[
-        UserScope.ENTERPRISE
-      ] as keyof typeof BuildingPermissionRole,
+      value: UserScope[UserScope.ENTERPRISE] as keyof typeof UserScope,
       label: 'enum.scope.ENTERPRISE'
     },
     {
       disabled: false,
-      value: UserScope[
-        UserScope.BUILDING
-      ] as keyof typeof BuildingPermissionRole,
+      value: UserScope[UserScope.BUILDING] as keyof typeof UserScope,
       label: 'enum.scope.BUILDING'
     }
   ];
-
+  // TODO: [thongdanghoang] integrate with enterprise use case
   protected mockBuildings: Building[] = [
-    {id: uuidv4() as UUID, name: 'Building 1'},
-    {id: uuidv4() as UUID, name: 'Building 2'},
-    {id: uuidv4() as UUID, name: 'Building 3'}
+    {id: 'c42cfe00-f32b-42cc-8b6c-9b495ad1f726' as UUID, name: 'Building 1'},
+    {id: 'e1a5f984-8fb4-4a4a-847f-e73fcd139829' as UUID, name: 'Building 2'},
+    {id: '901e46c3-ec95-45b5-b124-6945a6f8fe83' as UUID, name: 'Building 3'}
   ];
-  protected selectedBuilding: Building[] = [];
+  protected selectableBuildings: SelectableItem<any>[] = this.mockBuildings.map(
+    building => ({
+      disabled: false,
+      value: building.id,
+      label: building.name
+    })
+  );
 
   constructor(
     httpClient: HttpClient,
@@ -138,29 +132,98 @@ export class EnterpriseUserDetailsComponent extends AbstractFormComponent<Enterp
     super(httpClient, formBuilder, notificationService, translate);
   }
 
-  onBuildingPermissionChange(buildingId: UUID, event: SelectChangeEvent): void {
-    const role = event.value as keyof typeof BuildingPermissionRole;
-    const buildingPermission =
-      this.enterpriseUserStructure.buildingPermissions.value?.find(
-        permission => permission.buildingId === buildingId
+  onBuildingSelect(event: MultiSelectChangeEvent): void {
+    const selectedBuildingIds = event.value;
+    const currentBuildingIds = this.buildingPermissions.controls.map(
+      control => control.value.buildingId
+    );
+    const buildingIdsToAdd = selectedBuildingIds.filter(
+      (id: UUID): boolean => !currentBuildingIds.includes(id)
+    );
+    const buildingIdsToRemove = currentBuildingIds.filter(
+      (id: UUID): boolean => !selectedBuildingIds.includes(id)
+    );
+    buildingIdsToRemove.forEach(buildingId => {
+      const index = this.buildingPermissions.controls.findIndex(
+        control => control.value.buildingId === buildingId
       );
-    if (buildingPermission) {
-      buildingPermission.role = role;
-    } else {
-      if (this.enterpriseUserStructure.buildingPermissions.value) {
-        this.enterpriseUserStructure.buildingPermissions.value?.push({
-          buildingId,
-          role
-        });
-      } else {
-        this.enterpriseUserStructure.buildingPermissions.setValue([
-          {
-            buildingId,
-            role
-          }
-        ]);
+      if (index !== -1) {
+        this.removeBuildingPermission(index);
       }
+    });
+    buildingIdsToAdd.forEach((buildingId: UUID): void => {
+      this.addBuildingPermission(buildingId);
+    });
+  }
+
+  onEnterprisePermissionChange(event: SelectChangeEvent): void {
+    this.enterpriseUserStructure.buildingPermissions.clear();
+    this.addBuildingPermission(null, event.value);
+  }
+
+  onScopeChange(): void {
+    this.buildingPermissions.clear();
+    this.enterpriseUserStructure.selectedBuildingIds.setValue([]);
+    this.enterpriseUserStructure.enterprisePermission.setValue(null);
+  }
+
+  get isEdit(): boolean {
+    return !!this.enterpriseUserStructure.id.value;
+  }
+
+  get scopeBuildings(): boolean {
+    return (
+      this.enterpriseUserStructure.scope.value === UserScope[UserScope.BUILDING]
+    );
+  }
+
+  get scopeEnterprise(): boolean {
+    return (
+      this.enterpriseUserStructure.scope.value ===
+      UserScope[UserScope.ENTERPRISE]
+    );
+  }
+
+  get roleEmployee(): boolean {
+    return (
+      this.enterpriseUserStructure.role.value ===
+      UserRole[UserRole.ENTERPRISE_EMPLOYEE]
+    );
+  }
+
+  get buildingPermissions(): FormArray {
+    return this.formGroup.get('buildingPermissions') as FormArray;
+  }
+
+  getBuildingName(control: AbstractControl): string {
+    const building = this.mockBuildings.find(
+      b => b.id === control.value.buildingId
+    );
+    return building?.name ?? '';
+  }
+
+  addBuildingPermission(
+    buildingId: UUID | null,
+    role?: keyof typeof BuildingPermissionRole
+  ): void {
+    this.buildingPermissions.controls.push(
+      this.formBuilder.group({
+        buildingId: new FormControl(buildingId),
+        role: new FormControl(role, [Validators.required])
+      })
+    );
+  }
+
+  removeBuildingPermission(index: number): void {
+    this.buildingPermissions.removeAt(index);
+  }
+
+  override reset(): void {
+    if (this.isEdit) {
+      return this.initializeData();
     }
+    this.buildingPermissions.clear();
+    super.reset();
   }
 
   protected initializeData(): void {
@@ -172,27 +235,15 @@ export class EnterpriseUserDetailsComponent extends AbstractFormComponent<Enterp
         tap(id => this.enterpriseUserStructure.id.setValue(id)),
         switchMap(id => this.userService.getUserById(id))
       )
-      .subscribe(user => this.formGroup.patchValue(user));
+      .subscribe(user => {
+        this.formGroup.patchValue(user);
+        this.initializeBuildingPermissions(user.buildingPermissions);
+        this.initializeSelectedBuildingIds();
+        this.initializeEnterprisePermission();
+      });
   }
 
   protected initializeFormControls(): {[p: string]: AbstractControl} {
-    this.enterpriseUserStructure.scope.valueChanges
-      .pipe(
-        filter(
-          (): boolean =>
-            !(
-              this.enterpriseUserStructure.scope.untouched &&
-              this.enterpriseUserStructure.scope.pristine
-            )
-        ),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(value => {
-        if (value === UserScope[UserScope.ENTERPRISE]) {
-          this.enterpriseUserStructure.buildingPermissions.setValue([]);
-          this.selectedBuilding = [];
-        }
-      });
     return this.enterpriseUserStructure;
   }
 
@@ -210,18 +261,64 @@ export class EnterpriseUserDetailsComponent extends AbstractFormComponent<Enterp
     ]);
   }
 
-  private buildingValidator(): ValidatorFn {
+  private initializeBuildingPermissions(
+    buildingPermissions: BuildingPermission[]
+  ): void {
+    // Clear the existing FormArray
+    this.buildingPermissions.clear();
+
+    // Add a FormGroup for each building permission
+    buildingPermissions.forEach(permission => {
+      this.buildingPermissions.push(
+        this.formBuilder.group({
+          buildingId: new FormControl(permission.buildingId),
+          role: new FormControl(permission.role)
+        })
+      );
+    });
+  }
+
+  private initializeSelectedBuildingIds(): void {
+    if (this.scopeBuildings) {
+      this.enterpriseUserStructure.selectedBuildingIds.setValue(
+        this.buildingPermissions.controls.map(
+          control => control.value.buildingId
+        )
+      );
+    }
+  }
+
+  private initializeEnterprisePermission(): void {
+    if (
+      this.scopeEnterprise &&
+      this.roleEmployee &&
+      this.buildingPermissions.controls.length > 0
+    ) {
+      this.enterpriseUserStructure.enterprisePermission.setValue(
+        this.buildingPermissions.controls[0].value.role
+      );
+    }
+  }
+
+  private enterprisePermissionValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!this.enterpriseUserStructure) {
         return null;
       }
-      if (
-        this.enterpriseUserStructure.scope.value ===
-        UserScope[UserScope.BUILDING]
-      ) {
-        if (control.value?.length === 0) {
-          return {required: true};
-        }
+      if (this.scopeEnterprise) {
+        return control.value ? null : {required: true};
+      }
+      return null;
+    };
+  }
+
+  private selectedBuildingIdsValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!this.enterpriseUserStructure) {
+        return null;
+      }
+      if (this.scopeBuildings) {
+        return control.value.length > 0 ? null : {required: true};
       }
       return null;
     };

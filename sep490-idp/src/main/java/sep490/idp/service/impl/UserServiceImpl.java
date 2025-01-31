@@ -27,6 +27,7 @@ import sep490.idp.utils.IEmailUtil;
 import sep490.idp.utils.IMessageUtil;
 import sep490.idp.utils.SEPMailMessage;
 import sep490.idp.validation.Validator;
+import sep490.idp.validators.UserValidator;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,6 +43,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     
     private final UserRepository userRepo;
+    private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
     @Qualifier("signupValidator")
     private final Validator<SignupDTO> validator;
@@ -56,7 +58,7 @@ public class UserServiceImpl implements UserService {
         SignupResult result = validateSignupDTO(signupDTO);
         
         if (result.isSuccess()) {
-            var user = createUser(signupDTO);
+            var user = createEnterpriseOwner(signupDTO);
             userRepo.save(user);
             result.setSuccess(true);
             result.setSuccessMessage("signup.notification");
@@ -82,7 +84,7 @@ public class UserServiceImpl implements UserService {
     }
     
     
-    private UserEntity createUser(SignupDTO signupDTO) {
+    private UserEntity createEnterpriseOwner(SignupDTO signupDTO) {
         return UserEntity.register(
                 signupDTO.getEmail(),
                 false,
@@ -123,23 +125,18 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public void createOrUpdateEnterpriseUser(UserEntity user) {
-        // TODO: [TRAB] need call adapter to validate?
-        
-        if (userRepo.existsByEmail(user.getEmail())) {
-            throw new BusinessException("email", "email.exist");
-        }
+        userValidator.validateEnterpriseOwnerManageEmployees(user);
         
         var password = CommonUtils.alphaNumericString(12);
         user.setPassword(passwordEncoder.encode(password));
-        user.setRole(UserRole.ENTERPRISE_EMPLOYEE);
         
         userRepo.save(user);
         
-        var message = populateNewUserMailMessage(user.getEmail(), password);
+        var message = sendPasswordToUserByEmail(user.getEmail(), password);
         emailUtil.sendMail(message);
     }
     
-    private SEPMailMessage populateNewUserMailMessage(String email, String password) {
+    private SEPMailMessage sendPasswordToUserByEmail(String email, String password) {
         SEPMailMessage message = new SEPMailMessage();
         
         message.setTemplateName("new-user-notify.ftl");
@@ -156,12 +153,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity getEnterpriseUserDetail(UUID id) {
         return userRepo.findByIdWithBuildingPermissions(id).orElseThrow();
-    }
-    
-    @Override
-    public void updateEnterpriseUser(UserEntity user) {
-        // TODO: [TRAB] need call adapter to validate?
-        userRepo.save(user);
     }
     
 }
