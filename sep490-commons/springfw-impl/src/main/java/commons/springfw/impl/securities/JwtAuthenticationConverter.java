@@ -44,7 +44,7 @@ public class JwtAuthenticationConverter
                     .map(permission -> {
                         var permissionMap = (LinkedTreeMap) permission;
                         return new BuildingPermissionDTO(
-                                UUID.fromString((String) permissionMap.get(BuildingPermissionDTO.Fields.id)),
+                                UUID.fromString((String) permissionMap.get(BuildingPermissionDTO.Fields.buildingId)),
                                 BuildingPermissionRole.valueOf((String) permissionMap.get(BuildingPermissionDTO.Fields.role))
                         );
                     })

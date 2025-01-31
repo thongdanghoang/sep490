@@ -26,7 +26,7 @@ export class UserService {
 
   public deleteUsers(userIds: UUID[]): Observable<void> {
     return this.httpClient.delete<void>(
-      `${AppRoutingConstants.IDP_API_URL}/enterprise-user/delete`,
+      `${AppRoutingConstants.IDP_API_URL}/enterprise-user`,
       {
         body: userIds
       }

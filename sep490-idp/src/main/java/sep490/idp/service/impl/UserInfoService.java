@@ -44,7 +44,7 @@ public class UserInfoService {
                 .findAllByUserId(user.getId())
                 .stream()
                 .map(buildingPermission -> new BuildingPermissionDTO(
-                        buildingPermission.getId().getBuildingId(),
+                        buildingPermission.getBuilding(),
                         buildingPermission.getRole()
                 ))
                 .toList();

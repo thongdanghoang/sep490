@@ -19,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     
     private final UserRepository userRepository;
     private final BuildingPermissionRepository buildingPermissionRepository;
-
+    
     @Override
     public UserDetails loadUserByUsername(String email) {
         var user = userRepository.findByEmailWithBuildingPermissions(email).orElse(null);
@@ -28,8 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         var permissions = buildingPermissionRepository.findAllByUserId(user.getId());
         var buildingPermissions = permissions.stream()
-                .map(e -> new BuildingPermissionDTO(e.getId().getBuildingId(), e.getRole()))
-                .toList();
+                                             .map(e -> new BuildingPermissionDTO(e.getBuilding(), e.getRole()))
+                                             .toList();
         return new MvcUserContextData(user, IdpSecurityUtils.getAuthoritiesFromUserRole(user), buildingPermissions);
     }
 }

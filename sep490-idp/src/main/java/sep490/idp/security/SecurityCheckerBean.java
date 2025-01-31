@@ -19,7 +19,7 @@ public class SecurityCheckerBean {
         }
         return buildingPermissions
                 .stream()
-                .map(BuildingPermissionDTO::id)
+                .map(BuildingPermissionDTO::buildingId)
                 .anyMatch(id -> id.equals(buildingId));
     }
 }

@@ -20,7 +20,7 @@ public interface UserRepository extends AbstractBaseRepository<UserEntity> {
     
     Optional<UserEntity> findByEmail(String email);
     
-    @EntityGraph(UserEntity.USER_PERMISSIONS_ENTITY_GRAPH)
+    @EntityGraph(UserEntity.WITH_ENTERPRISE_PERMISSIONS_ENTITY_GRAPH)
     @Query("""
             SELECT u
             FROM UserEntity u
@@ -28,7 +28,7 @@ public interface UserRepository extends AbstractBaseRepository<UserEntity> {
             """)
     Optional<UserEntity> findByIdWithBuildingPermissions(UUID id);
     
-    @EntityGraph(UserEntity.USER_PERMISSIONS_ENTITY_GRAPH)
+    @EntityGraph(UserEntity.WITH_ENTERPRISE_PERMISSIONS_ENTITY_GRAPH)
     @Query("""
             SELECT u
             FROM UserEntity u
@@ -36,7 +36,7 @@ public interface UserRepository extends AbstractBaseRepository<UserEntity> {
             """)
     Optional<UserEntity> findByEmailWithBuildingPermissions(String email);
     
-    @EntityGraph(UserEntity.USER_PERMISSIONS_ENTITY_GRAPH)
+    @EntityGraph(UserEntity.WITH_ENTERPRISE_PERMISSIONS_ENTITY_GRAPH)
     @Query("""
                 SELECT u
                 FROM UserEntity u
@@ -47,8 +47,8 @@ public interface UserRepository extends AbstractBaseRepository<UserEntity> {
     @Query("""
             SELECT u.id
             FROM UserEntity u
-            WHERE LOWER(u.firstName) LIKE LOWER(CONCAT('%', :name, '%'))
-            OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :name, '%'))
+            WHERE u.enterprise.role <> sep490.common.api.security.UserRole.ENTERPRISE_OWNER
+            AND (LOWER(u.firstName) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :name, '%')))
             """
     )
     Page<UUID> findByName(String name, Pageable pageable);

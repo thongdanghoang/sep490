@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import sep490.common.api.exceptions.BusinessErrorResponse;
@@ -65,6 +66,13 @@ public class RestExceptionHandler {
     public ResponseEntity<TechnicalErrorResponse> handleNoSuchElementException(NoSuchElementException ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(technicalError(ex, ex.getMessage()));
+    }
+    
+    @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
+    public ResponseEntity<TechnicalErrorResponse> handleObjectOptimisticLockingFailureException(ObjectOptimisticLockingFailureException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
                 .body(technicalError(ex, ex.getMessage()));
     }
 }

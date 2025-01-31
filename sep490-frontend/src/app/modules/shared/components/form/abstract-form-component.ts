@@ -57,11 +57,6 @@ export abstract class AbstractFormComponent<T>
 
   reset(): void {
     this.formGroup.reset();
-    this.updateFormControlsState(this.formGroup, [
-      (ctr: AbstractControl): void => ctr.markAsUntouched(),
-      (ctr: AbstractControl): void => ctr.markAsPristine(),
-      (ctr: AbstractControl): void => ctr.updateValueAndValidity()
-    ]);
   }
 
   submit(): void {
