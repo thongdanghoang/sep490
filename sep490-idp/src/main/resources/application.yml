@@ -18,6 +18,8 @@ spring:
                 - phone
             require-authorization-consent: false
             require-proof-key: true
+            token:
+              access-token-time-to-live: PT1H
   mail:
     host: ${SMTP_HOST:127.0.0.1}
     port: ${SMTP_PORT:1025}
