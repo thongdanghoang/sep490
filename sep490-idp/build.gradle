@@ -35,6 +35,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	implementation 'com.webauthn4j:webauthn4j-core:0.28.3.RELEASE'
+	implementation 'com.github.vladimir-bukhtoyarov:bucket4j-core:8.0.1'
+	implementation 'com.github.ben-manes.caffeine:caffeine:3.2.0'
 
 	// Testing
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -77,4 +79,6 @@ tasks.named('processResources') {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	useTestNG()
+	useJUnit()
 }

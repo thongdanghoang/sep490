@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sep490.idp.dto.ForgotPasswordDTO;
 import sep490.idp.dto.ForgotResetPasswordDTO;
 import sep490.idp.dto.OtpDTO;
+import sep490.idp.limiter.ForgotPasswordLimiter;
 import sep490.idp.service.ForgotPasswordService;
 import sep490.idp.utils.IEmailUtil;
 import sep490.idp.utils.IMessageUtil;
@@ -26,6 +27,7 @@ public class ForgotPasswordController {
     private final IMessageUtil messageUtil;
     private final HttpSession session;
     private final IEmailUtil emailUtil;
+    private final ForgotPasswordLimiter rateLimiter;
     
     private static final String SESSION_OTP_SENT = "otp_sent";
     private static final String SESSION_OTP_VERIFIED = "otp_verified";
@@ -37,6 +39,7 @@ public class ForgotPasswordController {
     public String forgotPasswordPage(Model model) {
         session.setAttribute(SESSION_OTP_SENT, false);
         session.setAttribute(SESSION_OTP_VERIFIED, false);
+        // add message
         model.addAttribute("forgotPasswordDTO", new ForgotPasswordDTO(null));
         return "forgot-password";
     }
@@ -45,6 +48,13 @@ public class ForgotPasswordController {
     public String processForgotPassword(@ModelAttribute ForgotPasswordDTO forgotPasswordDTO,
                                         RedirectAttributes redirectAttributes) {
         String email = forgotPasswordDTO.email();
+        if (!rateLimiter.isSubmitEmailPermitted(email)) {
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, messageUtil.getMessage("forgotPassword.error.rateLimited"));
+            return "redirect:/forgot-password";
+        } else if (!rateLimiter.isSubmitOTPAvailable(email)) {
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, messageUtil.getMessage("forgotPassword.error.otpTempLock"));
+            return "redirect:/forgot-password";
+        }
         if (forgotPasswordService.sendResetPasswordEmail(email)) {
             session.setAttribute(SESSION_FORGOT_PASSWORD_EMAIL, email);
             session.setAttribute(SESSION_OTP_SENT, true);
@@ -69,8 +79,12 @@ public class ForgotPasswordController {
     }
     
     @PostMapping("/enter-otp")
-    public String verifyOtp(@ModelAttribute OtpDTO otpDTO, Model model) {
+    public String verifyOtp(@ModelAttribute OtpDTO otpDTO, Model model, RedirectAttributes redirectAttributes) {
         String email = (String) session.getAttribute(SESSION_FORGOT_PASSWORD_EMAIL);
+        if (!rateLimiter.isSubmitOTPPermitted(email)) {
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, messageUtil.getMessage("forgotPassword.error.otpRateLimited"));
+            return "redirect:/forgot-password";
+        }
         boolean isValid = forgotPasswordService.verifyOtp(otpDTO.getOtpCode(), email);
         if (isValid) {
             session.setAttribute(SESSION_OTP_VERIFIED, true);
