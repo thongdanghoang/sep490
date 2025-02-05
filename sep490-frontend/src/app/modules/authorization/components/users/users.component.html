@@ -79,8 +79,13 @@
         />
     </div>
 </ng-template>
-<ng-template #roleTemplate let-rowData>
-    <p>{{ "enum.role." + rowData.role | translate }}</p>
+<ng-template #permissionTemplate let-rowData>
+    <p>
+        <span *ngFor="let p of rowData.buildingPermissions">
+            {{ "enum.permissionRole." + p.role | translate }}
+        </span>
+        <!-- TODO: solve dupplication since user can have: STAFF, STAFF, STAFF, AUDITOR -->
+    </p>
 </ng-template>
 <ng-template #scopeTemplate let-rowData>
     <p>{{ "enum.scope." + rowData.scope | translate }}</p>

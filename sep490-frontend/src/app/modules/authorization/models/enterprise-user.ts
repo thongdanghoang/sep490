@@ -18,6 +18,7 @@ export interface EnterpriseUser extends BaseDTO {
   name: string;
   role: UserRole;
   scope: UserScope;
+  buildingPermissions: BuildingPermission[];
 }
 
 export interface Building {

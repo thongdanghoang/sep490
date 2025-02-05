@@ -76,6 +76,7 @@
         "name": "Tên",
         "email": "Email",
         "role": "Vai trò",
+        "permission": "Thẩm quyền",
         "scope": "Phạm vi"
       },
       "message": {

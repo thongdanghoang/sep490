@@ -76,6 +76,7 @@
         "name": "Name",
         "email": "Email",
         "role": "Role",
+        "permission": "Permission",
         "scope": "Scope"
       },
       "message": {

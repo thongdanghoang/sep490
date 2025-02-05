@@ -76,6 +76,7 @@
         "name": "姓名",
         "email": "电子邮件",
         "role": "角色",
+        "permission": "权限",
         "scope": "范围"
       },
       "message": {
