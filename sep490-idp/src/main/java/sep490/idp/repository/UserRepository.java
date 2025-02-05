@@ -48,10 +48,11 @@ public interface UserRepository extends AbstractBaseRepository<UserEntity> {
             SELECT u.id
             FROM UserEntity u
             WHERE u.enterprise.role <> sep490.common.api.security.UserRole.ENTERPRISE_OWNER
+            AND u.enterprise.enterprise = :enterpriseId
             AND (LOWER(u.firstName) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :name, '%')))
             """
     )
-    Page<UUID> findByName(String name, Pageable pageable);
+    Page<UUID> findByName(String name, UUID enterpriseId, Pageable pageable);
     
     @Query("""
             SELECT u

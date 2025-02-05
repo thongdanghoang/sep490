@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class JwtAuthenticationConverter
@@ -50,11 +51,17 @@ public class JwtAuthenticationConverter
                     })
                     .toList();
         }
+        UUID enterpriseUUID = Optional.ofNullable(source.getClaims().get("enterpriseId"))
+                .map(Object::toString)
+                .map(UUID::fromString)
+                .orElse(null);
+        // EnterpriseID could be null when new user just sign up and not linked to any enterprise
         
         return new JwtAuthenticationTokenDecorator(
                 source,
                 new UserContextData(
                         email,
+                        enterpriseUUID,
                         StringUtils.EMPTY,
                         List.copyOf(authorities),
                         List.copyOf(buildingPermissions)

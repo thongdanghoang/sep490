@@ -1,6 +1,5 @@
 package sep490.idp.security;
 
-
 import commons.springfw.impl.securities.UserContextData;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -17,7 +16,8 @@ public class MvcUserContextData extends UserContextData {
     public MvcUserContextData(@NotNull UserEntity userEntity,
                               List<GrantedAuthority> authorities,
                               List<BuildingPermissionDTO> permissions) {
-        super(userEntity.getEmail(), userEntity.getPassword(), List.copyOf(authorities), List.copyOf(permissions));
+        super(userEntity.getEmail(), userEntity.getEnterprise().getId(),
+                userEntity.getPassword(), List.copyOf(authorities), List.copyOf(permissions));
         this.userEntity = userEntity;
     }
 }

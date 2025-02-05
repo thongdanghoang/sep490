@@ -4,12 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.stereotype.Service;
 import sep490.common.api.dto.auth.BuildingPermissionDTO;
+import sep490.idp.entity.UserEnterpriseEntity;
 import sep490.idp.entity.UserEntity;
 import sep490.idp.repository.BuildingPermissionRepository;
 import sep490.idp.repository.UserRepository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +51,10 @@ public class UserInfoService {
                         buildingPermission.getRole()
                 ))
                 .toList();
+        claims.put("enterpriseId", Optional.ofNullable(user.getEnterprise())
+                                            .map(UserEnterpriseEntity::getEnterprise)
+                                            .map(UUID::toString)
+                                            .orElse(null));
         claims.put("permissions", buildingPermissions);
         return claims;
     }

@@ -8,6 +8,7 @@ import sep490.common.api.dto.auth.BuildingPermissionDTO;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public final class SecurityUtils {
     
@@ -17,6 +18,10 @@ public final class SecurityUtils {
     
     public static Optional<String> getCurrentUserEmail() {
         return getUserContextData().map(UserContextData::getUsername);
+    }
+
+    public static Optional<UUID> getCurrentUserEnterpriseId() {
+        return getUserContextData().map(UserContextData::getEnterpriseId);
     }
     
     public static List<BuildingPermissionDTO> getPermissions() {

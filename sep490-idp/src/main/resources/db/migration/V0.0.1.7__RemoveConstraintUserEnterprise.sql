@@ -1,0 +1,1 @@
+ALTER TABLE enterprise_users DROP CONSTRAINT enterprise_users_fk_user;
