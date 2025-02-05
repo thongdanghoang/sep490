@@ -6,6 +6,7 @@ import {AuthorizationComponent} from './authorization.component';
 import {EnterpriseUserDetailsComponent} from './components/create-user/enterprise-user-details.component';
 import {UsersComponent} from './components/users/users.component';
 import {UserService} from './services/user.service';
+import {Message} from 'primeng/message';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,7 @@ import {UserService} from './services/user.service';
     EnterpriseUserDetailsComponent,
     UsersComponent
   ],
-  imports: [SharedModule, AuthorizationRoutingModule],
+  imports: [SharedModule, AuthorizationRoutingModule, Message],
   providers: [UserService]
 })
 export class AuthorizationModule {}

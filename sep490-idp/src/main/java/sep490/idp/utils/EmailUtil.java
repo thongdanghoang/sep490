@@ -16,6 +16,7 @@ import sep490.common.api.exceptions.TechnicalException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map.Entry;
 
@@ -107,9 +108,6 @@ public class EmailUtil implements IEmailUtil {
 
     @Override
     public String maskEmail(String email) {
-        if (email == null || !email.contains("@")) {
-            throw new IllegalArgumentException("Invalid email format");
-        }
 
         String[] parts = email.split("@");
         String localPart = parts[0];
@@ -122,18 +120,18 @@ public class EmailUtil implements IEmailUtil {
 
         // Mask the domain part
         String[] domainParts = domainPart.split("\\.");
-        if (domainParts.length < 2) {
-            throw new IllegalArgumentException("Invalid domain format");
-        }
 
         String domainName = domainParts[0];
         int domainVisibleLength = Math.min(1, domainName.length());
         String maskedDomain = domainName.substring(0, domainVisibleLength)
-                + "•".repeat(domainName.length() - domainVisibleLength)
-                + "." + domainParts[1];
+                + "•".repeat(domainName.length() - domainVisibleLength);
+        
+        // Join the masked domain name with the rest of the domain parts
+        String maskedFullDomain = maskedDomain + "." + String.join(".", Arrays.copyOfRange(domainParts, 1, domainParts.length));
+
 
         // Combine masked local and domain parts
-        return maskedLocal + "@" + maskedDomain;
+        return maskedLocal + "@" + maskedFullDomain;
     }
 
 }

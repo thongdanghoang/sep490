@@ -24,7 +24,17 @@
         "exist": "电子邮件地址已存在"
       },
       "buildings": {
-        "invalid": "建筑物选择无效"
+        "invalid": "建筑物选择无效",
+        "permissionWarning": "请选择一栋建筑物来为该用户分配角色"
+      },
+      "buildingPermissions": {
+        "notEmpty": "施工权限不能为空",
+        "shouldHave": "建筑范围，员工应具有建筑许可和建筑 ID",
+        "shouldHaveUnique": "建筑范围，员工应具有唯一的建筑许可",
+        "idBuildingIsNull": "范围是企业，员工只能拥有一个建筑许可，且建筑 ID 为空"
+      },
+      "role": {
+        "enterpriseOnlyAddEmployee": "Doanh nghiệp chỉ thêm/tạo nhân viên"
       }
     }
   },
@@ -57,6 +67,7 @@
       "add": "添加用户",
       "create": "创建用户",
       "delete": "删除",
+      "detail": "详细信息",
       "deleteWithCount": "删除（{{count}}）用户",
       "email": "电子邮件",
       "firstName": "名字",
