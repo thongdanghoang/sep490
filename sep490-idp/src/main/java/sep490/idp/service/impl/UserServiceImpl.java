@@ -1,6 +1,7 @@
 package sep490.idp.service.impl;
 
 import commons.springfw.impl.mappers.CommonMapper;
+import commons.springfw.impl.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -99,8 +100,10 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public Page<UserEntity> search(SearchCriteriaDTO<UserCriteriaDTO> searchCriteria) {
+        UUID enterpriseId = SecurityUtils.getCurrentUserEnterpriseId().orElseThrow();
         var userIDs = userRepo.findByName(
                 searchCriteria.criteria().criteria(),
+                enterpriseId,
                 CommonMapper.toPageable(searchCriteria.page(), searchCriteria.sort()));
         var results = userRepo
                 .findByIDsWithPermissions(userIDs.toSet())
