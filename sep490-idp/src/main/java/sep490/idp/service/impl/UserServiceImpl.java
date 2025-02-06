@@ -30,10 +30,7 @@ import sep490.idp.utils.SEPMailMessage;
 import sep490.idp.validation.Validator;
 import sep490.idp.validators.UserValidator;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -133,14 +130,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createOrUpdateEnterpriseUser(UserEntity user) {
         userValidator.validateEnterpriseOwnerManageEmployees(user);
-        
-        var password = CommonUtils.alphaNumericString(12);
-        user.setPassword(passwordEncoder.encode(password));
-        
+        this.performCreateUserAction(user);
         userRepo.save(user);
-        
-        var message = sendPasswordToUserByEmail(user.getEmail(), password);
-        emailUtil.sendMail(message);
+    }
+
+    private void performCreateUserAction(UserEntity user) {
+        // Perform create action when create new
+        if (Objects.isNull(user.getId())) {
+            var password = CommonUtils.alphaNumericString(12);
+            user.setPassword(passwordEncoder.encode(password));
+
+            var message = sendPasswordToUserByEmail(user.getEmail(), password);
+            emailUtil.sendMail(message);
+        }
     }
     
     private SEPMailMessage sendPasswordToUserByEmail(String email, String password) {
