@@ -26,6 +26,13 @@ public abstract class EnterpriseUserMapperDecorator implements EnterpriseUserMap
     
     @Autowired
     private BuildingPermissionRepository buildingPermissionRepository;
+
+    @Override
+    public UserEntity createNewEnterpriseUser(EnterpriseUserDetailsDTO dto) {
+        UserEntity user = delegate.createNewEnterpriseUser(dto);
+        user.getEnterprise().setEnterprise(SecurityUtils.getCurrentUserEnterpriseId().orElseThrow());
+        return user;
+    }
     
     @Override
     public void updateEnterpriseUser(UserEntity user, EnterpriseUserDetailsDTO dto) {
