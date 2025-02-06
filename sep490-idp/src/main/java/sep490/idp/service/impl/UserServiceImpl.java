@@ -120,7 +120,11 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException("userIds", "user.delete.not.found",
                                         List.of(new BusinessErrorParam("ids", userIds)));
         }
-        userRepo.deleteAll(users);
+        // Stream approach to check if any user has the ENTERPRISE_OWNER role
+        if (users.stream().anyMatch(user -> user.getEnterprise().getRole() == UserRole.ENTERPRISE_OWNER)) {
+            throw new BusinessException("userIds", "user.cannot.delete.owner");
+        }
+            userRepo.deleteAll(users);
     }
     
     @Override

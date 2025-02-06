@@ -24,7 +24,17 @@
         "exist": "Email address already exists"
       },
       "buildings": {
-        "invalid": "The buildings selection is invalid"
+        "invalid": "The buildings selection is invalid",
+        "permissionWarning": "Please select a building to assign a role to this user"
+      },
+      "buildingPermissions": {
+        "notEmpty" : "Building permissions cannot be empty",
+        "shouldHave": "Building scope, employee should have building permission with building id",
+        "shouldHaveUnique": "Building scope, employee should have unique building permission",
+        "idBuildingIsNull": "Scope is enterprise, employee should have only one building permission with building id is null"
+      },
+      "role": {
+        "enterpriseOnlyAddEmployee": "企业仅添加/创建员工"
       }
     }
   },
@@ -57,6 +67,7 @@
       "add": "Add user",
       "create": "Create user",
       "delete": "Delete",
+      "detail": "Detail",
       "email": "Email",
       "firstName": "First Name",
       "lastName": "Last Name",

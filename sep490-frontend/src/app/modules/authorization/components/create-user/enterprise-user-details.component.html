@@ -1,7 +1,13 @@
 <div class="px-5">
-    <h1 class="font-bold text-lg">
-        {{ "enterprise.Users.create" | translate }}
-    </h1>
+    @if (isEdit) {
+        <h1 class="font-bold text-lg">
+            {{ "enterprise.Users.detail" | translate }}
+        </h1>
+    } @else {
+        <h1 class="font-bold text-lg">
+            {{ "enterprise.Users.create" | translate }}
+        </h1>
+    }
     <p class="font-light">
         {{ "enterprise.Users.description" | translate }}
     </p>
@@ -133,8 +139,15 @@
                         enterpriseUserStructure.buildingPermissions.controls
                             .length === 0
                     ) {
-                        TODO: replace by i18n: PLEASE SELECT BUILDINGS TO ASSIGN
-                        ROLE FOR THIS USER
+                        <p-message
+                            icon="pi pi-exclamation-triangle"
+                            severity="warn"
+                            variant="outlined"
+                            >{{
+                                "validation.business.buildings.permissionWarning"
+                                    | translate
+                            }}</p-message
+                        >
                     } @else {
                         <ng-container formArrayName="buildingPermissions"
                             ><div

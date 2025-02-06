@@ -24,7 +24,17 @@
         "exist": "Địa chỉ email đã tồn tại"
       },
       "buildings": {
-        "invalid": "Lựa chọn tòa nhà không hợp lệ"
+        "invalid": "Lựa chọn tòa nhà không hợp lệ",
+        "permissionWarning": "Vui lòng chọn một tòa nhà để chỉ định vai trò cho người dùng này"
+      },
+      "buildingPermissions": {
+        "notEmpty": "Quyền xây dựng không được để trống",
+        "shouldHave": "Phạm vi xây dựng, nhân viên phải có quyền xây dựng với ID tòa nhà",
+        "shouldHaveUnique": "Phạm vi xây dựng, nhân viên phải có quyền xây dựng duy nhất",
+        "idBuildingIsNull": "Phạm vi là doanh nghiệp, nhân viên chỉ được có một quyền xây dựng với ID tòa nhà là null"
+      },
+      "role": {
+        "enterpriseOnlyAddEmployee": "Doanh nghiệp chỉ thêm/tạo nhân viên"
       }
     }
   },
@@ -57,6 +67,7 @@
       "add": "Thêm người dùng",
       "create": "Tạo người dùng",
       "delete": "Xóa",
+      "detail": "Chi tiết",
       "deleteWithCount": "Xóa ({{count}}) người dùng",
       "email": "Email",
       "firstName": "Tên",

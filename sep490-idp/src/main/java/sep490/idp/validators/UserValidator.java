@@ -21,22 +21,22 @@ public class UserValidator {
     public void validateEnterpriseOwnerManageEmployees(UserEntity employee) {
         // TODO: replace with i18n
         if (employee.getEnterprise().getRole() != UserRole.ENTERPRISE_EMPLOYEE) {
-            throw new BusinessException("role", "Enterprise only add/create employee");
+            throw new BusinessException("role", "business.role.enterpriseOnlyAddEmployee");
         }
         if (employee.getBuildingPermissions().isEmpty()) {
-            throw new BusinessException("buildingPermissions", "buildingPermissions cannot be empty");
+            throw new BusinessException("buildingPermissions", "business.buildingPermissions.notEmpty");
         }
         if (employee.getEnterprise().getScope() == UserScope.BUILDING) {
             if (employee.getBuildingPermissions().stream()
                         .map(BuildingPermissionEntity::getBuilding)
                         .anyMatch(Objects::isNull)) {
-                throw new BusinessException("buildingPermissions", "Building scope, employee should have building permission with building id");
+                throw new BusinessException("buildingPermissions", "business.buildingPermissions.shouldHave");
             }
             if (employee.getBuildingPermissions().stream()
                         .map(BuildingPermissionEntity::getBuilding)
                         .distinct()
                         .count() != employee.getBuildingPermissions().size()) {
-                throw new BusinessException("buildingPermissions", "Building scope, employee should have unique building permission");
+                throw new BusinessException("buildingPermissions", "business.buildingPermissions.shouldHaveUnique");
             }
         }
         if (employee.getEnterprise().getScope() == UserScope.ENTERPRISE) {
@@ -45,13 +45,13 @@ public class UserValidator {
                            .map(BuildingPermissionEntity::getBuilding)
                            .anyMatch(Objects::nonNull)) {
                 throw new BusinessException("buildingPermissions",
-                                            "Scope is enterprise, employee should have only one building permission with building id is null");
+                                            "business.buildingPermissions.idBuildingIsNull");
             }
         }
         // validators need query should be last
         if (Objects.isNull(employee.getId())
             && userRepository.existsByEmail(employee.getEmail())) {
-            throw new BusinessException("email", "email.exist");
+            throw new BusinessException("email", "business.email.exist");
         }
     }
     
