@@ -34,6 +34,7 @@ import {FormFieldErrorDirective} from './directives/form-field-error.directive';
 import {TranslateParamsPipe} from './pipes/translate-params.pipe';
 import {ModalProvider} from './services/modal-provider';
 import {FormFieldErrorComponent} from './components/form/form-field-error/form-field-error.component';
+import {PaymentStatusComponent} from './components/payment-status/payment-status.component';
 
 const primeNgModules = [
   AutoFocusModule,
@@ -78,7 +79,8 @@ const commons = [
     TableTemplateComponent,
     ErrorMessagesDirective,
     FormFieldErrorDirective,
-    FormFieldErrorComponent
+    FormFieldErrorComponent,
+    PaymentStatusComponent
   ],
   imports: [...commons, ...primeNgModules],
   exports: [
@@ -89,7 +91,8 @@ const commons = [
     TableTemplateComponent,
     ErrorMessagesDirective,
     FormFieldErrorDirective,
-    FormFieldErrorComponent
+    FormFieldErrorComponent,
+    PaymentStatusComponent
   ],
   providers: [DatePipe, ModalProvider]
 })

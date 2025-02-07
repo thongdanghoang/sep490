@@ -119,5 +119,17 @@
   },
   "table": {
     "paginatorString": "显示第 {first} 到第 {last} 条，共 {totalRecords} 条记录"
+  },
+  "payment": {
+    "status": {
+      "success": {
+        "title": "支付成功！",
+        "content": "您的付款已完成。"
+      },
+      "error": {
+        "title": "支付失败！",
+        "content": "请稍后重试或使用其他付款方式。"
+      }
+    }
   }
 }

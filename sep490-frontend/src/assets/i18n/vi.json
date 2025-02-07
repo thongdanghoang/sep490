@@ -119,5 +119,17 @@
   },
   "table": {
     "paginatorString": "Hiển thị {first} đến {last} trong tổng số {totalRecords}"
+  },
+  "payment": {
+    "status": {
+      "success": {
+        "title": "Thanh toán thành công!",
+        "content": "Thanh toán của bạn đã hoàn tất."
+      },
+      "error": {
+        "title": "Thanh toán không thành công!",
+        "content": "Vui lòng thử lại sau hoặc sử dụng phương thức thanh toán khác."
+      }
+    }
   }
 }

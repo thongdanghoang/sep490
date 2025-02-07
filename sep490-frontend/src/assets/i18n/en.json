@@ -119,5 +119,17 @@
   },
   "table": {
     "paginatorString": "Showing {first} to {last} of {totalRecords}"
+  },
+  "payment": {
+    "status": {
+      "success": {
+        "title": "Payment Successful!",
+        "content": "Your payment has been completed."
+      },
+      "error": {
+        "title": "Payment Failed!",
+        "content": "Please try again later or use another payment method."
+      }
+    }
   }
 }
