@@ -1,25 +1,4 @@
 spring:
-  security:
-    oauth2:
-      authorizationserver:
-        client:
-          oidc-client:
-            registration:
-              client-id: ${OIDC_CLIENT_ID}
-              client-authentication-methods:
-                - "none"
-              authorization-grant-types:
-                - "authorization_code"
-              redirect-uris: ${OIDC_REDIRECT_URI}
-              post-logout-redirect-uris: ${OIDC_POST_LOGOUT_REDIRECT_URI}
-              scopes:
-                - openid
-                - email
-                - phone
-            require-authorization-consent: false
-            require-proof-key: true
-            token:
-              access-token-time-to-live: PT1H
   mail:
     host: ${SMTP_HOST:127.0.0.1}
     port: ${SMTP_PORT:1025}
@@ -36,7 +15,6 @@ spring:
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
   flyway:
-    default-schema: ${DB_SCHEMA}
     output-query-results: ${FLYWAY_OUTPUT_QUERIES:false}
     create-schemas: false
   jpa:

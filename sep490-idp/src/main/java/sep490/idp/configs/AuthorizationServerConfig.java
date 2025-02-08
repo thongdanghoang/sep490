@@ -5,6 +5,8 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import commons.springfw.impl.filters.MonitoringFilter;
+import commons.springfw.impl.securities.JwtAuthenticationConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,12 +18,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.encrypt.KeyStoreKeyFactory;
-import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
+import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -31,18 +40,41 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import commons.springfw.impl.filters.MonitoringFilter;
-import commons.springfw.impl.securities.JwtAuthenticationConverter;
 import sep490.idp.service.impl.UserInfoService;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Configuration
+@RequiredArgsConstructor
 public class AuthorizationServerConfig {
+    
+    private final PasswordEncoder passwordEncoder;
+    
+    @Bean
+    public RegisteredClientRepository registeredClientRepository() {
+        var testcontainers = RegisteredClient
+                .withId(UUID.randomUUID().toString())
+                .clientId("testcontainers")
+                .clientSecret(passwordEncoder.encode("testcontainers"))
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .redirectUri("http://localhost:8080/login/oauth2/code/testcontainers")
+                .scope(OidcScopes.OPENID)
+                .scope(OidcScopes.PROFILE)
+                .scope(OidcScopes.PHONE)
+                .scope(OidcScopes.EMAIL)
+                .clientSettings(ClientSettings.builder()
+                                              .requireProofKey(false)
+                                              .requireAuthorizationConsent(false)
+                                              .build())
+                .build();
+        return new InMemoryRegisteredClientRepository(testcontainers);
+    }
     
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
