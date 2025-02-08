@@ -1,0 +1,92 @@
+services:
+  sep490_identity_provider:
+    image: thongdh3401/sep490-idp:08.02.2025
+    container_name: sep490_identity_provider
+    environment:
+      DB_HOST: sep490_database
+      DB_PORT: 5432
+      DB_NAME: sep490_idp
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      OIDC_CLIENT_ID: oidc-client
+      OIDC_REDIRECT_URI: http://127.0.0.1:4200
+      OIDC_POST_LOGOUT_REDIRECT_URI: http://127.0.0.1:4200
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://127.0.0.1:8180/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "127.0.0.1:8180:8180"
+    depends_on:
+      - sep490_database
+  sep490_enterprise:
+    image: thongdh3401/sep490-enterprise:08.02.2025
+    container_name: sep490_enterprise
+    environment:
+      DB_HOST: sep490_database
+      DB_PORT: 5432
+      DB_NAME: sep490_enterprise
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      ISSUER_URI: http://127.0.0.1:8180
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://127.0.0.1:8080/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      - sep490_database
+  sep490_database:
+    image: postgres:16.4
+    container_name: sep490_database
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-U", "postgres", "-d", "postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ./postgres/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+  sep490_redis:
+    image: redis:7.4.1-alpine
+    container_name: sep490_redis
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "127.0.0.1:6379:6379"
+
+  sep490_mailhog:
+    image: mailhog/mailhog
+    container_name: sep490_mailhog
+    ports:
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:8025:8025"
+
+  sep490_minio:
+    image: quay.io/minio/minio
+    container_name: sep490_minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    healthcheck:
+      test: [ "CMD", "mc", "ready", "local" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin

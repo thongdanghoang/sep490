@@ -36,7 +36,6 @@ spring:
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
   flyway:
-    default-schema: ${DB_SCHEMA}
     output-query-results: ${FLYWAY_OUTPUT_QUERIES:false}
     create-schemas: false
   jpa:
