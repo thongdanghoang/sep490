@@ -1,0 +1,34 @@
+<!-- payment-status.component.html -->
+<div
+    class="flex items-center justify-center h-screen"
+    [ngClass]="{
+        'text-green-500': status === 'success',
+        'text-red-500': status === 'failed',
+    }"
+    @fadeIn
+>
+    <div class="text-center">
+        <i
+            class="pi"
+            [ngClass]="{
+                'pi-check-circle': status === 'success',
+                'pi-exclamation-circle': status === 'failed',
+            }"
+            [class.text-5xl]="true"
+        ></i>
+        <h1 class="text-2xl font-bold mt-4">
+            {{
+                status === "success"
+                    ? ("payment.status.success.title" | translate)
+                    : ("payment.status.error.title" | translate)
+            }}
+        </h1>
+        <p class="mt-2 text-lg">
+            {{
+                status === "success"
+                    ? ("payment.status.success.content" | translate)
+                    : ("payment.status.error.content" | translate)
+            }}
+        </p>
+    </div>
+</div>
