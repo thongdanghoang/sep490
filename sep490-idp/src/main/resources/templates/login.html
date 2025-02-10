@@ -9,7 +9,7 @@
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<div class="flex items-center justify-center min-h-screen px-4 lg:bg-[url('/img/background.jpg')] lg:bg-no-repeat lg:bg-cover">
+<div class="flex items-center justify-center min-h-screen py-8 px-4 bg-[url('/img/background.jpg')] bg-no-repeat bg-cover">
     <div class="flex flex-col justify-items-center items-center w-full max-w-5xl">
         <!-- Login Form Section -->
         <div class="bg-white p-6 lg:bg-opacity-80 rounded-xl w-full lg:w-1/2">
@@ -51,7 +51,7 @@
                 </div>
                 <div class="text-center mt-5">
                     <p class="text-gray-700 font-inter">
-                        <span th:text="#{login.label.newUser}">Don't have an account?</span>
+                        <span th:text="#{login.label.newUser}">Don't have an account?</span><br/>
                         <a class="text-primary hover:underline" th:href="@{/signup}"
                            th:text="#{login.btn.register}"></a>
                     </p>

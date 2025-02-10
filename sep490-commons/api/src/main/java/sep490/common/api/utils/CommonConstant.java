@@ -14,6 +14,9 @@ public final class CommonConstant {
     // 8 characters at least one letter and one number
 
     public static final String VIETNAM_PHONE_PATTERN = "^[0]{1}[0-9]{9}$";
+    
+    // Regex for Vietnamese enterprise tax code: 10 digits or 10 digits + "-XXX"
+    public static final String VIETNAME_TAX_CODE = "^\\d{10}(-\\d{3})?$";
 
     public static final int DEFAULT_PAGE_SIZE = 100;
     public static final int MAX_PAGE_SIZE = 1000;
