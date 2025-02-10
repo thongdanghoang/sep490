@@ -55,14 +55,16 @@ public class UserServiceImpl implements UserService {
     public SignupResult signup(SignupDTO signupDTO, Model model) {
         SignupResult result = validateSignupDTO(signupDTO);
         
-        if (result.isSuccess()) {
-            var user = createEnterpriseOwner(signupDTO);
-            userRepo.save(user);
-            result.setSuccess(true);
-            result.setSuccessMessage("signup.notification");
-            result.setRedirectUrl("redirect:/login?message=" + result.getSuccessMessage());
+        if (!result.isSuccess()) {
+            return result;
         }
+        var user = createEnterpriseOwner(signupDTO);
+        userRepo.save(user);
+        result.setSuccess(true);
+        result.setSuccessMessage("signup.notification");
+        result.setRedirectUrl("redirect:/login?message=" + result.getSuccessMessage());
         
+        // TODO: send enterpriseName and taxCode in dto
         return result;
     }
     
@@ -124,7 +126,7 @@ public class UserServiceImpl implements UserService {
         if (users.stream().anyMatch(user -> user.getEnterprise().getRole() == UserRole.ENTERPRISE_OWNER)) {
             throw new BusinessException("userIds", "user.cannot.delete.owner");
         }
-            userRepo.deleteAll(users);
+        userRepo.deleteAll(users);
     }
     
     @Override
@@ -133,13 +135,13 @@ public class UserServiceImpl implements UserService {
         this.performCreateUserAction(user);
         userRepo.save(user);
     }
-
+    
     private void performCreateUserAction(UserEntity user) {
         // Perform create action when create new
         if (Objects.isNull(user.getId())) {
             var password = CommonUtils.alphaNumericString(12);
             user.setPassword(passwordEncoder.encode(password));
-
+            
             var message = sendPasswordToUserByEmail(user.getEmail(), password);
             emailUtil.sendMail(message);
         }

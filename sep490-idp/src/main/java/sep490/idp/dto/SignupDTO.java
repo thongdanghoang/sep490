@@ -30,4 +30,10 @@ public class SignupDTO extends ToBeValidated {
 
     @Size(min = 1, max = 100, message = "{validation.lastName.invalid}")
     private String lastName;
+    
+    @Size(min = 1, max = 255, message = "{validation.enterpriseName.invalid}")
+    private String enterpriseName;
+    
+    @Pattern(regexp = VIETNAME_TAX_CODE, message = "{validation.enterpriseTaxCode.invalid}")
+    private String enterpriseTaxNumber;
 }

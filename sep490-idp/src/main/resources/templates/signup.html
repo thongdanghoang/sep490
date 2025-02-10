@@ -7,72 +7,118 @@
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<div class="flex items-center justify-center min-h-screen py-8 px-4 lg:bg-[url('/img/background.jpg')] lg:bg-no-repeat lg:bg-cover">
+<div class="flex items-center justify-center min-h-screen py-8 px-4 bg-[url('/img/background.jpg')] bg-no-repeat bg-cover">
     <div class="flex flex-col items-center w-full h-full max-w-5xl">
         <!-- Sign-Up Form Section -->
-        <div class="bg-white p-6 lg:bg-opacity-80 rounded-xl w-full lg:w-1/2">
-            <h2 class="text-center text-primary lg:text-5xl text-2xl font-black font-inter my-6 uppercase" th:text="#{signup.title}"></h2>
-            <form id="form" role="form" th:action="@{/signup}" method="post" th:object="${signupDTO}">
-                <!-- Email -->
-                <div class="mb-4 flex flex-col items-center justify-center">
+        <div class="bg-white p-6 lg:bg-opacity-80 rounded-xl">
+            <h2 class="text-center text-primary text-5xl font-black font-inter mt-6 mb-3 uppercase"
+                th:text="#{signup.title}"></h2>
+            <p class="text-center text-amber-700 text-xl mb-6" th:text="#{signup.form.note}"></p>
+            <form id="form" role="form" th:action="@{/signup}" method="post" th:object="${signupDTO}" class="flex flex-wrap">
+                <div class="w-full md:w-1/2 lg:w-1/2 p-2">
+                    <h1 class="text-primary font-bold" th:text="#{signup.form1.header}"></h1>
+                    <!-- Email -->
+                    <div class="mb-4">
                         <input type="email" required
                                class="w-full max-w-[400px] mt-1 p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
-                               id="email" name="email" th:field="*{email}" placeholder="Email">
-                    <p th:if="${#fields.hasErrors('email')}" class="w-full max-w-[400px] text-red-500 text-sm mt-1" th:errors="*{email}"></p>
+                               id="email" name="email" th:field="*{email}" th:placeholder="#{signup.placeholder.email}">
+                        <p th:if="${#fields.hasErrors('email')}" class="w-full max-w-[400px] text-red-500 text-sm mt-1"
+                           th:errors="*{email}"></p>
+                    </div>
+                    <!-- Phone -->
+                    <div class="mb-4">
+                        <input required
+                               class="w-full max-w-[400px] mt-1 p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
+                               id="phone" name="phone" th:field="*{phone}" th:placeholder="#{signup.placeholder.phone}">
+                        <p th:if="${#fields.hasErrors('phone')}" class="w-full max-w-[400px] text-red-500 text-sm mt-1"
+                           th:errors="*{phone}"></p>
+                    </div>
+                    <!-- First Name -->
+                    <div class="mb-4">
+                        <input type="text" required
+                               class="w-full mt-1 max-w-[400px] p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
+                               id="firstName" name="firstName" th:field="*{firstName}"
+                               th:placeholder="#{signup.placeholder.firstName}">
+                        <p th:if="${#fields.hasErrors('firstName')}" class="w-full max-w-[400px] text-red-500 text-sm mt-1"
+                           th:errors="*{firstName}"></p>
+                    </div>
+                    <!-- Last Name -->
+                    <div class="mb-4">
+                        <input type="text" required
+                               class="w-full max-w-[400px] mt-1 p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
+                               id="lastName" name="lastName" th:field="*{lastName}"
+                               th:placeholder="#{signup.placeholder.lastName}">
+                        <p th:if="${#fields.hasErrors('lastName')}" class="w-full max-w-[400px] text-red-500 text-sm mt-1"
+                           th:errors="*{lastName}"></p>
+                    </div>
+                    <!-- Password -->
+                    <div class="mb-4">
+                        <input type="password" required
+                               class="w-full max-w-[400px] mt-1 p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
+                               id="password" name="password" th:field="*{password}"
+                               th:placeholder="#{signup.placeholder.password}">
+                        <p th:if="${#fields.hasErrors('password')}" class="w-full max-w-[400px] text-red-500 text-sm mt-1"
+                           th:errors="*{password}"></p>
+                    </div>
+                    <!-- Confirm Password -->
+                    <div class="mb-4">
+                        <input type="password" required
+                               class="w-full max-w-[400px] mt-1 p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
+                               id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}"
+                               th:placeholder="#{signup.placeholder.confirmPassword}">
+                        <p th:if="${#fields.hasErrors('confirmPassword')}" class="w-full max-w-[400px] text-red-500 text-sm mt-1"
+                           th:errors="*{confirmPassword}"></p>
+                    </div>
                 </div>
-                <!-- Phone -->
-                <div class="mb-4 flex flex-col items-center justify-center">
-                    <input required
-                           class="w-full max-w-[400px] mt-1 p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
-                           id="phone" name="phone" th:field="*{phone}" placeholder="Phone">
-                    <p th:if="${#fields.hasErrors('phone')}" class="w-full max-w-[400px] text-red-500 text-sm mt-1" th:errors="*{phone}"></p>
+                <div class="w-full md:w-1/2 lg:w-1/2 p-2">
+                    <h1 class="text-primary font-bold" th:text="#{signup.form2.header}"></h1>
+                    <!-- Enterprise Name -->
+                    <div class="mb-4">
+                        <input required
+                               class="w-full max-w-[400px] mt-1 p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
+                               id="enterprise_name" name="enterprise_name" th:field="*{enterpriseName}"
+                               th:placeholder="#{signup.placeholder.enterpriseName}">
+                        <p th:if="${#fields.hasErrors('enterpriseName')}" class="w-full max-w-[400px] text-red-500 text-sm mt-1"
+                           th:errors="*{enterpriseName}"></p>
+                    </div>
+                    <!-- TAX ID -->
+                    <div class="mb-4">
+                        <input required
+                               class="w-full max-w-[400px] mt-1 p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
+                               id="tax" name="tax" th:field="*{enterpriseTaxNumber}"
+                               th:placeholder="#{signup.placeholder.enterpriseTaxNumber}">
+                        <p th:if="${#fields.hasErrors('enterpriseTaxNumber')}"
+                           class="w-full max-w-[400px] text-red-500 text-sm mt-1"
+                           th:errors="*{enterpriseTaxNumber}"></p>
+                    </div>
                 </div>
-                <!-- First Name -->
-                <div class="mb-4 flex flex-col items-center justify-center">
-                    <input type="text" required
-                           class="w-full mt-1 max-w-[400px] p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
-                           id="firstName" name="firstName" th:field="*{firstName}" placeholder="First Name">
-                    <p th:if="${#fields.hasErrors('firstName')}" class="w-full max-w-[400px] text-red-500 text-sm mt-1" th:errors="*{firstName}"></p>
-                </div>
-                <!-- Last Name -->
-                <div class="mb-4 flex flex-col items-center justify-center">
-                    <input type="text" required
-                           class="w-full max-w-[400px] mt-1 p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
-                           id="lastName" name="lastName" th:field="*{lastName}" placeholder="Last Name">
-                    <p th:if="${#fields.hasErrors('lastName')}" class="w-full max-w-[400px] text-red-500 text-sm mt-1" th:errors="*{lastName}"></p>
-                </div>
-                <div class="mb-4 flex flex-col items-center justify-center">
-                    <input type="password" required
-                           class="w-full max-w-[400px] mt-1 p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
-                           id="password" name="password" th:field="*{password}" placeholder="Password">
-                    <p th:if="${#fields.hasErrors('password')}" class="w-full max-w-[400px] text-red-500 text-sm mt-1" th:errors="*{password}"></p>
-                </div>
-                <div class="mb-4 flex flex-col items-center justify-center">
-                    <input type="password" required
-                           class="w-full max-w-[400px] mt-1 p-2 border border-current rounded focus:ring focus:ring-primary focus:outline-none"
-                           id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}" placeholder="Confirm Password">
-                    <p th:if="${#fields.hasErrors('confirmPassword')}" class="w-full max-w-[400px] text-red-500 text-sm mt-1" th:errors="*{confirmPassword}"></p>
-                </div>
-                <div th:if="${errorMsg}" class="mb-4 text-red-500 text-center">
-                    <span th:text="#{${errorMsg}}"></span>
-                </div>
-                <div class="text-center mt-4">
-                    <p class="text-gray-700 font-inter">
-                        <span th:text="#{signup.label.existingAccount}"></span>
-                        <a th:href="@{/login}" class="text-primary hover:underline" th:text="#{signup.btn.login}"></a>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center">
-                    <button type="submit"
-                            class="w-full lg:max-w-[120px] max-w-[160px] mt-4 bg-primary font-inter text-white py-2 px-4 rounded hover:bg-primary-dark focus:ring focus:ring-primary focus:outline-none"
-                            th:text="#{signup.btn.signup}">
-                    </button>
+                <div class="flex-1">
+                    <div class="flex items-center justify-center" th:if="${errorMsg}">
+                        <div class="animate-fadeIn bg-red-100 max-w-[400px] w-full border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4">
+                            <span th:text="#{${errorMsg}}"></span>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <p class="text-gray-700 font-inter">
+                            <span th:text="#{signup.label.existingAccount}"></span>
+                            <a th:href="@{/login}" class="text-primary hover:underline" th:text="#{signup.btn.login}"></a>
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <button type="submit"
+                                class="w-full lg:max-w-[120px] max-w-[160px] mt-4 bg-primary font-inter text-white py-2 px-4 rounded hover:bg-primary-dark focus:ring focus:ring-primary focus:outline-none"
+                                th:text="#{signup.btn.signup}">
+                        </button>
+                    </div>
                 </div>
             </form>
             <div class="text-center mt-3">
-                <a th:href="@{''(lang=en)}" class="text-primary font-inter hover:underline" th:text="#{language.english}">English</a> |
-                <a th:href="@{''(lang=vi)}" class="text-primary font-inter hover:underline" th:text="#{language.vietnamese}">Vietnamese</a> |
-                <a th:href="@{''(lang=zh)}" class="text-primary font-inter hover:underline" th:text="#{language.chinese}">Chinese</a>
+                <a th:href="@{''(lang=en)}" class="text-primary font-inter hover:underline"
+                   th:text="#{language.english}">English</a> |
+                <a th:href="@{''(lang=vi)}" class="text-primary font-inter hover:underline" th:text="#{language.vietnamese}">Vietnamese</a>
+                |
+                <a th:href="@{''(lang=zh)}" class="text-primary font-inter hover:underline"
+                   th:text="#{language.chinese}">Chinese</a>
             </div>
         </div>
     </div>
