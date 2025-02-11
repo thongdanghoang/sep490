@@ -76,7 +76,7 @@ export abstract class AbstractSearchComponent<
         error: error => {
           if (error.error?.i18nKey) {
             const title = this.pipe.transform(
-              `i18n.oblique.http.error.status.${error?.status}.title`
+              `http.error.status.${error?.status}.title`
             );
             const message = this.pipe.transform(error.error.i18nKey);
             this.messageService.add({
