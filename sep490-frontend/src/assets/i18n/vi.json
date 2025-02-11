@@ -116,12 +116,35 @@
     "scope": {
       "BUILDING": "Tòa nhà",
       "ENTERPRISE": "Doanh nghiệp"
+    },
+    "status": {
+      "payment": {
+        "success": "thành công",
+        "failed": "thất bại"
+      }
     }
   },
   "table": {
     "paginatorString": "Hiển thị {first} đến {last} trong tổng số {totalRecords}"
   },
   "payment": {
+    "history": {
+      "balance": "Số dư",
+      "title" : "Lịch sử thanh toán",
+      "table": {
+        "date": "Ngày",
+        "status": "Trạng thái",
+        "amount": "Số lượng"
+      },
+      "button": {
+        "buyCredit": "Mua tín dụng",
+        "setting": "Thay đổi cài đặt"
+      },
+      "credit": {
+        "label" : "Tín dụng là đơn vị chuyển đổi mà hệ thống phân bổ cho doanh nghiệp.",
+        "title": "Tín dụng"
+      }
+    },
     "status": {
       "success": {
         "title": "Thanh toán thành công!",

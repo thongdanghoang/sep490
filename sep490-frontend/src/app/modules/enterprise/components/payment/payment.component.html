@@ -1,1 +1,62 @@
-<p>payment works!</p>
+<p class="text-primary font-bold px-4 mb-4">
+    {{ "payment.history.credit.title" | translate }}
+</p>
+<div
+    class="flex items-center justify-between gap-2.5 lg:flex-row flex-col mb-20 pl-20"
+>
+    <div class="flex gap-6 flex-col">
+        <div
+            class="flex lg:items-end items-center gap-2.5 lg:flex-row flex-col"
+        >
+            <p>
+                {{ "payment.history.balance" | translate }}
+            </p>
+            <span class="text-5xl font-medium">{{ balance }}</span>
+        </div>
+        <span class="flex items-center">{{
+            "payment.history.credit.label" | translate
+        }}</span>
+    </div>
+    <div class="flex gap-2.5 flex-col">
+        <div class="flex items-center justify-between lg:flex-row gap-2.5">
+            <p-button
+                severity="primary"
+                [label]="'payment.history.button.buyCredit' | translate"
+                outlined
+            />
+            <a class="p-button font-bold">
+                {{ "payment.history.button.setting" | translate }}
+            </a>
+        </div>
+    </div>
+</div>
+<table-template
+    *ngIf="!applicationService.isMobile()"
+    [fetch]="fetchProducts"
+    [columns]="cols"
+    [criteria]="productCriteria"
+    [captionTemplateRef]="captionTemplateRef"
+>
+</table-template>
+<ng-template #captionTemplateRef>
+    <div class="flex items-center justify-start">
+        <span class="text-primary font-bold">{{
+            "payment.history.title" | translate
+        }}</span>
+    </div>
+</ng-template>
+<ng-template #actionsTemplate let-product>
+    <p-button
+        icon="pi pi-ellipsis-v"
+        [rounded]="true"
+        [text]="true"
+        severity="contrast"
+    />
+</ng-template>
+
+<ng-template #statusTemplate let-rowData>
+    <p-tag
+        [ngClass]="getStatusClass(rowData.status)"
+        [value]="'enum.status.payment.' + rowData.status | translate"
+    />
+</ng-template>

@@ -8,6 +8,7 @@ import {EnterpriseComponent} from './enterprise.component';
 import {MarkerService} from './services/marker.service';
 import {PopupService} from './services/popup.service';
 import {RegionService} from './services/region.service';
+import {Tag} from 'primeng/tag';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import {RegionService} from './services/region.service';
     PaymentComponent,
     BuildingsComponent
   ],
-  imports: [SharedModule, EnterpriseRoutingModule],
+  imports: [SharedModule, EnterpriseRoutingModule, Tag],
   providers: [MarkerService, PopupService, RegionService]
 })
 export class EnterpriseModule {}

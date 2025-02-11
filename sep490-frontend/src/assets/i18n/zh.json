@@ -116,12 +116,35 @@
     "scope": {
       "BUILDING": "建筑",
       "ENTERPRISE": "企业"
+    },
+    "status": {
+      "payment": {
+        "success": "成功",
+        "failed": "失败的"
+      }
     }
   },
   "table": {
     "paginatorString": "显示第 {first} 到第 {last} 条，共 {totalRecords} 条记录"
   },
   "payment": {
+    "history": {
+      "balance": "平衡",
+      "title" : "付款历史",
+      "table": {
+        "date": "日期",
+        "status": "地位",
+        "amount": "数量"
+      },
+      "button": {
+        "buyCredit": "购买信用",
+        "setting": "更改设置"
+      },
+      "credit": {
+        "label" : "信用是系统分配给企业的换算单位。",
+        "title": "信用"
+      }
+    },
     "status": {
       "success": {
         "title": "支付成功！",
