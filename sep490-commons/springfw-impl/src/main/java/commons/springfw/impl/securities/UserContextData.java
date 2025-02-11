@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import sep490.common.api.dto.auth.BuildingPermissionDTO;
+import green_buildings.commons.api.dto.auth.BuildingPermissionDTO;
 
 import java.util.List;
 import java.util.UUID;

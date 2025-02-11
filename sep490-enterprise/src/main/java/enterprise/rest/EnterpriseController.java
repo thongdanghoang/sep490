@@ -2,9 +2,10 @@ package enterprise.rest;
 
 import commons.springfw.impl.securities.UserContextData;
 import enterprise.dtos.EnterpriseDTO;
-import enterprise.entities.WalletEntity;
 import enterprise.mappers.EnterpriseMapper;
 import enterprise.services.EnterpriseService;
+import green_buildings.commons.api.exceptions.BusinessException;
+import green_buildings.commons.api.security.UserRole;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sep490.common.api.exceptions.BusinessException;
-import sep490.common.api.security.UserRole;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -41,7 +40,6 @@ public class EnterpriseController {
         }
         
         var enterprise = mapper.createEnterprise(enterpriseDTO);
-        enterprise.setWallet(WalletEntity.of(enterprise));
         
         return ResponseEntity
                 .status(HttpStatus.CREATED)

@@ -1,6 +1,6 @@
 package enterprise.dtos;
 
-import sep490.common.api.BaseDTO;
+import green_buildings.commons.api.BaseDTO;
 
 import java.util.UUID;
 
