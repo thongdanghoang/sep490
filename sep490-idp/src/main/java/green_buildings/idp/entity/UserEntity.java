@@ -18,9 +18,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @NamedEntityGraph(
         name = UserEntity.WITH_ENTERPRISE_PERMISSIONS_ENTITY_GRAPH,
@@ -29,6 +33,9 @@ import java.util.Set;
                 @NamedAttributeNode("buildingPermissions")
         }
 )
+@FilterDef(name = UserEntity.BELONG_ENTERPRISE_FILTER, parameters = @ParamDef(name = UserEntity.BELONG_ENTERPRISE_PARAM, type = UUID.class))
+@Filter(name = UserEntity.BELONG_ENTERPRISE_FILTER,
+        condition = "id IN (SELECT ue.user_id FROM enterprise_users ue WHERE ue.enterprise_id = :" + UserEntity.BELONG_ENTERPRISE_PARAM)
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
@@ -38,6 +45,8 @@ import java.util.Set;
 public class UserEntity extends AbstractAuditableEntity {
     
     public static final String WITH_ENTERPRISE_PERMISSIONS_ENTITY_GRAPH = "user-permissions-entity-graph";
+    public static final String BELONG_ENTERPRISE_FILTER = "belongEnterpriseFilter";
+    public static final String BELONG_ENTERPRISE_PARAM = "enterpriseId";
     
     @NotNull
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)

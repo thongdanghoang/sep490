@@ -18,6 +18,7 @@ import green_buildings.idp.dto.UserCriteriaDTO;
 import green_buildings.idp.entity.UserEntity;
 import green_buildings.idp.producers.IdPEventProducer;
 import green_buildings.idp.repository.UserRepository;
+import green_buildings.idp.repository.UserRepositoryAdapter;
 import green_buildings.idp.service.UserService;
 import green_buildings.idp.utils.IEmailUtil;
 import green_buildings.idp.utils.IMessageUtil;
@@ -54,6 +55,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl extends SagaManager implements UserService {
     
     private final UserRepository userRepo;
+    private final UserRepositoryAdapter userRepositoryAdapter;
     private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
     @Qualifier("signupValidator")
@@ -174,7 +176,7 @@ public class UserServiceImpl extends SagaManager implements UserService {
         if (CollectionUtils.isEmpty(userIds)) {
             throw new BusinessException("userIds", "user.delete.no.ids", Collections.emptyList());
         }
-        var users = userRepo.findByIDs(userIds);
+        var users = userRepositoryAdapter.findByIDs(userIds);
         if (users.size() != userIds.size()) {
             userIds.removeAll(users.stream().map(UserEntity::getId).collect(Collectors.toSet()));
             throw new BusinessException("userIds", "user.delete.not.found",
