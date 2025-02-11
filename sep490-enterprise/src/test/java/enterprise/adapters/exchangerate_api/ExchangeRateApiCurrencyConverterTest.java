@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.client.RestTemplate;
-import sep490.common.api.enums.Currency;
+import green_buildings.commons.api.enums.Currency;
 
 import java.math.BigDecimal;
 

@@ -5,8 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
-import sep490.common.api.dto.auth.BuildingPermissionDTO;
-import sep490.common.api.security.BuildingPermissionRole;
+import green_buildings.commons.api.dto.auth.BuildingPermissionDTO;
+import green_buildings.commons.api.security.BuildingPermissionRole;
 
 import java.util.Collections;
 import java.util.List;

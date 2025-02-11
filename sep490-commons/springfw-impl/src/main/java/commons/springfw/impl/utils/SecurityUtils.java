@@ -3,7 +3,7 @@ package commons.springfw.impl.utils;
 import commons.springfw.impl.securities.UserContextData;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import sep490.common.api.dto.auth.BuildingPermissionDTO;
+import green_buildings.commons.api.dto.auth.BuildingPermissionDTO;
 
 import java.util.Collections;
 import java.util.List;

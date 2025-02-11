@@ -2,8 +2,8 @@ package enterprise.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import sep490.common.api.BaseDTO;
-import sep490.common.api.utils.CommonConstant;
+import green_buildings.commons.api.BaseDTO;
+import green_buildings.commons.api.utils.CommonConstant;
 
 import java.util.UUID;
 

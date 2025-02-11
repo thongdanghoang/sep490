@@ -1,13 +1,12 @@
 package enterprise.adapters.exchangerate_api;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import sep490.common.api.adapters.CurrencyConverter;
-import sep490.common.api.enums.Currency;
-import sep490.common.api.exceptions.TechnicalException;
+import green_buildings.commons.api.adapters.CurrencyConverter;
+import green_buildings.commons.api.enums.Currency;
+import green_buildings.commons.api.exceptions.TechnicalException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

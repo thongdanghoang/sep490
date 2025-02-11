@@ -12,7 +12,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sep490.common.api.utils.CommonConstant;
+import green_buildings.commons.api.utils.CommonConstant;
 
 @Entity
 @Table(name = "enterprises")
