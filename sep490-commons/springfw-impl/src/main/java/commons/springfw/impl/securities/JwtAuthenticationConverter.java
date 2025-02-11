@@ -44,8 +44,12 @@ public class JwtAuthenticationConverter
                     .filter(LinkedTreeMap.class::isInstance)
                     .map(permission -> {
                         var permissionMap = (LinkedTreeMap) permission;
+                        UUID uuid = Optional.ofNullable(permissionMap.get(BuildingPermissionDTO.Fields.buildingId))
+                                            .map(String.class::cast)
+                                            .map(UUID::fromString)
+                                            .orElse(null);
                         return new BuildingPermissionDTO(
-                                UUID.fromString((String) permissionMap.get(BuildingPermissionDTO.Fields.buildingId)),
+                                uuid,
                                 BuildingPermissionRole.valueOf((String) permissionMap.get(BuildingPermissionDTO.Fields.role))
                         );
                     })

@@ -12,6 +12,7 @@
     "revert": "撤销"
   },
   "validation": {
+    "authorizeDenied": "您无权执行此操作",
     "email": "格式无效：请输入有效的电子邮件地址",
     "max": "值必须小于或等于{{max}}",
     "maxlength": "最多支持{{requiredLength}}个字符",

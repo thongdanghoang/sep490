@@ -54,10 +54,10 @@ public class RestExceptionHandler {
     }
     
     @ExceptionHandler(AuthorizationDeniedException.class)
-    public ResponseEntity<TechnicalErrorResponse> handleAccessDeniedException(AuthorizationDeniedException ex) {
+    public ResponseEntity<BusinessErrorResponse> handleAccessDeniedException(AuthorizationDeniedException ex) {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
-                .body(technicalError(ex, ex.getMessage()));
+                .body(new BusinessErrorResponse(MDC.get(MDCContext.CORRELATION_ID), "validation.authorizeDenied"));
     }
     
     @ExceptionHandler(NoSuchElementException.class)

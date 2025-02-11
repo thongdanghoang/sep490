@@ -12,6 +12,7 @@
     "revert": "Revert"
   },
   "validation": {
+    "authorizeDenied": "You are not allowed to perform this action",
     "email": "Invalid format: please enter a valid email address",
     "max": "Value must be less than or equal to {{max}}",
     "maxlength": "A maximum of {{requiredLength}} characters is supported",

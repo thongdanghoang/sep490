@@ -24,4 +24,8 @@ public record BusinessErrorResponse(
     public BusinessErrorResponse(BusinessException exception, String correlationId) {
         this(correlationId, exception.field, exception.i18nKey, exception.args);
     }
+    
+    public BusinessErrorResponse(String correlationId, String i18nKey) {
+        this(correlationId, null, i18nKey, null);
+    }
 }
