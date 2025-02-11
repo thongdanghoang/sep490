@@ -12,16 +12,6 @@ import green_buildings.commons.api.exceptions.TechnicalException;
 import green_buildings.commons.api.security.UserRole;
 import green_buildings.commons.api.security.UserScope;
 import green_buildings.commons.api.utils.CommonUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.util.CollectionUtils;
 import green_buildings.idp.dto.SignupDTO;
 import green_buildings.idp.dto.SignupResult;
 import green_buildings.idp.dto.UserCriteriaDTO;
@@ -34,6 +24,16 @@ import green_buildings.idp.utils.IMessageUtil;
 import green_buildings.idp.utils.SEPMailMessage;
 import green_buildings.idp.validation.Validator;
 import green_buildings.idp.validators.UserValidator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -89,17 +89,18 @@ public class UserServiceImpl extends SagaManager implements UserService {
             user.getEnterprise().setEnterprise(enterpriseId);
             userRepo.save(user); // COMPLETE
         } catch (TimeoutException e) {
-            getPendingSagaResponses().remove(correlationId);
             throw new TechnicalException("Request timeout", e);
         } catch (ExecutionException e) {
-            if (e.getCause() instanceof BusinessException) {
-                throw (BusinessException) e.getCause();
+            if (e.getCause() instanceof BusinessException businessException) {
+                throw businessException;
             }
             throw new TechnicalException("Error while waiting for response", e);
         } catch (InterruptedException e) {
             /* Clean up whatever needs to be handled before interrupting  */
             log.warn("Interrupted!", e);
             Thread.currentThread().interrupt();
+        } finally {
+            getPendingSagaResponses().remove(correlationId);
         }
         
         result.setSuccess(true);
@@ -183,7 +184,10 @@ public class UserServiceImpl extends SagaManager implements UserService {
         if (users.stream().anyMatch(user -> user.getEnterprise().getRole() == UserRole.ENTERPRISE_OWNER)) {
             throw new BusinessException("userIds", "user.cannot.delete.owner");
         }
-        userRepo.deleteAll(users);
+        for (UserEntity user : users) {
+            user.setDeleted(true);
+        }
+        userRepo.saveAll(users);
     }
     
     @Override

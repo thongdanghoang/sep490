@@ -1,6 +1,8 @@
 package green_buildings.idp.entity;
 
 import commons.springfw.impl.entities.AbstractBaseEntity;
+import green_buildings.commons.api.security.UserRole;
+import green_buildings.commons.api.security.UserScope;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,8 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import green_buildings.commons.api.security.UserRole;
-import green_buildings.commons.api.security.UserScope;
 
 import java.util.UUID;
 

@@ -1,6 +1,9 @@
 package green_buildings.idp.entity;
 
 import commons.springfw.impl.entities.AbstractAuditableEntity;
+import green_buildings.commons.api.security.UserRole;
+import green_buildings.commons.api.security.UserScope;
+import green_buildings.commons.api.utils.CommonConstant;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,10 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SoftDelete;
-import green_buildings.commons.api.security.UserRole;
-import green_buildings.commons.api.security.UserScope;
-import green_buildings.commons.api.utils.CommonConstant;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -36,7 +35,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@SoftDelete
 public class UserEntity extends AbstractAuditableEntity {
     
     public static final String WITH_ENTERPRISE_PERMISSIONS_ENTITY_GRAPH = "user-permissions-entity-graph";
@@ -74,6 +72,9 @@ public class UserEntity extends AbstractAuditableEntity {
     @NotNull
     @Column(name = "last_name", length = 100)
     private String lastName;
+    
+    @Column(name = "deleted")
+    private boolean deleted;
     
     public static UserEntity register(
             String email,

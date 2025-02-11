@@ -17,7 +17,7 @@
     </envs>
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateResources" />
     <module name="sep490-idp.main" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="sep490.idp.IdentityProvider" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="green_buildings.idp.IdentityProvider" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="sep490.idp.*" />

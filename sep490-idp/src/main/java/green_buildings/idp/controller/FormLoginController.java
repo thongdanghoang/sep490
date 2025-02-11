@@ -1,5 +1,12 @@
-package sep490.idp.controller;
+package green_buildings.idp.controller;
 
+import green_buildings.idp.dto.LoginDTO;
+import green_buildings.idp.dto.SignupDTO;
+import green_buildings.idp.dto.SignupResult;
+import green_buildings.idp.repository.UserAuthenticatorRepository;
+import green_buildings.idp.security.MvcUserContextData;
+import green_buildings.idp.service.UserService;
+import green_buildings.idp.utils.IMessageUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,13 +19,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import sep490.idp.dto.LoginDTO;
-import sep490.idp.dto.SignupDTO;
-import sep490.idp.dto.SignupResult;
-import sep490.idp.repository.UserAuthenticatorRepository;
-import sep490.idp.security.MvcUserContextData;
-import sep490.idp.service.UserService;
-import sep490.idp.utils.IMessageUtil;
 
 import java.util.UUID;
 
