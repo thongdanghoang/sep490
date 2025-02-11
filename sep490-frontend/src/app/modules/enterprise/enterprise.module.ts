@@ -8,7 +8,14 @@ import {EnterpriseComponent} from './enterprise.component';
 import {MarkerService} from './services/marker.service';
 import {PopupService} from './services/popup.service';
 import {RegionService} from './services/region.service';
+import {PaymentService} from './services/payment.service';
 import {Tag} from 'primeng/tag';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionHeader,
+  AccordionPanel
+} from 'primeng/accordion';
 
 @NgModule({
   declarations: [
@@ -17,7 +24,15 @@ import {Tag} from 'primeng/tag';
     PaymentComponent,
     BuildingsComponent
   ],
-  imports: [SharedModule, EnterpriseRoutingModule, Tag],
-  providers: [MarkerService, PopupService, RegionService]
+  imports: [
+    SharedModule,
+    EnterpriseRoutingModule,
+    Tag,
+    Accordion,
+    AccordionPanel,
+    AccordionHeader,
+    AccordionContent
+  ],
+  providers: [MarkerService, PopupService, RegionService, PaymentService]
 })
 export class EnterpriseModule {}

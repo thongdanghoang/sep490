@@ -1,14 +1,15 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {TableTemplateColumn} from '../../../shared/components/table-template/table-template.component';
-import {DevService, Product} from '../../../dev/dev.service';
 import {
   SearchCriteriaDto,
   SearchResultDto
 } from '../../../shared/models/models';
 import {Observable} from 'rxjs';
 import {ApplicationService} from '../../../core/services/application.service';
+import {PaymentDTO} from '../../models/payment';
+import {PaymentService} from '../../services/payment.service';
 
-export interface ProductCriteria {
+export interface PaymentCriteria {
   criteria: string;
   // specific criteria such as name, category, etc.
 }
@@ -21,29 +22,31 @@ export interface ProductCriteria {
 export class PaymentComponent implements OnInit {
   @ViewChild('statusTemplate', {static: true})
   statusTemplate!: TemplateRef<any>;
+  @ViewChild('amountTemplate', {static: true})
+  amountTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate', {static: true})
   actionsTemplate!: TemplateRef<any>;
   cols: TableTemplateColumn[] = [];
-  productCriteria!: ProductCriteria;
+  paymentCriteria!: PaymentCriteria;
   balance: number = 0;
-  protected fetchProducts!: (
-    criteria: SearchCriteriaDto<ProductCriteria>
-  ) => Observable<SearchResultDto<Product>>;
+  protected fetchData!: (
+    criteria: SearchCriteriaDto<PaymentCriteria>
+  ) => Observable<SearchResultDto<PaymentDTO>>;
   constructor(
     protected readonly applicationService: ApplicationService,
-    private readonly devService: DevService
+    private readonly paymentService: PaymentService
   ) {}
 
   ngOnInit(): void {
-    this.fetchProducts = this.devService.getData.bind(this.devService);
-    this.productCriteria = {criteria: ''};
+    this.fetchData = this.paymentService.getPayments.bind(this.paymentService);
+    this.paymentCriteria = {criteria: ''};
     this.buildCols();
     this.getBalance();
   }
 
   buildCols(): void {
     this.cols.push({
-      field: 'date',
+      field: 'createdDate',
       header: 'payment.history.table.date',
       sortable: true
     });
@@ -55,7 +58,8 @@ export class PaymentComponent implements OnInit {
     this.cols.push({
       field: 'amount',
       header: 'payment.history.table.amount',
-      sortable: true
+      sortable: true,
+      templateRef: this.amountTemplate
     });
     this.cols.push({
       field: 'actions',
@@ -65,7 +69,7 @@ export class PaymentComponent implements OnInit {
   }
 
   getStatusClass(status: string): string {
-    return status === 'success'
+    return status === 'SUCCESS'
       ? 'bg-[#91C896] text-white'
       : 'bg-red-500 text-white';
   }

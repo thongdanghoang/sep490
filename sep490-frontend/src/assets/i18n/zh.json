@@ -119,8 +119,8 @@
     },
     "status": {
       "payment": {
-        "success": "成功",
-        "failed": "失败的"
+        "SUCCESS": "成功",
+        "FAILED": "失败的"
       }
     }
   },
@@ -155,5 +155,13 @@
         "content": "请稍后重试或使用其他付款方式。"
       }
     }
+  },
+  "purchaseCredit": {
+    "title": "购买信用",
+    "introduceMethod": "您可以使用以下付款方式。",
+    "currentBalance": "当前余额",
+    "selectCreditPackage": "选择要购买的信用包",
+    "about": "关于信用",
+    "termService": "服务条款"
   }
 }

@@ -119,8 +119,8 @@
     },
     "status": {
       "payment": {
-        "success": "success",
-        "failed": "failed"
+        "SUCCESS": "success",
+        "FAILED": "failed"
       }
     }
   },
@@ -155,5 +155,13 @@
         "content": "Please try again later or use another payment method."
       }
     }
+  },
+  "purchaseCredit": {
+    "title": "Purchase Credit",
+    "introduceMethod": "You can use the following payment methods.",
+    "currentBalance": "Current balance",
+    "selectCreditPackage": "Select Credit package to purchase",
+    "about": "About Credit",
+    "termService": "Term of Service"
   }
 }

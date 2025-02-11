@@ -1,5 +1,5 @@
 :host {
-  @apply rounded box-shadow border-t-2 border-t-primary *:w-full;
+  @apply rounded box-shadow border-t-2 *:w-full;
 }
 
 .box-shadow {

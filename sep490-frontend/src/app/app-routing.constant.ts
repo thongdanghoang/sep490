@@ -2,6 +2,7 @@ import {environment} from '../environments/environment';
 
 export class AppRoutingConstants {
   public static readonly IDP_API_URL = environment.idpApiUrl;
+  public static readonly ENTERPRISE_API_URL = environment.enterpriseUrl;
 
   // To be remove
   public static readonly DEV_PATH = 'dev';

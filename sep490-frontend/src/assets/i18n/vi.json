@@ -119,8 +119,8 @@
     },
     "status": {
       "payment": {
-        "success": "thành công",
-        "failed": "thất bại"
+        "SUCCESS": "thành công",
+        "FAILED": "thất bại"
       }
     }
   },
@@ -155,5 +155,13 @@
         "content": "Vui lòng thử lại sau hoặc sử dụng phương thức thanh toán khác."
       }
     }
+  },
+  "purchaseCredit": {
+    "title": "Mua tín dụng",
+    "introduceMethod": "Bạn có thể sử dụng các phương thức thanh toán sau.",
+    "currentBalance": "Số dư hiện tại",
+    "selectCreditPackage": "Chọn gói tín dụng để mua",
+    "about": "Về tín dụng",
+    "termService": "Điều khoản dịch vụ"
   }
 }

@@ -1,19 +1,21 @@
-<p class="text-primary font-bold px-4 mb-4">
-    {{ "payment.history.credit.title" | translate }}
-</p>
+<div class="flex items-center justify-center lg:justify-start">
+    <p class="text-primary font-bold px-4 mb-4">
+        {{ "payment.history.credit.title" | translate }}
+    </p>
+</div>
 <div
-    class="flex items-center justify-between gap-2.5 lg:flex-row flex-col mb-20 pl-20"
+    class="flex items-center justify-center lg:justify-between gap-2.5 lg:flex-row flex-col mb-20 lg:pl-20 pl-0"
 >
-    <div class="flex gap-6 flex-col">
+    <div class="flex gap-6 flex-col items-center lg:items-start">
         <div
-            class="flex lg:items-end items-center gap-2.5 lg:flex-row flex-col"
+            class="flex lg:items-end items-center gap-2.5 lg:flex-row flex-col text-center lg:text-left"
         >
             <p>
                 {{ "payment.history.balance" | translate }}
             </p>
             <span class="text-5xl font-medium">{{ balance }}</span>
         </div>
-        <span class="flex items-center">{{
+        <span class="flex items-center text-center">{{
             "payment.history.credit.label" | translate
         }}</span>
     </div>
@@ -32,9 +34,9 @@
 </div>
 <table-template
     *ngIf="!applicationService.isMobile()"
-    [fetch]="fetchProducts"
+    [fetch]="fetchData"
     [columns]="cols"
-    [criteria]="productCriteria"
+    [criteria]="paymentCriteria"
     [captionTemplateRef]="captionTemplateRef"
 >
 </table-template>
@@ -59,4 +61,8 @@
         [ngClass]="getStatusClass(rowData.status)"
         [value]="'enum.status.payment.' + rowData.status | translate"
     />
+</ng-template>
+
+<ng-template #amountTemplate let-rowData>
+    <p>+{{ rowData.amount }}</p>
 </ng-template>

@@ -1,0 +1,2 @@
+ALTER TABLE payments ADD status VARCHAR(255) NOT NULL;
+ALTER TABLE payments ADD amount BIGINT NOT NULL;
