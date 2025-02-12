@@ -20,4 +20,9 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     public UUID createEnterprise(EnterpriseEntity enterprise) {
         return repository.save(enterprise).getId();
     }
+    
+    @Override
+    public EnterpriseEntity getById(UUID id) {
+        return repository.findById(id).orElseThrow();
+    }
 }

@@ -8,4 +8,6 @@ public interface EnterpriseService {
     
     UUID createEnterprise(EnterpriseEntity enterprise);
     
+    EnterpriseEntity getById(UUID id);
+    
 }

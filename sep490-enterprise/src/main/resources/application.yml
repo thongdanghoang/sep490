@@ -1,5 +1,5 @@
 exchangerate-api:
-  key: ${EXCHANGERATE_API_KEY}
+  key: ${EXCHANGERATE_API_KEY:secret}
   url: https://v6.exchangerate-api.com/v6/
 
 spring:

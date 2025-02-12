@@ -87,7 +87,7 @@ public class UserServiceImpl extends SagaManager implements UserService {
                                                                  .hotline(signupDTO.getEnterpriseHotline())
                                                                  .build());
         try { // Wait synchronously for response
-            var enterpriseId = UUID.fromString(future.get(100, TimeUnit.SECONDS).toString());// Timeout in case response is lost
+            var enterpriseId = UUID.fromString(future.get(TRANSACTION_TIMEOUT, TimeUnit.SECONDS).toString());// Timeout in case response is lost
             user.getEnterprise().setEnterprise(enterpriseId);
             userRepo.save(user); // COMPLETE
         } catch (TimeoutException e) {
