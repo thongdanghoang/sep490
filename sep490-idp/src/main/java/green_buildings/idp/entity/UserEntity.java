@@ -65,11 +65,9 @@ public class UserEntity extends AbstractAuditableEntity {
     @Column(name = "phone_verified")
     private boolean phoneVerified;
     
-    @NotNull
     @Column(name = "first_name", length = 50)
     private String firstName;
     
-    @NotNull
     @Column(name = "last_name", length = 100)
     private String lastName;
     

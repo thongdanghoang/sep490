@@ -148,9 +148,9 @@ public class UserServiceImpl extends SagaManager implements UserService {
                 false,
                 UserRole.ENTERPRISE_OWNER,
                 UserScope.ENTERPRISE,
-                signupDTO.getFirstName(),
-                signupDTO.getLastName(),
-                signupDTO.getPhone(),
+                "",
+                "",
+                "",
                 false,
                 passwordEncoder.encode(signupDTO.getPassword()));
     }
