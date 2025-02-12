@@ -36,4 +36,7 @@ public class SignupDTO extends ToBeValidated {
     
     @Pattern(regexp = VIETNAME_TAX_CODE, message = "{validation.enterpriseTaxCode.invalid}")
     private String enterpriseTaxNumber;
+    
+    @Pattern(regexp = VIETNAM_ENTERPRISE_HOTLINE_PATTERN, message = "{validation.enterpriseHotline.invalid}")
+    private String enterpriseHotline;
 }
