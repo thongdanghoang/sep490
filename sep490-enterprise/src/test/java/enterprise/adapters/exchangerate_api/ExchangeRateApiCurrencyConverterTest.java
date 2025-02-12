@@ -1,5 +1,7 @@
 package enterprise.adapters.exchangerate_api;
 
+import enterprise.TestcontainersConfigs;
+import green_buildings.commons.api.enums.Currency;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -7,14 +9,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.client.RestTemplate;
-import green_buildings.commons.api.enums.Currency;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-class ExchangeRateApiCurrencyConverterTest {
+class ExchangeRateApiCurrencyConverterTest extends TestcontainersConfigs {
     
     @Mock
     RestTemplate restTemplate;

@@ -1,0 +1,4 @@
+ALTER TABLE buildings
+    ADD COLUMN name VARCHAR(255) NOT NULL,
+    ADD COLUMN floors INTEGER NOT NULL,
+    ADD COLUMN square_meters NUMERIC(15, 3) NOT NULL;

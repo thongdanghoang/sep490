@@ -3,6 +3,6 @@ import {PaymentStatus} from '../enums/payment-status';
 
 export interface PaymentDTO extends BaseDTO {
   createdDate: Date;
-  status: PaymentStatus;
+  status: keyof typeof PaymentStatus;
   amount: bigint;
 }

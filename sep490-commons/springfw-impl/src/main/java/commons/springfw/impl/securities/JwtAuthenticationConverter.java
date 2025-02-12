@@ -1,12 +1,12 @@
 package commons.springfw.impl.securities;
 
 import com.nimbusds.jose.shaded.gson.internal.LinkedTreeMap;
+import green_buildings.commons.api.dto.auth.BuildingPermissionDTO;
+import green_buildings.commons.api.security.BuildingPermissionRole;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
-import green_buildings.commons.api.dto.auth.BuildingPermissionDTO;
-import green_buildings.commons.api.security.BuildingPermissionRole;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +36,7 @@ public class JwtAuthenticationConverter
                     .collect(Collectors.toUnmodifiableSet());
         }
         
-        var buildingPermissionsClaim = Objects.requireNonNull(source.getClaims().get("permissions"));
+        var buildingPermissionsClaim = Optional.ofNullable(source.getClaims().get("permissions")).orElse(Collections.emptyList());
         List<BuildingPermissionDTO> buildingPermissions = Collections.emptyList();
         if (buildingPermissionsClaim instanceof List<?> buildingPermissionsList) {
             buildingPermissions = buildingPermissionsList

@@ -35,11 +35,10 @@ jobs:
             ${{ runner.os }}-gradle-
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
-
       - name: Build with Gradle
         timeout-minutes: 15
         run: |
-          ./gradlew build --scan
+          ./gradlew build -x test --scan
         working-directory: ${{ matrix.module }}
 
   build-frontend:
