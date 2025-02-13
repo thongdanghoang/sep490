@@ -1,7 +1,10 @@
 package enterprise.entities;
 
 import commons.springfw.impl.entities.AbstractAuditableEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -10,6 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import sep490.common.api.enums.StatusPayment;
 
 @Entity
 @Table(name = "payments")
@@ -27,5 +31,13 @@ public class PaymentEntity extends AbstractAuditableEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "bundle_id", nullable = false)
     private BundleEntity bundle;
+    
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusPayment status;
+    
+    @Column(name = "amount")
+    private long amount;
     
 }

@@ -37,6 +37,14 @@ import {ModalProvider} from './services/modal-provider';
 import {FormFieldErrorComponent} from './components/form/form-field-error/form-field-error.component';
 import {PaymentStatusComponent} from './components/payment-status/payment-status.component';
 import {CardTemplateComponent} from './components/card/card-template/card-template.component';
+import {Tag} from 'primeng/tag';
+import {Card} from 'primeng/card';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionHeader,
+  AccordionPanel
+} from 'primeng/accordion';
 
 const primeNgModules = [
   AutoFocusModule,
@@ -86,7 +94,16 @@ const commons = [
     PaymentStatusComponent,
     CardTemplateComponent
   ],
-  imports: [...commons, ...primeNgModules],
+  imports: [
+    ...commons,
+    ...primeNgModules,
+    Tag,
+    Card,
+    Accordion,
+    AccordionPanel,
+    AccordionHeader,
+    AccordionContent
+  ],
   exports: [
     ...commons,
     ...primeNgModules,

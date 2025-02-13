@@ -116,12 +116,35 @@
     "scope": {
       "BUILDING": "Tòa nhà",
       "ENTERPRISE": "Doanh nghiệp"
+    },
+    "status": {
+      "payment": {
+        "SUCCESS": "thành công",
+        "FAILED": "thất bại"
+      }
     }
   },
   "table": {
     "paginatorString": "Hiển thị {first} đến {last} trong tổng số {totalRecords}"
   },
   "payment": {
+    "history": {
+      "balance": "Số dư",
+      "title" : "Lịch sử thanh toán",
+      "table": {
+        "date": "Ngày",
+        "status": "Trạng thái",
+        "amount": "Số lượng"
+      },
+      "button": {
+        "buyCredit": "Mua tín dụng",
+        "setting": "Thay đổi cài đặt"
+      },
+      "credit": {
+        "label" : "Tín dụng là đơn vị chuyển đổi mà hệ thống phân bổ cho doanh nghiệp.",
+        "title": "Tín dụng"
+      }
+    },
     "status": {
       "success": {
         "title": "Thanh toán thành công!",
@@ -132,5 +155,13 @@
         "content": "Vui lòng thử lại sau hoặc sử dụng phương thức thanh toán khác."
       }
     }
+  },
+  "purchaseCredit": {
+    "title": "Mua tín dụng",
+    "introduceMethod": "Bạn có thể sử dụng các phương thức thanh toán sau.",
+    "currentBalance": "Số dư hiện tại",
+    "selectCreditPackage": "Chọn gói tín dụng để mua",
+    "about": "Về tín dụng",
+    "termService": "Điều khoản dịch vụ"
   }
 }

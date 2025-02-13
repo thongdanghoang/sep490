@@ -116,12 +116,35 @@
     "scope": {
       "BUILDING": "Building",
       "ENTERPRISE": "Enterprise"
+    },
+    "status": {
+      "payment": {
+        "SUCCESS": "success",
+        "FAILED": "failed"
+      }
     }
   },
   "table": {
     "paginatorString": "Showing {first} to {last} of {totalRecords}"
   },
   "payment": {
+    "history": {
+      "balance": "Balance",
+      "title" : "Payment History",
+      "table": {
+        "date": "Date",
+        "status": "Status",
+        "amount": "Amount"
+      },
+      "button": {
+        "buyCredit": "Buy Credit",
+        "setting": "Change Setting"
+      },
+      "credit": {
+        "label" : "Credit is the conversion unit that the system allocates to businesses.",
+        "title": "Credit"
+      }
+    },
     "status": {
       "success": {
         "title": "Payment Successful!",
@@ -132,5 +155,13 @@
         "content": "Please try again later or use another payment method."
       }
     }
+  },
+  "purchaseCredit": {
+    "title": "Purchase Credit",
+    "introduceMethod": "You can use the following payment methods.",
+    "currentBalance": "Current balance",
+    "selectCreditPackage": "Select Credit package to purchase",
+    "about": "About Credit",
+    "termService": "Term of Service"
   }
 }

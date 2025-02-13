@@ -4,8 +4,8 @@ import {Observable} from 'rxjs';
 import {UUID} from '../../../../types/uuid';
 import {AppRoutingConstants} from '../../../app-routing.constant';
 import {SearchCriteriaDto, SearchResultDto} from '../../shared/models/models';
-import {UserCriteria} from '../components/users/users.component';
 import {EnterpriseUser, EnterpriseUserDetails} from '../models/enterprise-user';
+import {UserCriteria} from '../components/users/users.component';
 
 @Injectable()
 export class UserService {
