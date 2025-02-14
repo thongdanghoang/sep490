@@ -11,6 +11,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.utility.DockerImageName;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -18,7 +19,7 @@ import java.util.function.Supplier;
 public abstract class TestcontainersConfigs {
     
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16.4-alpine");
-    static GenericContainer<?> idP = new GenericContainer<>("thongdh3401/keycloak:24.0.5");
+    static GenericContainer<?> idP = new GenericContainer<>(DockerImageName.parse("thongdh3401/keycloak:24.0.5"));
     
     @BeforeAll
     static void beforeAll() {

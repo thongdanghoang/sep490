@@ -38,7 +38,7 @@ jobs:
       - name: Build with Gradle
         timeout-minutes: 15
         run: |
-          ./gradlew build -x test --scan
+          ./gradlew build --scan
         working-directory: ${{ matrix.module }}
 
   build-frontend:
