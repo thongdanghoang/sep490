@@ -1,7 +1,6 @@
 package enterprise.rest;
 
 import commons.springfw.impl.securities.UserContextData;
-import enterprise.dtos.BuildingDTO;
 import green_buildings.commons.api.exceptions.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -16,7 +15,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/wallet")
+@RequestMapping("/api/wallet")
 @RequiredArgsConstructor
 public class WalletController {
     
