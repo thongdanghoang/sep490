@@ -11,6 +11,7 @@ import {BadgeModule} from 'primeng/badge';
 import {ButtonModule} from 'primeng/button';
 import {CardModule} from 'primeng/card';
 import {DialogModule} from 'primeng/dialog';
+import {DividerModule} from 'primeng/divider';
 import {DrawerModule} from 'primeng/drawer';
 import {DynamicDialog} from 'primeng/dynamicdialog';
 import {FloatLabelModule} from 'primeng/floatlabel';
@@ -53,6 +54,7 @@ const primeNgModules = [
   DialogModule,
   DrawerModule,
   DynamicDialog,
+  DividerModule,
   FloatLabelModule,
   IconField,
   InputIcon,

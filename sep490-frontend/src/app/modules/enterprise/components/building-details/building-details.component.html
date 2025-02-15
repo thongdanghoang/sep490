@@ -1,0 +1,73 @@
+<span>
+    <p-button
+        (onClick)="back()"
+        class="*:min-w-28"
+        label="{{ 'common.back' | translate }}"
+        severity="primary"
+        outlined="true"
+        icon="pi pi-arrow-left"
+    />
+</span>
+
+<div class="font-medium text-2xl">
+    {{
+        (isEdit
+            ? "enterprise.buildings.details.edit"
+            : "enterprise.buildings.details.create"
+        ) | translate
+    }}
+</div>
+
+<form
+    [formGroup]="formGroup"
+    class="grid grid-cols-2 border border-black rounded-lg p-4 gap-4"
+>
+    <div class="flex flex-col gap-2" errorMessages>
+        <label class="font-medium text-lg" for="name">{{
+            "enterprise.buildings.details.labels.name" | translate
+        }}</label>
+        <input pInputText formControlName="name" id="name" type="text" />
+        <form-field-error></form-field-error>
+    </div>
+    <span></span>
+
+    <div class="flex flex-col gap-2" errorMessages>
+        <label class="font-medium text-lg" for="numberOfDevices">{{
+            "enterprise.buildings.details.labels.numberOfDevices" | translate
+        }}</label>
+        <input
+            pInputText
+            formControlName="numberOfDevices"
+            id="numberOfDevices"
+            type="number"
+        />
+        <form-field-error></form-field-error>
+    </div>
+    <div class="flex items-center gap-2">
+        <i class="pi pi-info-circle text-lg"></i>
+        {{
+            "enterprise.buildings.details.labels.maxNumberOfDevices" | translate
+        }}
+    </div>
+</form>
+
+<div class="flex gap-4 justify-end">
+    <p-button
+        (onClick)="reset()"
+        class="*:min-w-24"
+        label="{{ 'common.revert' | translate }}"
+        [outlined]="true"
+    />
+    <p-button
+        (onClick)="submit()"
+        class="*:min-w-16"
+        label="{{ (isEdit ? 'common.save' : 'common.create') | translate }}"
+    />
+</div>
+
+<ng-template>
+    <p-floatlabel variant="on">
+        <input pInputText formControlName="name" id="on_label" />
+        <label for="on_label">On Label</label>
+    </p-floatlabel>
+</ng-template>

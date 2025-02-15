@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import java.math.BigDecimal;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BuildingControllerTest extends TestcontainersConfigs {
     
@@ -51,8 +49,7 @@ class BuildingControllerTest extends TestcontainersConfigs {
     void createBuilding_withValidToken_returns201() {
         var building = BuildingDTO.builder()
                                   .name("Building 1")
-                                  .floors(1)
-                                  .squareMeters(BigDecimal.valueOf(123.45))
+                                  .numberOfDevices(10)
                                   .build();
         RestAssured.given()
                    .auth().oauth2(getToken("enterprise.owner@greenbuildings.com", "enterprise.owner"))

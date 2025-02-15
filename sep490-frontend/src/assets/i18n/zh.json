@@ -9,7 +9,12 @@
     "reject": "否",
     "create": "创建",
     "save": "保存",
-    "revert": "撤销"
+    "revert": "撤销",
+    "back": "返回",
+    "error": {
+      "title": "错误",
+      "technicalServerError": "发生意外服务器错误。请联系您的管理员，提供此关键 correlationId = {{correlationId}} 以获取更多信息。"
+    }
   },
   "validation": {
     "authorizeDenied": "您无权执行此操作",
@@ -64,7 +69,7 @@
     "title": "企业",
     "Users": {
       "title": "用户",
-      "search":"搜索",
+      "search": "搜索",
       "add": "添加用户",
       "create": "创建用户",
       "delete": "删除",
@@ -91,13 +96,34 @@
         "scope": "范围"
       },
       "message": {
-        "success" : {
+        "success": {
           "summary": "成功",
-          "detail" : "用户已删除"
+          "detail": "用户已删除"
         },
-        "error" : {
+        "error": {
           "summary": "错误",
-          "detail" : "用户删除失败"
+          "detail": "用户删除失败"
+        }
+      }
+    },
+    "buildings": {
+      "overview": {
+        "title": "建筑物",
+        "btn": {
+          "add": "添加建筑物",
+          "activate": "激活"
+        }
+      },
+      "details": {
+        "edit": "编辑",
+        "create": "创建",
+        "labels": {
+          "name": "建筑名称",
+          "numberOfDevices": "设备数量",
+          "maxNumberOfDevices": "估计建筑物内的设备库存量",
+          "validFromInclusive": "有效日期",
+          "validToInclusive": "有效日期",
+          "address": "地址"
         }
       }
     }
@@ -130,7 +156,7 @@
   "payment": {
     "history": {
       "balance": "平衡",
-      "title" : "付款历史",
+      "title": "付款历史",
       "table": {
         "date": "日期",
         "status": "地位",
@@ -141,7 +167,7 @@
         "setting": "更改设置"
       },
       "credit": {
-        "label" : "信用是系统分配给企业的换算单位。",
+        "label": "信用是系统分配给企业的换算单位。",
         "title": "信用"
       }
     },
