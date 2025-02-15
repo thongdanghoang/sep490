@@ -17,12 +17,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class WalletServiceImpl implements WalletService {
     private final WalletRepository walRepo;
+    
     @Override
-    public WalletEntity getBalance(){
-       // UUID enterpriseId = SecurityUtils.getCurrentUserEnterpriseId().orElseThrow();
-     //TODO are here
-        
-        return new WalletEntity();
+    public Long getBalance(){
+        UUID enterpriseId = SecurityUtils.getCurrentUserEnterpriseId().orElseThrow();
+        return walRepo
+                .findByEnterpriseId(enterpriseId)
+                .map(WalletEntity::getBalance)
+                .orElseThrow();
     }
     
 }

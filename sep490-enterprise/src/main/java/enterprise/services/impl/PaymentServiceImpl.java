@@ -14,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -26,10 +24,7 @@ public class PaymentServiceImpl implements PaymentService {
     
     @Override
     public Page<PaymentEntity> search(SearchCriteriaDTO<PaymentCriteriaDTO> searchCriteria, Pageable pageable) {
-     //   UUID enterpriseId = SecurityUtils.getCurrentUserEnterpriseId().orElseThrow();
-        return payRepo.findByName(
-                searchCriteria.criteria().criteria(),
-     //           enterpriseId,
-                  pageable);
+        UUID enterpriseId = SecurityUtils.getCurrentUserEnterpriseId().orElseThrow();
+        return payRepo.findByEnterpriseId(enterpriseId, pageable);
     }
 }
