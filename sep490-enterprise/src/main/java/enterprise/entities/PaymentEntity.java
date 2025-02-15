@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sep490.common.api.enums.StatusPayment;
+import green_buildings.commons.api.enums.StatusPayment;
 
 @Entity
 @Table(name = "payments")

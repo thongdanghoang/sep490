@@ -1,4 +1,4 @@
-package sep490.common.api.enums;
+package green_buildings.commons.api.enums;
 
 public enum StatusPayment {
     SUCCESS,

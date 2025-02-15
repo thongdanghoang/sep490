@@ -2,7 +2,7 @@ package enterprise.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
-import sep490.common.api.enums.StatusPayment;
+import green_buildings.commons.api.enums.StatusPayment;
 
 import java.time.LocalDateTime;
 import java.util.Date;
