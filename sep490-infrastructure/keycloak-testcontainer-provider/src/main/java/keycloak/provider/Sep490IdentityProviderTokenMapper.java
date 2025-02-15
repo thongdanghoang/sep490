@@ -19,7 +19,7 @@ import java.util.UUID;
 @AutoService(ProtocolMapper.class)
 public class Sep490IdentityProviderTokenMapper extends AbstractOIDCProtocolMapper implements OIDCAccessTokenMapper {
     private static final String ID = "green-buildings-mapper";
-    private static final String LABEL = "GreenBuildings testContainer mapper";
+    private static final String LABEL = "Testcontainer mapper";
     
     private static final String AUTHORITIES_CLAIM = "authorities";
     private static final String ENTERPRISE_ID_CLAIM = "enterpriseId";
@@ -39,7 +39,7 @@ public class Sep490IdentityProviderTokenMapper extends AbstractOIDCProtocolMappe
                                             ClientSessionContext clientSessionCtx) {
         setClaim(token, mappingModel, userSession, session, clientSessionCtx);
         var email = token.getOtherClaims().get("email").toString();
-        registerClaim(token, PERMISSIONS_CLAIM, Collections.emptyList());
+        registerClaim(token, PERMISSIONS_CLAIM, Collections.emptyList()); // TODO: put mock permissions here
         if (email.startsWith("system.admin")) {
             registerClaim(token, AUTHORITIES_CLAIM, List.of("ROLE_SYSTEM_ADMIN"));
             return token;
