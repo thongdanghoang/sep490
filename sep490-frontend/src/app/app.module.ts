@@ -86,7 +86,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
         renewUserInfoAfterTokenRenew: true,
         logLevel: environment.production ? LogLevel.Warn : LogLevel.Debug,
         historyCleanupOff: true,
-        secureRoutes: [environment.idpApiUrl]
+        secureRoutes: [environment.idpApiUrl, environment.enterpriseUrl]
       }
     }),
     TranslateModule.forRoot({
