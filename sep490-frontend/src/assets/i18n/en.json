@@ -137,12 +137,12 @@
         "amount": "Amount"
       },
       "button": {
-        "buyCredit": "Buy Credit",
+        "buyCredit": "Buy Credits",
         "setting": "Change Setting"
       },
       "credit": {
         "label" : "Credit is the conversion unit that the system allocates to businesses.",
-        "title": "Credit"
+        "title": "Credits"
       }
     },
     "status": {

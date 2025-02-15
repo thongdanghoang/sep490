@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
+import {WalletService} from '../../services/wallet.service';
 
 interface CreditPackage {
   id: number;
@@ -10,7 +12,10 @@ interface CreditPackage {
   templateUrl: './plan.component.html',
   styleUrl: './plan.component.css'
 })
-export class PlanComponent implements OnInit {
+export class PlanComponent
+  extends SubscriptionAwareComponent
+  implements OnInit
+{
   tabs = [
     {title: 'purchaseCredit.about', content: 'Content 1', value: '0'},
     {title: 'purchaseCredit.termService', content: 'Content 2', value: '1'}
@@ -26,7 +31,9 @@ export class PlanComponent implements OnInit {
 
   selectedPackageId: number | null = null;
   balance: number = 0;
-  constructor() {}
+  constructor(private readonly walletService: WalletService) {
+    super();
+  }
   ngOnInit(): void {
     this.getBalance();
   }
@@ -40,6 +47,10 @@ export class PlanComponent implements OnInit {
     }
   }
   getBalance(): void {
-    this.balance = 1500;
+    this.registerSubscription(
+      this.walletService.getWalletBalance().subscribe(result => {
+        this.balance = result;
+      })
+    );
   }
 }

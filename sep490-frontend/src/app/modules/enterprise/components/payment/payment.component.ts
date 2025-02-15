@@ -1,4 +1,5 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {TableTemplateColumn} from '../../../shared/components/table-template/table-template.component';
 import {
   SearchCriteriaDto,
@@ -8,6 +9,7 @@ import {Observable} from 'rxjs';
 import {ApplicationService} from '../../../core/services/application.service';
 import {PaymentDTO} from '../../models/payment';
 import {PaymentService} from '../../services/payment.service';
+import {WalletService} from '../../services/wallet.service';
 
 export interface PaymentCriteria {
   criteria: string;
@@ -19,7 +21,10 @@ export interface PaymentCriteria {
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })
-export class PaymentComponent implements OnInit {
+export class PaymentComponent
+  extends SubscriptionAwareComponent
+  implements OnInit
+{
   @ViewChild('statusTemplate', {static: true})
   statusTemplate!: TemplateRef<any>;
   @ViewChild('amountTemplate', {static: true})
@@ -32,10 +37,14 @@ export class PaymentComponent implements OnInit {
   protected fetchData!: (
     criteria: SearchCriteriaDto<PaymentCriteria>
   ) => Observable<SearchResultDto<PaymentDTO>>;
+
   constructor(
     protected readonly applicationService: ApplicationService,
-    private readonly paymentService: PaymentService
-  ) {}
+    private readonly paymentService: PaymentService,
+    private readonly walletService: WalletService
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.fetchData = this.paymentService.getPayments.bind(this.paymentService);
@@ -75,6 +84,10 @@ export class PaymentComponent implements OnInit {
   }
 
   getBalance(): void {
-    this.balance = 1500;
+    this.registerSubscription(
+      this.walletService.getWalletBalance().subscribe(result => {
+        this.balance = result;
+      })
+    );
   }
 }

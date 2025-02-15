@@ -9,6 +9,7 @@ import {MarkerService} from './services/marker.service';
 import {PaymentService} from './services/payment.service';
 import {PopupService} from './services/popup.service';
 import {RegionService} from './services/region.service';
+import {WalletService} from './services/wallet.service';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,12 @@ import {RegionService} from './services/region.service';
     BuildingsComponent
   ],
   imports: [SharedModule, EnterpriseRoutingModule],
-  providers: [MarkerService, PopupService, RegionService, PaymentService]
+  providers: [
+    MarkerService,
+    PopupService,
+    RegionService,
+    PaymentService,
+    WalletService
+  ]
 })
 export class EnterpriseModule {}
