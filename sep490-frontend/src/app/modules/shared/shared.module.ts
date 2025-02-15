@@ -20,6 +20,8 @@ import {InputSwitchModule} from 'primeng/inputswitch';
 import {InputTextModule} from 'primeng/inputtext';
 import {MenuModule} from 'primeng/menu';
 import {MenubarModule} from 'primeng/menubar';
+import {MessageModule} from 'primeng/message';
+import {MessagesModule} from 'primeng/messages';
 import {MultiSelect} from 'primeng/multiselect';
 import {PaginatorModule} from 'primeng/paginator';
 import {PasswordModule} from 'primeng/password';
@@ -56,6 +58,8 @@ const primeNgModules = [
   InputIcon,
   InputTextModule,
   InputSwitchModule,
+  MessageModule,
+  MessagesModule,
   MenuModule,
   MenubarModule,
   Select,

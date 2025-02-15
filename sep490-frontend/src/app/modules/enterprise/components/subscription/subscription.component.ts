@@ -9,13 +9,12 @@ interface CreditPackage {
 }
 @Component({
   selector: 'app-subscriptions',
-  templateUrl: './plan.component.html',
-  styleUrl: './plan.component.css'
+  templateUrl: './subscription.component.html',
+  styleUrl: './subscription.component.css'
 })
-export class PlanComponent
+export class SubscriptionComponent
   extends SubscriptionAwareComponent
-  implements OnInit
-{
+  implements OnInit {
   tabs = [
     {title: 'purchaseCredit.about', content: 'Content 1', value: '0'},
     {title: 'purchaseCredit.termService', content: 'Content 2', value: '1'}

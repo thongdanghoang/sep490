@@ -1,6 +1,6 @@
 import {AfterViewInit, Component} from '@angular/core';
-import * as L from 'leaflet';
 import * as geojson from 'geojson';
+import * as L from 'leaflet';
 import {MarkerService} from '../../services/marker.service';
 import {RegionService} from '../../services/region.service';
 
@@ -97,9 +97,7 @@ export class BuildingsComponent implements AfterViewInit {
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
         maxZoom: 18,
-        minZoom: 3,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        minZoom: 3
       }
     );
 
