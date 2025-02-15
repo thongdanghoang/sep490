@@ -30,7 +30,7 @@ class BuildingControllerTest extends TestcontainersConfigs {
                    .contentType(ContentType.JSON)
                    .body(new SearchCriteriaDTO<Void>(null, null, null))
                    .when()
-                   .post("/buildings/search")
+                   .post("/api/buildings/search")
                    .then()
                    .statusCode(200);
     }
@@ -42,7 +42,7 @@ class BuildingControllerTest extends TestcontainersConfigs {
                    .contentType(ContentType.JSON)
                    .body(new SearchCriteriaDTO<Void>(null, null, null))
                    .when()
-                   .post("/buildings/search")
+                   .post("/api/buildings/search")
                    .then()
                    .statusCode(401);
     }
@@ -59,7 +59,7 @@ class BuildingControllerTest extends TestcontainersConfigs {
                    .contentType(ContentType.JSON)
                    .body(building)
                    .when()
-                   .post("/buildings")
+                   .post("/api/buildings")
                    .then()
                    .statusCode(201);
     }
@@ -71,7 +71,7 @@ class BuildingControllerTest extends TestcontainersConfigs {
                    .contentType(ContentType.JSON)
                    .body(BuildingDTO.builder().build())
                    .when()
-                   .post("/buildings")
+                   .post("/api/buildings")
                    .then()
                    .statusCode(400);
     }
@@ -83,7 +83,7 @@ class BuildingControllerTest extends TestcontainersConfigs {
                    .contentType(ContentType.JSON)
                    .body(BuildingDTO.builder().build())
                    .when()
-                   .post("/buildings")
+                   .post("/api/buildings")
                    .then()
                    .statusCode(401);
     }
