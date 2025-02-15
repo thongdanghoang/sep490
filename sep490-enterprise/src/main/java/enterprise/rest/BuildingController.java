@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/buildings")
+@RequestMapping("/api/buildings")
 @RequiredArgsConstructor
 @RolesAllowed({
         UserRole.RoleNameConstant.ENTERPRISE_OWNER,
