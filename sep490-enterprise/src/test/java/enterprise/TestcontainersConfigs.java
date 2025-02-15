@@ -24,12 +24,9 @@ public abstract class TestcontainersConfigs {
     static void beforeAll() {
         postgres.start();
         idP.withExposedPorts(8180)
-           .waitingFor(Wait.forHttp("/realms/greenbuildings/.well-known/openid-configuration")
-                           .forStatusCode(200)
-                               .withReadTimeout(java.time.Duration.ofMinutes(5))
-                               .withStartupTimeout(java.time.Duration.ofMinutes(5))
-                      )
-           .start();
+                .withCommand("start-dev --http-port 8180")
+                .waitingFor(Wait.forHttp("/realms/greenbuildings/.well-known/openid-configuration"))
+                .start();
     }
     
     @AfterAll
