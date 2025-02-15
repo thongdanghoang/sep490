@@ -65,6 +65,14 @@
             </td>
         </tr>
     </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <td
+            [attr.colspan]="columns.length + (checkbox ? 1 : 0)"
+            class="px-3 py-4"
+        >
+            {{ "common.noRow" | translate }}
+        </td>
+    </ng-template>
 </p-table>
 <p-paginator
     *ngIf="searchResult"

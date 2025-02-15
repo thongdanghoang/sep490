@@ -35,7 +35,7 @@ import java.util.UUID;
 )
 @FilterDef(name = UserEntity.BELONG_ENTERPRISE_FILTER, parameters = @ParamDef(name = UserEntity.BELONG_ENTERPRISE_PARAM, type = UUID.class))
 @Filter(name = UserEntity.BELONG_ENTERPRISE_FILTER,
-        condition = "id IN (SELECT ue.user_id FROM enterprise_users ue WHERE ue.enterprise_id = :" + UserEntity.BELONG_ENTERPRISE_PARAM)
+        condition = "id IN (SELECT ue.user_id FROM enterprise_users ue WHERE ue.enterprise_id = :" + UserEntity.BELONG_ENTERPRISE_PARAM + ")")
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
