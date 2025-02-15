@@ -1,7 +1,7 @@
 services:
-  sep490_instance:
+  sep490_databases:
     image: postgres:16.4
-    container_name: sep490_instance
+    container_name: sep490_databases
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
