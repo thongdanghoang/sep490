@@ -5,6 +5,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import commons.springfw.impl.securities.CorsConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -26,9 +27,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import commons.springfw.impl.filters.MonitoringFilter;
 import commons.springfw.impl.securities.JwtAuthenticationConverter;
 import green_buildings.idp.service.impl.UserInfoService;
@@ -44,14 +43,7 @@ public class AuthorizationServerConfig {
     
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        config.addAllowedOrigin("http://localhost:4200");
-        config.setAllowCredentials(true);
-        source.registerCorsConfiguration("/**", config);
-        return source;
+        return CorsConfig.corsConfigurationSource();
     }
     
     @Bean
