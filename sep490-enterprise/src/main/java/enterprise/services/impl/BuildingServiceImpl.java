@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -21,6 +22,11 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public BuildingEntity createBuilding(BuildingEntity building) {
         return buildingRepository.save(building);
+    }
+    
+    @Override
+    public Optional<BuildingEntity> findById(UUID id) {
+        return buildingRepository.findById(id);
     }
     
     @Override

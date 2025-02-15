@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {SharedModule} from '../shared/shared.module';
+import {BuildingDetailsComponent} from './components/building-details/building-details.component';
 import {BuildingsComponent} from './components/buildings/buildings.component';
 import {PaymentComponent} from './components/payment/payment.component';
 import {SubscriptionComponent} from './components/subscription/subscription.component';
@@ -16,7 +17,8 @@ import {WalletService} from './services/wallet.service';
     EnterpriseComponent,
     SubscriptionComponent,
     PaymentComponent,
-    BuildingsComponent
+    BuildingsComponent,
+    BuildingDetailsComponent
   ],
   imports: [SharedModule, EnterpriseRoutingModule],
   providers: [

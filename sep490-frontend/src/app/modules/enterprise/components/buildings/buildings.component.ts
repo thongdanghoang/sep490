@@ -1,6 +1,14 @@
 import {AfterViewInit, Component} from '@angular/core';
+import {Router} from '@angular/router';
 import * as geojson from 'geojson';
 import * as L from 'leaflet';
+import {SelectButtonChangeEvent} from 'primeng/selectbutton';
+import {takeUntil} from 'rxjs';
+import {UUID} from '../../../../../types/uuid';
+import {AppRoutingConstants} from '../../../../app-routing.constant';
+import {BuildingService} from '../../../../services/building.service';
+import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
+import {Building} from '../../models/building.dto';
 import {MarkerService} from '../../services/marker.service';
 import {RegionService} from '../../services/region.service';
 
@@ -24,41 +32,34 @@ export enum ViewMode {
   MAP = 'map'
 }
 
-export interface Building {
-  name: string;
-  floors: number;
-  squareMeters: number;
-  status: string; // 'active' | 'inactive'
-  validFromInclusive?: Date;
-  validToInclusive?: Date;
-  location: {
-    latitude: number;
-    longitude: number;
-  };
-}
-
 @Component({
   selector: 'app-building',
   templateUrl: './buildings.component.html',
   styleUrl: './buildings.component.css'
 })
-export class BuildingsComponent implements AfterViewInit {
+export class BuildingsComponent
+  extends SubscriptionAwareComponent
+  implements AfterViewInit
+{
   viewMode: ViewMode = ViewMode.MAP;
+  buildings: Building[] = [];
 
   justifyOptions: any[] = [
     {icon: 'pi pi-map', value: ViewMode.MAP},
     {icon: 'pi pi-list', value: ViewMode.LIST}
   ];
 
-  mockBuildings: Building[] = [];
-
   private map!: L.Map;
   private states!: geojson.GeoJsonObject | geojson.GeoJsonObject[] | null;
 
   constructor(
+    private readonly router: Router,
+    private readonly buildingService: BuildingService,
     private readonly markerService: MarkerService,
     private readonly shapeService: RegionService
-  ) {}
+  ) {
+    super();
+  }
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -71,6 +72,38 @@ export class BuildingsComponent implements AfterViewInit {
       this.states = states;
       this.initStatesLayer();
     });
+  }
+
+  onViewModeChanged(event: SelectButtonChangeEvent): void {
+    if (event.value === ViewMode.LIST) {
+      this.buildingService
+        .searchBuildings({
+          page: {
+            pageNumber: 0,
+            pageSize: 100
+          }
+        })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(buildings => (this.buildings = buildings.results));
+    }
+  }
+
+  addBuilding(): void {
+    void this.router.navigate([
+      '/',
+      AppRoutingConstants.ENTERPRISE_PATH,
+      AppRoutingConstants.BUILDING_PATH,
+      'create'
+    ]);
+  }
+
+  viewBuildingDetails(id: UUID): void {
+    void this.router.navigate([
+      '/',
+      AppRoutingConstants.ENTERPRISE_PATH,
+      AppRoutingConstants.BUILDING_PATH,
+      id
+    ]);
   }
 
   get mapView(): boolean {

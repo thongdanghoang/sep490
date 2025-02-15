@@ -17,18 +17,19 @@ import {environment} from '../environments/environment';
 import {AppRoutingConstants} from './app-routing.constant';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
+import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {ForbiddenComponent} from './components/forbidden/forbidden.component';
 import {HeaderComponent} from './components/header/header.component';
 import {HomeComponent} from './components/home/home.component';
 import {NotFoundComponent} from './components/not-found/not-found.component';
+import {PricingComponent} from './components/pricing/pricing.component';
+import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
 import {CoreModule} from './modules/core/core.module';
+import {HttpErrorHandlerInterceptor} from './modules/core/services/http-error-handler.interceptor';
 import {LanguageInterceptor} from './modules/shared/interceptor/language.interceptor';
 import {SharedModule} from './modules/shared/shared.module';
-import {SidebarComponent} from './components/sidebar/sidebar.component';
-import {PricingComponent} from './components/pricing/pricing.component';
-import {DashboardComponent} from './components/dashboard/dashboard.component';
 
 enum OidcScopes {
   OPENID = 'openid',
@@ -110,7 +111,12 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
       multi: true
     },
     {provide: HTTP_INTERCEPTORS, useClass: LanguageInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorHandlerInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

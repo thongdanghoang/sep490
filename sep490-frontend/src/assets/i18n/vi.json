@@ -9,7 +9,12 @@
     "saveSuccess": "Lưu thành công!",
     "create": "Tạo",
     "save": "Lưu",
-    "revert": "Hoàn tác"
+    "revert": "Hoàn tác",
+    "back": "Quay lại",
+    "error": {
+      "title": "Lỗi",
+      "technicalServerError": "Đã xảy ra lỗi máy chủ không mong muốn. Vui lòng liên hệ với System Admin có correlationId = {{correlationId}} để biết thêm thông tin."
+    }
   },
   "validation": {
     "authorizeDenied": "Bạn không thể thực hiện chức năng này",
@@ -64,7 +69,7 @@
     "title": "Doanh nghiệp",
     "Users": {
       "title": "Người dùng",
-      "search":"Tìm kiếm",
+      "search": "Tìm kiếm",
       "add": "Thêm người dùng",
       "create": "Tạo người dùng",
       "delete": "Xóa",
@@ -91,13 +96,34 @@
         "scope": "Phạm vi"
       },
       "message": {
-        "success" : {
+        "success": {
           "summary": "Thành công",
-          "detail" : "Đã xóa người dùng"
+          "detail": "Đã xóa người dùng"
         },
-        "error" : {
+        "error": {
           "summary": "Lỗi",
-          "detail" : "Đã xóa người dùng không thành công"
+          "detail": "Đã xóa người dùng không thành công"
+        }
+      }
+    },
+    "buildings": {
+      "overview": {
+        "title": "Tòa nhà",
+        "btn": {
+          "add": "Thêm tòa nhà",
+          "activate": "Kích hoạt"
+        }
+      },
+      "details": {
+        "edit": "Chỉnh sửa",
+        "create": "Tạo mới",
+        "labels": {
+          "name": "Tên tòa nhà",
+          "numberOfDevices": "Số lượng thiết bị",
+          "maxNumberOfDevices": "Ước tính số lượng thiết bị kiểm kê trong tòa nhà",
+          "validFromInclusive": "Hiệu lực từ",
+          "validToInclusive": "Hiệu lực đến",
+          "address": "Địa chỉ"
         }
       }
     }
@@ -130,7 +156,7 @@
   "payment": {
     "history": {
       "balance": "Số dư",
-      "title" : "Lịch sử thanh toán",
+      "title": "Lịch sử thanh toán",
       "table": {
         "date": "Ngày",
         "status": "Trạng thái",
@@ -141,7 +167,7 @@
         "setting": "Thay đổi cài đặt"
       },
       "credit": {
-        "label" : "Tín dụng là đơn vị chuyển đổi mà hệ thống phân bổ cho doanh nghiệp.",
+        "label": "Tín dụng là đơn vị chuyển đổi mà hệ thống phân bổ cho doanh nghiệp.",
         "title": "Tín dụng"
       }
     },

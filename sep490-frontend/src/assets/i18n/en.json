@@ -9,7 +9,12 @@
     "reject": "No",
     "create": "Create",
     "save": "Save",
-    "revert": "Revert"
+    "revert": "Revert",
+    "back": "Back",
+    "error": {
+      "title": "Error",
+      "technicalServerError": "Unexpected server error occurred. Please contact your administrator with this key correlationId = {{correlationId}} for more information."
+    }
   },
   "validation": {
     "authorizeDenied": "You are not allowed to perform this action",
@@ -29,7 +34,7 @@
         "permissionWarning": "Please select a building to assign a role to this user"
       },
       "buildingPermissions": {
-        "notEmpty" : "Building permissions cannot be empty",
+        "notEmpty": "Building permissions cannot be empty",
         "shouldHave": "Building scope, employee should have building permission with building id",
         "shouldHaveUnique": "Building scope, employee should have unique building permission",
         "idBuildingIsNull": "Scope is enterprise, employee should have only one building permission with building id is null"
@@ -62,7 +67,7 @@
   },
   "enterprise": {
     "title": "Enterprise",
-    "Users" : {
+    "Users": {
       "title": "Users",
       "search": "Search",
       "add": "Add user",
@@ -91,13 +96,34 @@
         "scope": "Scope"
       },
       "message": {
-        "success" : {
+        "success": {
           "summary": "Success",
-          "detail" : "User deleted"
+          "detail": "User deleted"
         },
-        "error" : {
+        "error": {
           "summary": "Error",
-          "detail" : "User deleted unsuccessfully"
+          "detail": "User deleted unsuccessfully"
+        }
+      }
+    },
+    "buildings": {
+      "overview": {
+        "title": "Buildings",
+        "btn": {
+          "add": "Add building",
+          "activate": "Activate"
+        }
+      },
+      "details": {
+        "edit": "Edit",
+        "create": "Create",
+        "labels": {
+          "name": "Building name",
+          "numberOfDevices": "Number of devices",
+          "maxNumberOfDevices": "Estimate the amount of equipment inventory in the building",
+          "validFromInclusive": "Valid from",
+          "validToInclusive": "Valid to",
+          "address": "Address"
         }
       }
     }
@@ -130,7 +156,7 @@
   "payment": {
     "history": {
       "balance": "Balance",
-      "title" : "Payment History",
+      "title": "Payment History",
       "table": {
         "date": "Date",
         "status": "Status",
@@ -141,7 +167,7 @@
         "setting": "Change Setting"
       },
       "credit": {
-        "label" : "Credit is the conversion unit that the system allocates to businesses.",
+        "label": "Credit is the conversion unit that the system allocates to businesses.",
         "title": "Credits"
       }
     },

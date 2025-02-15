@@ -1,14 +1,25 @@
-<div class="">
-    <p-selectbutton
-        [options]="justifyOptions"
-        [(ngModel)]="viewMode"
-        optionValue="value"
-    >
-        <ng-template #item let-item>
-            <i [class]="item.icon"></i>
-        </ng-template>
-    </p-selectbutton>
+<div class="flex justify-between items-center">
+    <div class="font-medium text-2xl">
+        {{ "enterprise.buildings.overview.title" | translate }}
+    </div>
+    <p-button
+        severity="primary"
+        [label]="'enterprise.buildings.overview.btn.add' | translate"
+        icon="pi pi-building"
+        (onClick)="addBuilding()"
+    />
 </div>
+
+<p-selectbutton
+    (onChange)="onViewModeChanged($event)"
+    [options]="justifyOptions"
+    [(ngModel)]="viewMode"
+    optionValue="value"
+>
+    <ng-template #item let-item>
+        <i [class]="item.icon"></i>
+    </ng-template>
+</p-selectbutton>
 
 <div
     [hidden]="listView"
@@ -19,9 +30,81 @@
 </div>
 
 @if (listView) {
-    <card-template>
-        <div header>header</div>
-        <div body>body</div>
-        <div footer>footer</div>
-    </card-template>
+    @for (building of buildings; track building.id) {
+        <ng-container
+            *ngTemplateOutlet="cardTemplate; context: { $implicit: building }"
+        ></ng-container>
+    }
 }
+
+<ng-template #cardTemplate let-building>
+    <div class="rounded box-shadow border-t-2 border-t-primary *:w-full">
+        <div class="p-4 rounded-t bg-primary-50 flex justify-between">
+            <div class="text-xl font-bold">{{ building.name }}</div>
+            <div class="">
+                <p-button
+                    (onClick)="viewBuildingDetails(building.id)"
+                    icon="pi pi-info"
+                    text
+                />
+                <p-button icon="pi pi-map" text />
+            </div>
+        </div>
+        <div class="p-4 border-b">
+            <div class="grid grid-cols-4">
+                <div class="flex flex-col gap-1">
+                    <div class="text-sm">
+                        {{
+                            "enterprise.buildings.details.labels.numberOfDevices"
+                                | translate
+                        }}
+                    </div>
+                    <div>{{ building.numberOfDevices }}</div>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <div class="text-sm">
+                        {{
+                            "enterprise.buildings.details.labels.validFromInclusive"
+                                | translate
+                        }}
+                    </div>
+                    <div>
+                        {{ building.validFromInclusive | date: "dd.MM.yyyy" }}
+                    </div>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <div class="text-sm">
+                        {{
+                            "enterprise.buildings.details.labels.validToInclusive"
+                                | translate
+                        }}
+                    </div>
+                    <div>
+                        {{ building.validToInclusive | date: "dd.MM.yyyy" }}
+                    </div>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <div class="text-sm">
+                        {{
+                            "enterprise.buildings.details.labels.address"
+                                | translate
+                        }}
+                    </div>
+                    <div>
+                        {{ building.address }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-2 flex justify-end">
+            <p-button
+                class="*:w-24"
+                severity="primary"
+                [label]="
+                    'enterprise.buildings.overview.btn.activate' | translate
+                "
+                outlined
+            />
+        </div>
+    </div>
+</ng-template>
