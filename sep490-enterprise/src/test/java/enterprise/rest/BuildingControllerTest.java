@@ -5,21 +5,9 @@ import enterprise.dtos.BuildingDTO;
 import green_buildings.commons.api.dto.SearchCriteriaDTO;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BuildingControllerTest extends TestcontainersConfigs {
-    
-    @LocalServerPort
-    private Integer port;
-    
-    @BeforeEach
-    void setUp() {
-        RestAssured.baseURI = "http://localhost:" + port;
-    }
     
     @Test
     void getEnterpriseBuildings_withValidToken_returns200() {

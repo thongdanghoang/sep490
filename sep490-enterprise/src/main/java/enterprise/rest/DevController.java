@@ -8,6 +8,7 @@ import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,13 +31,13 @@ public class DevController {
     }
     
     @PostMapping("/save-business-error")
-    public String saveBusinessError(String body) {
+    public String saveBusinessError(@RequestBody String body) {
         log.info(body);
         throw new DemoException("email", "demo", new BusinessErrorParam("name", "invalid_name"));
     }
     
     @PostMapping("/save-technical-error")
-    public String saveTechnicalError(String body) {
+    public String saveTechnicalError(@RequestBody String body) {
         log.info(body);
         throw new TechnicalException("Demo technical error");
     }
