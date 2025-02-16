@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice(basePackages = "sep490.idp.controller")
+@ControllerAdvice(basePackages = "green_buildings.idp.controller")
 @Slf4j
 public class MvcExceptionHandler {
     
