@@ -36,7 +36,6 @@ export class UsersComponent
   extends SubscriptionAwareComponent
   implements OnInit
 {
-  @ViewChild('roleTemplate', {static: true}) roleTemplate!: TemplateRef<any>;
   @ViewChild('scopeTemplate', {static: true})
   scopeTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate', {static: true})
@@ -77,11 +76,6 @@ export class UsersComponent
       field: 'email',
       header: 'enterprise.Users.table.email',
       sortable: true
-    });
-    this.cols.push({
-      field: 'role',
-      header: 'enterprise.Users.table.role',
-      templateRef: this.roleTemplate
     });
     this.cols.push({
       field: 'scope',
