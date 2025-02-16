@@ -17,6 +17,7 @@ import {AppRoutingConstants} from '../../../../app-routing.constant';
 import {BuildingService} from '../../../../services/building.service';
 import {AbstractFormComponent} from '../../../shared/components/form/abstract-form-component';
 import {BuildingDetails} from '../../models/enterprise.dto';
+import {MapLocation} from '../buildings/buildings.component';
 
 @Component({
   selector: 'app-building-detail',
@@ -31,7 +32,17 @@ export class BuildingDetailsComponent extends AbstractFormComponent<BuildingDeta
     numberOfDevices: new FormControl(0, {
       nonNullable: true,
       validators: [Validators.min(1), Validators.required]
-    })
+    }),
+    latitude: new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.min(-90),
+      Validators.max(90)
+    ]),
+    longitude: new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.min(-180),
+      Validators.max(180)
+    ])
   };
 
   constructor(
@@ -74,6 +85,23 @@ export class BuildingDetailsComponent extends AbstractFormComponent<BuildingDeta
       )
       .subscribe(building => {
         this.formGroup.patchValue(building);
+      });
+    this.activatedRoute.queryParams
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((params): params is MapLocation => !!params)
+      )
+      .subscribe(location => {
+        if (!!location.latitude && !!location.longitude) {
+          this.buildingDetailsStructure.latitude.setValue(location.latitude);
+          this.buildingDetailsStructure.longitude.setValue(location.longitude);
+        } else if (!this.isEdit) {
+          this.notificationService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Invalid location'
+          });
+        }
       });
   }
 
