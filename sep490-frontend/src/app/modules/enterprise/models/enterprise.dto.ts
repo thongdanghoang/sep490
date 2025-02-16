@@ -7,3 +7,13 @@ export interface Building extends BaseDTO {
   validToInclusive?: Date;
   activated?: boolean;
 }
+
+export interface BuildingDetails {
+  name: string;
+  numberOfDevices: number;
+}
+
+export interface CreditPackage extends BaseDTO {
+  numberOfCredits: number;
+  price: number;
+}

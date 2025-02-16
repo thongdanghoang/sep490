@@ -3,8 +3,10 @@ import {Injectable} from '@angular/core';
 import {Observable, map} from 'rxjs';
 import {UUID} from '../../types/uuid';
 import {AppRoutingConstants} from '../app-routing.constant';
-import {BuildingDetails} from '../modules/enterprise/models/building-details.dto';
-import {Building} from '../modules/enterprise/models/building.dto';
+import {
+  Building,
+  BuildingDetails
+} from '../modules/enterprise/models/enterprise.dto';
 import {
   SearchCriteriaDto,
   SearchResultDto

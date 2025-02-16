@@ -8,7 +8,7 @@ import {UUID} from '../../../../../types/uuid';
 import {AppRoutingConstants} from '../../../../app-routing.constant';
 import {BuildingService} from '../../../../services/building.service';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
-import {Building} from '../../models/building.dto';
+import {Building} from '../../models/enterprise.dto';
 import {MarkerService} from '../../services/marker.service';
 import {RegionService} from '../../services/region.service';
 

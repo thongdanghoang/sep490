@@ -22,6 +22,7 @@
     <div class="flex gap-2.5 flex-col">
         <div class="flex items-center justify-between lg:flex-row gap-2.5">
             <p-button
+                (onClick)="navigateToSubscription()"
                 severity="primary"
                 [label]="'payment.history.button.buyCredit' | translate"
                 outlined
