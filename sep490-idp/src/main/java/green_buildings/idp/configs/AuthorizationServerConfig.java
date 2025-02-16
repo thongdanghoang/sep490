@@ -5,7 +5,10 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import commons.springfw.impl.securities.CorsConfig;
+import commons.springfw.impl.filters.MonitoringFilter;
+import commons.springfw.impl.securities.JwtAuthenticationConverter;
+import green_buildings.idp.service.impl.UserInfoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -27,24 +30,17 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
-import org.springframework.web.cors.CorsConfigurationSource;
-import commons.springfw.impl.filters.MonitoringFilter;
-import commons.springfw.impl.securities.JwtAuthenticationConverter;
-import green_buildings.idp.service.impl.UserInfoService;
 
-import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Configuration
+@RequiredArgsConstructor
 public class AuthorizationServerConfig {
     
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        return CorsConfig.corsConfigurationSource();
-    }
+    private final JwtAuthenticationConverter converter;
     
     @Bean
     @Order(1)
@@ -75,7 +71,7 @@ public class AuthorizationServerConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(
                         resourceServer -> resourceServer.jwt(
-                                jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(tokenToUserContextDataConverter())
+                                jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(converter)
                                                             )
                                      )
                 .addFilterAfter(new MonitoringFilter(), SecurityContextHolderFilter.class);
@@ -83,12 +79,7 @@ public class AuthorizationServerConfig {
     }
     
     @Bean
-    public JwtAuthenticationConverter tokenToUserContextDataConverter() {
-        return new JwtAuthenticationConverter();
-    }
-    
-    @Bean
-    public JWKSource<SecurityContext> jwkSource() throws NoSuchAlgorithmException {
+    public JWKSource<SecurityContext> jwkSource() {
         var keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"), "P@ssW0rd".toCharArray());
         var keyPair = keyStoreKeyFactory.getKeyPair("GreenBuildings");
         var publicKey = (RSAPublicKey) keyPair.getPublic();

@@ -1,6 +1,9 @@
 <p-menu [model]="items" class="flex *:border-none" styleClass="w-full md:w-60">
     <ng-template #start>
-        <span class="inline-flex items-center pt-8 px-4">
+        <span
+            class="inline-flex items-center pt-8 px-4 cursor-pointer"
+            (click)="homepage()"
+        >
             <img
                 ngSrc="assets/images/logo.svg"
                 alt="Logo"
@@ -29,7 +32,7 @@
             >
         </a>
     </ng-template>
-    <ng-template #end> </ng-template>
+    <ng-template #end></ng-template>
 </p-menu>
 
 <p-menu [model]="settings" class="*:border-none" />

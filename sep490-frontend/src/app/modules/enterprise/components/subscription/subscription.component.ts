@@ -14,7 +14,8 @@ interface CreditPackage {
 })
 export class SubscriptionComponent
   extends SubscriptionAwareComponent
-  implements OnInit {
+  implements OnInit
+{
   tabs = [
     {title: 'purchaseCredit.about', content: 'Content 1', value: '0'},
     {title: 'purchaseCredit.termService', content: 'Content 2', value: '1'}

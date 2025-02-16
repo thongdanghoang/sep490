@@ -1,26 +1,45 @@
-import {NgModule} from '@angular/core';
+import {NgModule, inject} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {AutoLoginPartialRoutesGuard} from 'angular-auth-oidc-client';
+import {
+  AutoLoginPartialRoutesGuard,
+  LoginResponse,
+  OidcSecurityService
+} from 'angular-auth-oidc-client';
+import {Observable, of, switchMap, tap} from 'rxjs';
 import {AppRoutingConstants} from './app-routing.constant';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {ForbiddenComponent} from './components/forbidden/forbidden.component';
 import {HomeComponent} from './components/home/home.component';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
+import {ApplicationService} from './modules/core/services/application.service';
+
+const authGuard: () => Observable<LoginResponse> = () => {
+  const authService = inject(OidcSecurityService);
+  const applicationService = inject(ApplicationService);
+
+  return authService.checkAuth().pipe(
+    tap(authData => {
+      if (!authData.isAuthenticated) {
+        applicationService.login();
+      } else {
+        applicationService.postLogin();
+      }
+    }),
+    switchMap(loggedIn => of(loggedIn))
+  );
+};
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
+    canActivate: [AutoLoginPartialRoutesGuard, authGuard]
   },
   {
     path: AppRoutingConstants.DASHBOARD_PATH,
-    component: DashboardComponent
-  },
-  {
-    path: AppRoutingConstants.DEV_PATH,
-    loadChildren: () =>
-      import('./modules/dev/dev.module').then(m => m.DevModule)
+    component: DashboardComponent,
+    canActivate: [AutoLoginPartialRoutesGuard, authGuard]
   },
   {
     path: AppRoutingConstants.AUTH_PATH,
@@ -28,7 +47,7 @@ const routes: Routes = [
       import('./modules/authorization/authorization.module').then(
         m => m.AuthorizationModule
       ),
-    canActivate: [AutoLoginPartialRoutesGuard]
+    canActivate: [AutoLoginPartialRoutesGuard, authGuard]
   },
   {
     path: AppRoutingConstants.ENTERPRISE_PATH,
@@ -36,7 +55,7 @@ const routes: Routes = [
       import('./modules/enterprise/enterprise.module').then(
         m => m.EnterpriseModule
       ),
-    canActivate: [AutoLoginPartialRoutesGuard]
+    canActivate: [AutoLoginPartialRoutesGuard, authGuard]
   },
   {
     path: AppRoutingConstants.EMISSIONS_PATH,
@@ -44,7 +63,7 @@ const routes: Routes = [
       import('./modules/emissions/emissions.module').then(
         m => m.EmissionsModule
       ),
-    canActivate: [AutoLoginPartialRoutesGuard]
+    canActivate: [AutoLoginPartialRoutesGuard, authGuard]
   },
   {
     path: AppRoutingConstants.FORBIDDEN,
@@ -53,6 +72,11 @@ const routes: Routes = [
   {
     path: AppRoutingConstants.UNAUTHORIZED,
     component: UnauthorizedComponent
+  },
+  {
+    path: AppRoutingConstants.DEV_PATH,
+    loadChildren: () =>
+      import('./modules/dev/dev.module').then(m => m.DevModule)
   },
   {
     path: '**',
