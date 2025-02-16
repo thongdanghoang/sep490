@@ -19,12 +19,10 @@ public class CreditPackageEntity extends AbstractAuditableEntity {
 
     @Column(name = "number_of_credits", nullable = false)
     @Min(0)
-    @NotNull
     private int numberOfCredits = 0;
     
     @Column(name = "price", nullable = false)
     @Min(0)
-    @NotNull
     private long price = 0;
     
 }
