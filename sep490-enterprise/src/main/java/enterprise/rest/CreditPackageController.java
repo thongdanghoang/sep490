@@ -6,11 +6,14 @@ import enterprise.services.CreditPackageService;
 import green_buildings.commons.api.security.UserRole;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/credit-package")
@@ -27,6 +30,15 @@ public class CreditPackageController {
                                    .stream()
                                    .map(mapper::entityToDTO)
                                    .toList();
+    }
+    
+    @GetMapping("/{id}")
+    @RolesAllowed({UserRole.RoleNameConstant.SYSTEM_ADMIN, UserRole.RoleNameConstant.ENTERPRISE_OWNER})
+    public ResponseEntity<CreditPackageDTO> findById(@PathVariable UUID id) {
+        CreditPackageDTO creditPackageDTO = creditPackageService.findById(id)
+                                                                .map(mapper::entityToDTO)
+                                                                .orElseThrow();
+        return ResponseEntity.ok(creditPackageDTO);
     }
     
 }
