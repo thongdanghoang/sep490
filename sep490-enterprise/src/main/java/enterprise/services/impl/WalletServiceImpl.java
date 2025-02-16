@@ -19,12 +19,11 @@ public class WalletServiceImpl implements WalletService {
     private final WalletRepository walRepo;
     
     @Override
-    public Long getBalance(){
+    public long getBalance(){
         UUID enterpriseId = SecurityUtils.getCurrentUserEnterpriseId().orElseThrow();
         return walRepo
                 .findByEnterpriseId(enterpriseId)
-                .map(WalletEntity::getBalance)
-                .orElseThrow();
+                .getBalance();
     }
     
 }
