@@ -1,4 +1,4 @@
-package green_buildings.idp.configs;
+package enterprise.configs;
 
 import jakarta.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;

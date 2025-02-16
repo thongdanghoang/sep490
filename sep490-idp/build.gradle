@@ -66,7 +66,6 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.6.2'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
-	implementation 'vn.payos:payos-java:1.0.3'
 }
 
 tasks.register('npmBuild', NpmTask) {
