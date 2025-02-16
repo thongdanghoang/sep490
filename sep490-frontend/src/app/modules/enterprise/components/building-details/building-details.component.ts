@@ -16,7 +16,7 @@ import {UUID} from '../../../../../types/uuid';
 import {AppRoutingConstants} from '../../../../app-routing.constant';
 import {BuildingService} from '../../../../services/building.service';
 import {AbstractFormComponent} from '../../../shared/components/form/abstract-form-component';
-import {BuildingDetails} from '../../models/building-details.dto';
+import {BuildingDetails} from '../../models/enterprise.dto';
 
 @Component({
   selector: 'app-building-detail',

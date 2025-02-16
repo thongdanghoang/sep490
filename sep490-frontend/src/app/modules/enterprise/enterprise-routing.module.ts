@@ -4,7 +4,7 @@ import {AppRoutingConstants} from '../../app-routing.constant';
 import {BuildingDetailsComponent} from './components/building-details/building-details.component';
 import {BuildingsComponent} from './components/buildings/buildings.component';
 import {PaymentComponent} from './components/payment/payment.component';
-import {SubscriptionComponent} from './components/subscription/subscription.component';
+import {PlanComponent} from './components/plan/plan.component';
 import {EnterpriseComponent} from './enterprise.component';
 
 const routes: Routes = [
@@ -22,7 +22,7 @@ const routes: Routes = [
       },
       {
         path: AppRoutingConstants.PLAN_PATH,
-        component: SubscriptionComponent
+        component: PlanComponent
       },
       {path: AppRoutingConstants.PAYMENT_PATH, component: PaymentComponent}
     ]

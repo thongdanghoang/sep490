@@ -1,4 +1,6 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
+import {AppRoutingConstants} from '../../../../app-routing.constant';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {TableTemplateColumn} from '../../../shared/components/table-template/table-template.component';
 import {
@@ -43,7 +45,8 @@ export class PaymentComponent
   constructor(
     protected readonly applicationService: ApplicationService,
     private readonly paymentService: PaymentService,
-    private readonly walletService: WalletService
+    private readonly walletService: WalletService,
+    private readonly router: Router
   ) {
     super();
   }
@@ -95,5 +98,13 @@ export class PaymentComponent
         this.balance = result;
       })
     );
+  }
+
+  navigateToSubscription(): void {
+    void this.router.navigate([
+      '/',
+      AppRoutingConstants.ENTERPRISE_PATH,
+      AppRoutingConstants.PLAN_PATH
+    ]);
   }
 }

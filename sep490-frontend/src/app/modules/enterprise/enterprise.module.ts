@@ -3,9 +3,10 @@ import {SharedModule} from '../shared/shared.module';
 import {BuildingDetailsComponent} from './components/building-details/building-details.component';
 import {BuildingsComponent} from './components/buildings/buildings.component';
 import {PaymentComponent} from './components/payment/payment.component';
-import {SubscriptionComponent} from './components/subscription/subscription.component';
+import {PlanComponent} from './components/plan/plan.component';
 import {EnterpriseRoutingModule} from './enterprise-routing.module';
 import {EnterpriseComponent} from './enterprise.component';
+import {CreditPackageService} from './services/credit-package.service';
 import {MarkerService} from './services/marker.service';
 import {PaymentService} from './services/payment.service';
 import {PopupService} from './services/popup.service';
@@ -15,7 +16,7 @@ import {WalletService} from './services/wallet.service';
 @NgModule({
   declarations: [
     EnterpriseComponent,
-    SubscriptionComponent,
+    PlanComponent,
     PaymentComponent,
     BuildingsComponent,
     BuildingDetailsComponent
@@ -26,7 +27,8 @@ import {WalletService} from './services/wallet.service';
     PopupService,
     RegionService,
     PaymentService,
-    WalletService
+    WalletService,
+    CreditPackageService
   ]
 })
 export class EnterpriseModule {}

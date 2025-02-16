@@ -28,11 +28,6 @@ public class PaymentEntity extends AbstractAuditableEntity {
     private EnterpriseEntity enterprise;
     
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "bundle_id", nullable = false)
-    private BundleEntity bundle;
-    
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusPayment status;
