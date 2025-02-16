@@ -56,6 +56,8 @@ public class UserInfoService {
                                             .map(UserEnterpriseEntity::getEnterprise)
                                             .map(UUID::toString)
                                             .orElse(null));
+        claims.put("userId", user.getId());
+        claims.put("role", user.getEnterprise().getRole());
         claims.put("permissions", buildingPermissions);
         return claims;
     }

@@ -11,8 +11,8 @@
         <img
             ngSrc="assets/images/payment-method/momo.svg"
             alt="Logo"
-            width="20"
-            height="20"
+            width="30"
+            height="30"
             priority
         />
         <img
@@ -21,6 +21,7 @@
             width="30"
             height="30"
             priority
+            class="border"
         />
         <img
             ngSrc="assets/images/payment-method/napas.svg"
@@ -28,6 +29,7 @@
             width="30"
             height="30"
             priority
+            class="border"
         />
         <img
             ngSrc="assets/images/payment-method/visa.svg"
@@ -35,6 +37,7 @@
             width="30"
             height="30"
             priority
+            class="border"
         />
         <img
             ngSrc="assets/images/payment-method/master-card.svg"
@@ -42,6 +45,7 @@
             width="30"
             height="30"
             priority
+            class="border"
         />
     </div>
 </div>
@@ -68,12 +72,12 @@
 >
     <div class="flex flex-col gap-16">
         <div
-            class="bg-white rounded-md border-[#E5E7EB] border px-4 py-2 mt-8 mx-6 flex justify-center items-center lg:justify-start"
+            class="bg-white rounded-md border-[#E5E7EB] border px-4 py-2 mt-8 mx-6 flex justify-center items-center lg:justify-start text-black"
         >
             <p>{{ "purchaseCredit.selectCreditPackage" | translate }}</p>
         </div>
         <div
-            class="flex lg:flex-row flex-col gap-16 items-center justify-center mx-6"
+            class="flex lg:flex-row flex-col gap-16 items-center justify-center mx-6 text-black"
         >
             @for (package of creditPackages; track package.id) {
                 <card-template
@@ -126,7 +130,7 @@
     <p-accordion [value]="0">
         @for (tab of tabs; track tab.title) {
             <p-accordion-panel [value]="tab.value">
-                <p-accordion-header class="bg-[#F4FCFD]">{{
+                <p-accordion-header class="bg-[#F4FCFD] text-black">{{
                     tab.title | translate
                 }}</p-accordion-header>
                 <p-accordion-content>

@@ -6,6 +6,9 @@ import {
 import {SubscriptionAwareComponent} from '../subscription-aware.component';
 import {BehaviorSubject, Observable, filter, map, switchMap} from 'rxjs';
 import {JwtPayload} from 'jwt-decode';
+import {JwtHelperService} from '@auth0/angular-jwt';
+import {UserRole} from '../../authorization/enums/role-names';
+import {UUID} from '../../../../types/uuid';
 
 interface UserInfoEmailScope {
   email: string;
@@ -50,7 +53,7 @@ export class ApplicationService
   implements OnDestroy
 {
   public readonly userInfoSubject;
-
+  jwtHelperService = new JwtHelperService();
   constructor(private readonly oidcSecurityService: OidcSecurityService) {
     super();
     this.userInfoSubject = new BehaviorSubject<UserInfoData | null>(null);
@@ -79,6 +82,7 @@ export class ApplicationService
 
   login(): void {
     this.oidcSecurityService.authorize();
+    this.getAccessToken();
   }
 
   isMobile(): boolean {
@@ -97,9 +101,46 @@ export class ApplicationService
     );
   }
 
+  getStoredAccessToken(): string | null {
+    return localStorage.getItem('access_token') ?? '';
+  }
+  getUserId(): UUID | null {
+    const token = this.getStoredAccessToken();
+    if (!token) {
+      return null;
+    }
+    const userObject = this.jwtHelperService.decodeToken(token);
+    return 'userId' in userObject ? userObject.userId : '';
+  }
+
+  getUserRole(): UserRole {
+    const token = this.getStoredAccessToken();
+    if (!token) {
+      return UserRole.ENTERPRISE_OWNER;
+    }
+    const userObject = this.jwtHelperService.decodeToken(token);
+    return 'role' in userObject ? userObject.role : '';
+  }
+
   private postLogout(): void {
     sessionStorage.clear();
     localStorage.clear();
+    // localStorage.removeItem('access_token');
     this.userInfoSubject.next(null);
+  }
+
+  private getAccessToken(): void {
+    this.oidcSecurityService.getAccessToken().subscribe((token: string) => {
+      if (token) {
+        localStorage.setItem('access_token', token);
+      }
+    });
+  }
+
+  private isTokenExpired(): boolean {
+    if (this.getStoredAccessToken() == null) {
+      return false;
+    }
+    return this.jwtHelperService.isTokenExpired(this.getStoredAccessToken());
   }
 }
