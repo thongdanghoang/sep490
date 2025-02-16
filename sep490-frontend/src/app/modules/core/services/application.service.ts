@@ -3,19 +3,37 @@ import {
   AuthenticatedResult,
   OidcSecurityService
 } from 'angular-auth-oidc-client';
-import {SubscriptionAwareComponent} from '../subscription-aware.component';
-import {BehaviorSubject, Observable, filter, map, switchMap} from 'rxjs';
 import {JwtPayload} from 'jwt-decode';
+import {
+  BehaviorSubject,
+  Observable,
+  filter,
+  map,
+  switchMap,
+  takeUntil
+} from 'rxjs';
+import {UUID} from '../../../../types/uuid';
+import {UserRole} from '../../authorization/enums/role-names';
+import {SubscriptionAwareComponent} from '../subscription-aware.component';
 
 interface UserInfoEmailScope {
   email: string;
   email_verified: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface UserInfoPhoneScope {
   phone: string;
   phone_verified: boolean;
+}
+
+interface UserInfoData extends UserInfoEmailScope, UserInfoPhoneScope {
+  sub: string;
+}
+
+export interface UserData extends JwtPayload {
+  authorities: string[];
+  permissions: string[];
+  enterpriseId: UUID;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -42,26 +60,27 @@ interface UserInfoProfileScope {
   website: string;
   zoneinfo: string;
 }
-interface UserInfoData extends UserInfoEmailScope, JwtPayload {}
 
 @Injectable()
 export class ApplicationService
   extends SubscriptionAwareComponent
   implements OnDestroy
 {
-  public readonly userInfoSubject;
+  private readonly userInfoSubject;
+  private readonly userDataSubject;
 
   constructor(private readonly oidcSecurityService: OidcSecurityService) {
     super();
+    this.userDataSubject = new BehaviorSubject<UserData | null>(null);
     this.userInfoSubject = new BehaviorSubject<UserInfoData | null>(null);
     this.registerSubscription(
       this.oidcSecurityService.isAuthenticated$
         .pipe(
           filter((auth: AuthenticatedResult): boolean => auth.isAuthenticated),
-          switchMap(() => this.oidcSecurityService.getUserData())
+          switchMap(() => this.oidcSecurityService.getPayloadFromAccessToken())
         )
-        .subscribe((userInfo: UserInfoData): void =>
-          this.userInfoSubject.next(userInfo)
+        .subscribe((userData: UserData): void =>
+          this.userDataSubject.next(userData)
         )
     );
   }
@@ -71,14 +90,40 @@ export class ApplicationService
     super.ngOnDestroy();
   }
 
+  get UserData(): Observable<UserData> {
+    return this.userDataSubject
+      .asObservable()
+      .pipe(filter((user): user is UserData => user !== null));
+  }
+
   isAuthenticated(): Observable<boolean> {
     return this.oidcSecurityService.isAuthenticated$.pipe(
       map((result: AuthenticatedResult): boolean => result.isAuthenticated)
     );
   }
 
+  includeRole(authorities: string[], role: UserRole): boolean {
+    const jwtRolePrefix = 'ROLE_';
+    return authorities.includes(`${jwtRolePrefix}${UserRole[role]}`);
+  }
+
   login(): void {
     this.oidcSecurityService.authorize();
+  }
+
+  postLogin(): void {
+    this.oidcSecurityService
+      .getPayloadFromAccessToken()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: UserData): void => {
+        this.userDataSubject.next(data);
+      });
+    this.oidcSecurityService
+      .getUserData()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(userInfo => {
+        this.userInfoSubject.next(userInfo);
+      });
   }
 
   isMobile(): boolean {
