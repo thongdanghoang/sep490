@@ -1,16 +1,14 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, ComponentRef} from '@angular/core';
 import {Router} from '@angular/router';
-import * as geojson from 'geojson';
 import * as L from 'leaflet';
-import {SelectButtonChangeEvent} from 'primeng/selectbutton';
 import {takeUntil} from 'rxjs';
 import {UUID} from '../../../../../types/uuid';
 import {AppRoutingConstants} from '../../../../app-routing.constant';
 import {BuildingService} from '../../../../services/building.service';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {Building} from '../../models/enterprise.dto';
-import {MarkerService} from '../../services/marker.service';
-import {RegionService} from '../../services/region.service';
+import {PopupService} from '../../services/popup.service';
+import {BuildingPopupMarkerComponent} from '../building-popup-marker/building-popup-marker.component';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -32,6 +30,11 @@ export enum ViewMode {
   MAP = 'map'
 }
 
+export interface MapLocation {
+  latitude: number;
+  longitude: number;
+}
+
 @Component({
   selector: 'app-building',
   templateUrl: './buildings.component.html',
@@ -41,6 +44,8 @@ export class BuildingsComponent
   extends SubscriptionAwareComponent
   implements AfterViewInit
 {
+  addBuildingLocation: boolean = false;
+  buildingLocation: MapLocation | null = null;
   viewMode: ViewMode = ViewMode.MAP;
   buildings: Building[] = [];
 
@@ -50,51 +55,75 @@ export class BuildingsComponent
   ];
 
   private map!: L.Map;
-  private states!: geojson.GeoJsonObject | geojson.GeoJsonObject[] | null;
 
   constructor(
     private readonly router: Router,
     private readonly buildingService: BuildingService,
-    private readonly markerService: MarkerService,
-    private readonly shapeService: RegionService
+    private readonly popupService: PopupService
   ) {
     super();
   }
 
   ngAfterViewInit(): void {
     this.initMap();
-    this.markerService.makeCapitalMarkers(this.map);
+    this.fetchBuilding();
     this.map.on('click', e => {
       const marker = L.marker([e.latlng.lat, e.latlng.lng]);
-      marker.addTo(this.map);
-    });
-    this.shapeService.getStateShapes().subscribe(states => {
-      this.states = states;
-      this.initStatesLayer();
+      if (this.addBuildingLocation && this.buildingLocation === null) {
+        marker.addTo(this.map);
+        this.buildingLocation = {
+          latitude: e.latlng.lat,
+          longitude: e.latlng.lng
+        };
+      }
     });
   }
 
-  onViewModeChanged(event: SelectButtonChangeEvent): void {
-    if (event.value === ViewMode.LIST) {
-      this.buildingService
-        .searchBuildings({
-          page: {
-            pageNumber: 0,
-            pageSize: 100
-          }
-        })
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(buildings => (this.buildings = buildings.results));
-    }
+  get mapView(): boolean {
+    return this.viewMode === ViewMode.MAP;
+  }
+
+  get listView(): boolean {
+    return this.viewMode === ViewMode.LIST;
+  }
+
+  onViewModeChanged(): void {
+    this.fetchBuilding();
+  }
+
+  turnOnSelectBuildingLocation(): void {
+    this.viewMode = ViewMode.MAP;
+    this.addBuildingLocation = true;
   }
 
   addBuilding(): void {
-    void this.router.navigate([
-      '/',
-      AppRoutingConstants.ENTERPRISE_PATH,
-      AppRoutingConstants.BUILDING_PATH,
-      'create'
-    ]);
+    if (this.buildingLocation) {
+      void this.router.navigate(
+        [
+          '/',
+          AppRoutingConstants.ENTERPRISE_PATH,
+          AppRoutingConstants.BUILDING_PATH,
+          'create'
+        ],
+        {
+          queryParams: this.buildingLocation
+        }
+      );
+    }
+  }
+
+  cancelAddBuilding(): void {
+    this.addBuildingLocation = false;
+    this.map.eachLayer(layer => {
+      if (
+        layer instanceof L.Marker &&
+        layer.getLatLng().lat === this.buildingLocation?.latitude &&
+        layer.getLatLng().lng === this.buildingLocation?.longitude
+      ) {
+        this.map.removeLayer(layer);
+      }
+    });
+    this.buildingLocation = null;
   }
 
   viewBuildingDetails(id: UUID): void {
@@ -106,19 +135,48 @@ export class BuildingsComponent
     ]);
   }
 
-  get mapView(): boolean {
-    return this.viewMode === ViewMode.MAP;
+  fetchBuilding(): void {
+    this.buildingService
+      .searchBuildings({
+        page: {
+          pageNumber: 0,
+          pageSize: 100
+        }
+      })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(buildings => {
+        this.buildings = buildings.results;
+        buildings.results.forEach(building => {
+          const marker = L.marker([building.latitude, building.longitude]);
+          marker.addTo(this.map);
+          const markerPopup: HTMLDivElement = this.popupService.compilePopup(
+            BuildingPopupMarkerComponent,
+            (c: ComponentRef<BuildingPopupMarkerComponent>): void => {
+              c.instance.building = building;
+            }
+          );
+          marker.bindPopup(markerPopup);
+        });
+        const latLngs = buildings.results.map(building =>
+          L.latLng(building.latitude, building.longitude)
+        );
+        const bounds = L.latLngBounds(latLngs);
+        this.map.fitBounds(bounds);
+      });
   }
 
-  get listView(): boolean {
-    return this.viewMode === ViewMode.LIST;
+  zoomTo(latitude: number, longitude: number): void {
+    if (this.map) {
+      this.viewMode = ViewMode.MAP;
+      this.map.setView([latitude, longitude], 16);
+    }
   }
 
   private initMap(): void {
     if (document.getElementById('map')) {
       this.map = L.map('map', {
         center: [10.841394, 106.810052],
-        zoom: 20
+        zoom: 16
       });
     } else {
       throw new Error(
@@ -129,56 +187,11 @@ export class BuildingsComponent
     const tiles = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
-        maxZoom: 18,
-        minZoom: 3
+        maxZoom: 16,
+        minZoom: 1
       }
     );
 
     tiles.addTo(this.map);
-  }
-
-  private initStatesLayer(): void {
-    const stateLayer = L.geoJSON(this.states, {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      style: feature => ({
-        weight: 3,
-        opacity: 0.5,
-        color: '#008f68',
-        fillOpacity: 0.8,
-        fillColor: '#6DB65B'
-      }),
-      onEachFeature: (feature, layer) =>
-        layer.on({
-          mouseover: e => this.highlightFeature(e),
-          mouseout: e => this.resetFeature(e)
-        })
-    });
-
-    this.map.addLayer(stateLayer);
-    stateLayer.bringToBack();
-  }
-
-  private highlightFeature(e: L.LeafletMouseEvent): void {
-    const layer = e.target;
-
-    layer.setStyle({
-      weight: 10,
-      opacity: 1.0,
-      color: '#DFA612',
-      fillOpacity: 1.0,
-      fillColor: '#FAE042'
-    });
-  }
-
-  private resetFeature(e: L.LeafletMouseEvent): void {
-    const layer = e.target;
-
-    layer.setStyle({
-      weight: 3,
-      opacity: 0.5,
-      color: '#008f68',
-      fillOpacity: 0.8,
-      fillColor: '#6DB65B'
-    });
   }
 }

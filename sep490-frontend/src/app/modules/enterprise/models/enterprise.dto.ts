@@ -6,11 +6,15 @@ export interface Building extends BaseDTO {
   validFromInclusive?: Date;
   validToInclusive?: Date;
   activated?: boolean;
+  latitude: number;
+  longitude: number;
 }
 
-export interface BuildingDetails {
+export interface BuildingDetails extends BaseDTO {
   name: string;
   numberOfDevices: number;
+  latitude: number;
+  longitude: number;
 }
 
 export interface CreditPackage extends BaseDTO {

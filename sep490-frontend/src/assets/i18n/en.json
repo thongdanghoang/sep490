@@ -11,6 +11,8 @@
     "save": "Save",
     "revert": "Revert",
     "back": "Back",
+    "next": "Next",
+    "cancel": "Cancel",
     "error": {
       "title": "Error",
       "technicalServerError": "Unexpected server error occurred. Please contact your administrator with this key correlationId = {{correlationId}} for more information."

@@ -12,6 +12,7 @@ import {PaymentService} from './services/payment.service';
 import {PopupService} from './services/popup.service';
 import {RegionService} from './services/region.service';
 import {WalletService} from './services/wallet.service';
+import {BuildingPopupMarkerComponent} from './components/building-popup-marker/building-popup-marker.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {WalletService} from './services/wallet.service';
     PlanComponent,
     PaymentComponent,
     BuildingsComponent,
-    BuildingDetailsComponent
+    BuildingDetailsComponent,
+    BuildingPopupMarkerComponent
   ],
   imports: [SharedModule, EnterpriseRoutingModule],
   providers: [

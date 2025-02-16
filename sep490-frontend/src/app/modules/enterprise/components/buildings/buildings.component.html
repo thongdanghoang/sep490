@@ -1,17 +1,19 @@
-<div class="flex justify-between items-center">
+<div class="flex justify-between items-center" style="min-height: 42px">
     <div class="font-medium text-2xl">
         {{ "enterprise.buildings.overview.title" | translate }}
     </div>
     <p-button
+        *ngIf="!addBuildingLocation"
         severity="primary"
         [label]="'enterprise.buildings.overview.btn.add' | translate"
         icon="pi pi-building"
-        (onClick)="addBuilding()"
+        (onClick)="turnOnSelectBuildingLocation()"
     />
 </div>
 
 <p-selectbutton
-    (onChange)="onViewModeChanged($event)"
+    (onChange)="onViewModeChanged()"
+    [disabled]="addBuildingLocation"
     [options]="justifyOptions"
     [(ngModel)]="viewMode"
     optionValue="value"
@@ -28,6 +30,26 @@
 >
     <div class="h-full" id="map"></div>
 </div>
+
+@if (mapView) {
+    <div class="flex justify-end gap-4">
+        <p-button
+            class="*:min-w-20"
+            *ngIf="addBuildingLocation"
+            severity="primary"
+            [label]="'common.cancel' | translate"
+            outlined
+            (onClick)="cancelAddBuilding()"
+        />
+        <p-button
+            class="*:min-w-24"
+            *ngIf="addBuildingLocation"
+            severity="primary"
+            [label]="'common.next' | translate"
+            (onClick)="addBuilding()"
+        />
+    </div>
+}
 
 @if (listView) {
     @for (building of buildings; track building.id) {
@@ -47,7 +69,12 @@
                     icon="pi pi-info"
                     text
                 />
-                <p-button icon="pi pi-map" text />
+                <p-button
+                    icon="pi pi-map"
+                    text
+                    (onClick)="zoomTo(building.latitude, building.longitude)"
+                />
+                <p-button icon="pi pi-trash" severity="warn" text />
             </div>
         </div>
         <div class="p-4 border-b">
