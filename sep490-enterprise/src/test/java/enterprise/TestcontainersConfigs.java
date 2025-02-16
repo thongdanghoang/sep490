@@ -4,36 +4,56 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.apache.commons.text.StringSubstitutor;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Map;
 import java.util.function.Supplier;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Testcontainers
 public abstract class TestcontainersConfigs {
     
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16.4-alpine");
     static GenericContainer<?> idP = new GenericContainer<>("thongdh3401/keycloak:24.0.5");
     
-    @BeforeAll
-    static void beforeAll() {
+    static {
         postgres.start();
         idP.withExposedPorts(8180)
-                .withCommand("start-dev --http-port 8180")
-                .waitingFor(Wait.forHttp("/realms/greenbuildings/.well-known/openid-configuration"))
-                .start();
+           .withCommand("start-dev --http-port 8180")
+           .waitingFor(Wait.forHttp("/realms/greenbuildings/.well-known/openid-configuration"))
+           .start();
     }
     
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
-        idP.stop();
+    @LocalServerPort
+    Integer port;
+    
+    @BeforeEach
+    void setUp() {
+        RestAssured.baseURI = "http://localhost:" + port;
     }
+
+//    @BeforeAll
+//    static void beforeAll() {
+//        postgres.start();
+//        idP.withExposedPorts(8180)
+//                .withCommand("start-dev --http-port 8180")
+//                .waitingFor(Wait.forHttp("/realms/greenbuildings/.well-known/openid-configuration"))
+//                .start();
+//    }
+
+//    @AfterAll
+//    static void afterAll() {
+//        postgres.stop();
+//        idP.stop();
+//    }
     
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
