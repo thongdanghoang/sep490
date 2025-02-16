@@ -3,7 +3,8 @@ import {SubscriptionAwareComponent} from '../../../core/subscription-aware.compo
 import {TableTemplateColumn} from '../../../shared/components/table-template/table-template.component';
 import {
   SearchCriteriaDto,
-  SearchResultDto
+  SearchResultDto,
+  SortDto
 } from '../../../shared/models/models';
 import {Observable} from 'rxjs';
 import {ApplicationService} from '../../../core/services/application.service';
@@ -33,6 +34,7 @@ export class PaymentComponent
   actionsTemplate!: TemplateRef<any>;
   cols: TableTemplateColumn[] = [];
   paymentCriteria!: PaymentCriteria;
+  sort!: SortDto;
   balance: number = 0;
   protected fetchData!: (
     criteria: SearchCriteriaDto<PaymentCriteria>
@@ -48,6 +50,10 @@ export class PaymentComponent
 
   ngOnInit(): void {
     this.fetchData = this.paymentService.getPayments.bind(this.paymentService);
+    this.sort = {
+      field: 'createdDate',
+      direction: 'DESC'
+    };
     this.paymentCriteria = {criteria: ''};
     this.buildCols();
     this.getBalance();
