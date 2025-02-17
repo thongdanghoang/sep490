@@ -21,3 +21,6 @@ INSERT INTO public.buildings (created_date, created_by, last_modified_date, last
 VALUES ('2025-02-16 20:36:27.019184', 'fptu.hcm@fpt.edu.vn', '2025-02-16 20:36:27.019184', 'fptu.hcm@fpt.edu.vn',
         'c8636202-c2ff-49e7-a43a-267a4dfa1658', 0, 'f87565e6-e229-4e9b-b74d-4e085d05395e', 'FPT Ho Chi Minh', 123,
         10.84139877290165, 106.81006103754045);
+INSERT INTO public.credit_packages (created_date, created_by, last_modified_date, last_modified_by, id, version, number_of_credits, price)
+VALUES ('2025-02-16 20:45:00.595269', 'fptu.hcm@fpt.edu.vn', '2025-02-16 20:45:00.595269', 'fptu.hcm@fpt.edu.vn',
+        'b9c3a8f7-5d4e-4e2a-80c7-1f9d2b45e1a3', 0, 100,10000000);

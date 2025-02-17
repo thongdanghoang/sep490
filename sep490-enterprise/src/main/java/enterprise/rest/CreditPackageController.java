@@ -1,19 +1,20 @@
 package enterprise.rest;
 
+import commons.springfw.impl.securities.UserContextData;
+import enterprise.dtos.BuildingDTO;
 import enterprise.dtos.CreditPackageDTO;
+import enterprise.entities.CreditPackageEntity;
 import enterprise.mappers.CreditPackageMapper;
 import enterprise.services.CreditPackageService;
 import green_buildings.commons.api.security.UserRole;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/credit-package")
@@ -40,5 +41,40 @@ public class CreditPackageController {
                                                                 .orElseThrow();
         return ResponseEntity.ok(creditPackageDTO);
     }
+
+    @PostMapping()
+    public ResponseEntity<Void> createCreditPackage(@RequestBody CreditPackageDTO creditPackageDTO) {
+        if (Objects.isNull(creditPackageDTO.id())) {
+            return createNewCreditPackage(creditPackageDTO);
+        }
+
+        return updateExistingCreditPackage(creditPackageDTO)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    private ResponseEntity<Void> createNewCreditPackage(CreditPackageDTO creditPackageDTO) {
+        var creditPackageEntity = mapper.dtoToCreateCreditPackage(creditPackageDTO);
+        return saveUserAndReturnResponse(creditPackageEntity, HttpStatus.CREATED);
+    }
+
+    private Optional<ResponseEntity<Void>> updateExistingCreditPackage(CreditPackageDTO creditPackageDTO) {
+        return creditPackageService.findById(creditPackageDTO.id())
+                .map(entity -> {
+                  CreditPackageEntity creditPackageEntity =  mapper.dtoToUpdateCreditPackage(entity, creditPackageDTO);
+                    return saveUserAndReturnResponse(creditPackageEntity, HttpStatus.OK);
+                });
+    }
+
+    private ResponseEntity<Void> saveUserAndReturnResponse(CreditPackageEntity entity, HttpStatus status) {
+        creditPackageService.createOrUpdate(entity);
+        return ResponseEntity.status(status).build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteCreditPackages(@RequestBody Set<UUID> packageIds) {
+        creditPackageService.deletePackages(packageIds);
+        return ResponseEntity.noContent().build();
+    }
+
     
 }
