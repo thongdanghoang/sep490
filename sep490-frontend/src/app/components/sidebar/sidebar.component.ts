@@ -9,6 +9,7 @@ import {
   UserData
 } from '../../modules/core/services/application.service';
 import {SubscriptionAwareComponent} from '../../modules/core/subscription-aware.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,7 +26,8 @@ export class SidebarComponent
 
   constructor(
     private readonly applicationService: ApplicationService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly translate: TranslateService
   ) {
     super();
   }
@@ -40,6 +42,13 @@ export class SidebarComponent
           )
         ) {
           this.items = this.buildEnterpriseOwnerMenu();
+        } else if (
+          this.applicationService.includeRole(
+            userData.authorities,
+            UserRole.SYSTEM_ADMIN
+          )
+        ) {
+          this.items = this.buildAdminMenu();
         }
       }
     );
@@ -92,6 +101,21 @@ export class SidebarComponent
             label: 'Payment',
             icon: 'pi pi-wallet',
             route: `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.PAYMENT_PATH}`
+          }
+        ]
+      }
+    ];
+  }
+
+  private buildAdminMenu(): MenuItem[] {
+    return [
+      {
+        label: 'Admin',
+        items: [
+          {
+            label: 'Package Credit',
+            icon: 'pi pi-chart-line',
+            route: `/${AppRoutingConstants.ADMIN_PATH}/${AppRoutingConstants.PACKAGE_CREDIT_PATH}`
           }
         ]
       }

@@ -9,6 +9,7 @@ export class AppRoutingConstants {
 
   public static readonly AUTH_PATH = 'authorization';
   public static readonly USERS_PATH = 'users';
+  public static readonly ADMIN_PATH = 'admin';
   public static readonly USER_DETAILS = 'user-details';
 
   // Enterprise Module
@@ -19,6 +20,9 @@ export class AppRoutingConstants {
 
   // Emissions Module
   public static readonly EMISSIONS_PATH = 'emissions';
+
+  // Admin Module
+  public static readonly PACKAGE_CREDIT_PATH = 'package-credit';
 
   // App Routing
   public static readonly DASHBOARD_PATH = 'dashboard';

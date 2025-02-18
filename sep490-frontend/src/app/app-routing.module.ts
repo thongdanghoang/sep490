@@ -50,6 +50,12 @@ const routes: Routes = [
     canActivate: [AutoLoginPartialRoutesGuard, authGuard]
   },
   {
+    path: AppRoutingConstants.ADMIN_PATH,
+    loadChildren: () =>
+      import('./modules/admin/admin.module').then(m => m.AdminModule),
+    canActivate: [AutoLoginPartialRoutesGuard, authGuard]
+  },
+  {
     path: AppRoutingConstants.ENTERPRISE_PATH,
     loadChildren: () =>
       import('./modules/enterprise/enterprise.module').then(
