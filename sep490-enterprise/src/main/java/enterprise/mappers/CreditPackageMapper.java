@@ -2,12 +2,9 @@ package enterprise.mappers;
 
 import enterprise.dtos.CreditPackageDTO;
 import enterprise.entities.CreditPackageEntity;
-import enterprise.mappers.decorators.CreditPackageMapperDecorator;
-import enterprise.mappers.decorators.EnterpriseMapperDecorator;
 import org.mapstruct.*;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-@DecoratedWith(CreditPackageMapperDecorator.class)
 public interface CreditPackageMapper {
     
     CreditPackageDTO entityToDTO(CreditPackageEntity creditPackageEntity);

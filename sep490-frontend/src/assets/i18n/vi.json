@@ -191,5 +191,20 @@
     "selectCreditPackage": "Chọn gói tín dụng để mua",
     "about": "Về tín dụng",
     "termService": "Điều khoản dịch vụ"
+  },
+  "sidebar": {
+    "owner": {
+      "dashboard": "Bảng điều khiển",
+      "coefficientCenter": "Hệ số trung tâm",
+      "building": "Tòa nhà",
+      "manage": "Quản lý",
+      "users": "Người sử dụng",
+      "subscription": "Nạp",
+      "payment": "Thanh toán"
+    },
+    "admin": {
+      "title": "Quản trị viên",
+      "packageCredit": "Gói tín dụng"
+    }
   }
 }

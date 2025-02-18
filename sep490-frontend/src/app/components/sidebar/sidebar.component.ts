@@ -9,6 +9,7 @@ import {
   UserData
 } from '../../modules/core/services/application.service';
 import {SubscriptionAwareComponent} from '../../modules/core/subscription-aware.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,7 +26,8 @@ export class SidebarComponent
 
   constructor(
     private readonly applicationService: ApplicationService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly translate: TranslateService
   ) {
     super();
   }

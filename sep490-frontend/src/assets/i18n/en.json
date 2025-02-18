@@ -191,5 +191,20 @@
     "selectCreditPackage": "Select Credit package to purchase",
     "about": "About Credit",
     "termService": "Term of Service"
-  }
+  },
+  "sidebar": {
+    "owner": {
+      "dashboard": "Dashboard",
+      "coefficientCenter": "Coefficient center",
+      "building": "Building",
+      "manage": "Manage",
+      "users": "Users",
+      "subscription": "Subscription",
+      "payment": "Payment"
+    },
+   "admin": {
+     "title": "Admin",
+     "packageCredit": "Package Credit"
+   }
+}
 }

@@ -3,9 +3,7 @@ package enterprise.services.impl;
 import enterprise.entities.CreditPackageEntity;
 import enterprise.repositories.CreditPackageRepository;
 import enterprise.services.CreditPackageService;
-import green_buildings.commons.api.exceptions.BusinessErrorParam;
 import green_buildings.commons.api.exceptions.BusinessException;
-import green_buildings.commons.api.security.UserRole;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,7 +39,7 @@ public class CreditPackageServiceImpl implements CreditPackageService {
         if (CollectionUtils.isEmpty(packageIds)) {
             throw new BusinessException("packageIds", "package.delete.no.ids", Collections.emptyList());
         }
-        var creditPackageEntityList = creditPackageRepository.findByIDs(packageIds);
+        var creditPackageEntityList = creditPackageRepository.findAllById(packageIds);
 
         creditPackageRepository.deleteAll(creditPackageEntityList);
     }
