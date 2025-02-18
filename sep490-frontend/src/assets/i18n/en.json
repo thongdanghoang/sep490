@@ -147,8 +147,10 @@
     },
     "status": {
       "payment": {
-        "SUCCESS": "success",
-        "FAILED": "failed"
+        "PENDING": "Pending",
+        "PAID": "Paid",
+        "PROCESSING": "Processing",
+        "CANCELLED": "Cancelled"
       }
     }
   },
@@ -173,6 +175,7 @@
         "title": "Credits"
       }
     },
+    "confirmMessage": "You are purchasing <b>{{noCredits}}</b> credits for <b>{{price}}</b>.<br/> Click <b>'Yes'</b> to proceed, and you will be redirected to <b>PayOS</b> to complete the payment.",
     "status": {
       "success": {
         "title": "Payment Successful!",
@@ -187,7 +190,7 @@
   "purchaseCredit": {
     "title": "Purchase Credit",
     "introduceMethod": "You can use the following payment methods.",
-    "currentBalance": "Current balance",
+    "currentBalance": "Current credits",
     "selectCreditPackage": "Select Credit package to purchase",
     "about": "About Credit",
     "termService": "Term of Service"

@@ -75,16 +75,16 @@
         <div
             class="flex lg:flex-row flex-col gap-16 items-center justify-center mx-6"
         >
-            @for (package of creditPackages; track package.id) {
+            @for (pkg of creditPackages; track pkg.id) {
                 <card-template
                     class="text-center rounded-lg border border-[#e0e0e0] bg-white max-w-40 w-full cursor-pointer transition-all duration-300"
                     [ngClass]="{
                         'border-primary border-2 shadow-lg shadow-primary/20':
-                            selectedPackageId === package.id,
+                            selectedPackage?.id === pkg.id,
                         'border-[#e0e0e0] hover:border-primary/50 hover:shadow-md':
-                            selectedPackageId !== package.id,
+                            selectedPackage?.id !== pkg.id,
                     }"
-                    (click)="selectPackage(package.id)"
+                    (click)="selectPackage(pkg)"
                 >
                     <!-- Header: Image -->
                     <div header>
@@ -96,7 +96,7 @@
                     </div>
                     <!-- Body: Credit Value -->
                     <div body class="text-lg font-semibold">
-                        {{ package.numberOfCredits }}
+                        {{ pkg.numberOfCredits }}
                         {{ "payment.history.credit.title" | translate }}
                     </div>
 
@@ -105,7 +105,7 @@
                         footer
                         class="text-gray-600 text-base font-medium text-center"
                     >
-                        {{ package.price | number: "1.0-0" }} VND
+                        {{ pkg.price | number: "1.0-0" }} VND
                     </div>
                 </card-template>
             }
@@ -114,6 +114,7 @@
             <p-button
                 severity="primary"
                 [label]="'payment.history.button.buyCredit' | translate"
+                [disabled]="!selectedPackage"
                 (onClick)="onBuyCredit()"
             />
         </div>

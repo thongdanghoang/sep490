@@ -147,8 +147,10 @@
     },
     "status": {
       "payment": {
-        "SUCCESS": "thành công",
-        "FAILED": "thất bại"
+        "PENDING": "Đang chờ xử lý",
+        "PAID": "Đã thanh toán",
+        "PROCESSING": "Đang xử lý",
+        "CANCELLED": "Đã hủy"
       }
     }
   },
@@ -173,6 +175,7 @@
         "title": "Tín dụng"
       }
     },
+    "confirmMessage": "Bạn đang mua <b>{{noCredits}}</b> tín dụng với giá <b>{{price}}</b>.<br/> Nhấp <b>'Có'</b> để tiếp tục, bạn sẽ được chuyển hướng đến <b>PayOS</b> để hoàn thành thanh toán.",
     "status": {
       "success": {
         "title": "Thanh toán thành công!",
@@ -187,7 +190,7 @@
   "purchaseCredit": {
     "title": "Mua tín dụng",
     "introduceMethod": "Bạn có thể sử dụng các phương thức thanh toán sau.",
-    "currentBalance": "Số dư hiện tại",
+    "currentBalance": "Số tín dụng hiện tại",
     "selectCreditPackage": "Chọn gói tín dụng để mua",
     "about": "Về tín dụng",
     "termService": "Điều khoản dịch vụ"

@@ -65,5 +65,5 @@ payment:
     client_id: ${PAYOS_CLIENT_ID:not_a_real_key_to_prevent_null}
     api_key: ${PAYOS_API_KEY:not_a_real_key_to_prevent_null}
     checksum_key: ${PAYOS_CHECKSUM_KEY:not_a_real_key_to_prevent_null}
-    returnPath: /success-payment
-    cancelPath: /fail-payment
+    returnPath: /enterprise/payment
+    cancelPath: /enterprise/payment
