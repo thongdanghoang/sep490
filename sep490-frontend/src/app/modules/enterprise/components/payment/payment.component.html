@@ -40,6 +40,7 @@
     [criteria]="paymentCriteria"
     [captionTemplateRef]="captionTemplateRef"
     [sort]="sort"
+    [triggerSearch]="triggerSearch"
 >
 </table-template>
 <ng-template #captionTemplateRef>
@@ -66,5 +67,5 @@
 </ng-template>
 
 <ng-template #amountTemplate let-rowData>
-    <p>+{{ rowData.amount }}</p>
+    <p>+{{ rowData.numberOfCredits }}</p>
 </ng-template>

@@ -147,8 +147,10 @@
     },
     "status": {
       "payment": {
-        "SUCCESS": "成功",
-        "FAILED": "失败的"
+        "PENDING": "待处理",
+        "PAID": "已支付",
+        "PROCESSING": "处理中",
+        "CANCELLED": "已取消"
       }
     }
   },
@@ -173,6 +175,7 @@
         "title": "信用"
       }
     },
+    "confirmMessage": "您正在以 <b>{{price}}</b> 购买 <b>{{noCredits}}</b> 积分。<br/>点击 <b>'是'</b> 继续，您将被重定向至 <b>PayOS</b> 以完成付款。",
     "status": {
       "success": {
         "title": "支付成功！",

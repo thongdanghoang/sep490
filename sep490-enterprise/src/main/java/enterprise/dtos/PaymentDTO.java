@@ -1,17 +1,27 @@
 package enterprise.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.NotNull;
-import green_buildings.commons.api.enums.StatusPayment;
+import green_buildings.commons.api.enums.PaymentStatus;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 public record PaymentDTO(
         UUID id,
         @JsonFormat(pattern = "dd/MM/yyyy") LocalDateTime createdDate,
-        StatusPayment status,
-        @NotNull long amount
+        PaymentStatus status,
+        long amount,
+        Integer numberOfCredits,
+        String bin,
+        String accountNumber,
+        String accountName,
+        String description,
+        Long orderCode,
+        String currency,
+        String paymentLinkId,
+        String payOSStatus,
+        Long expiredAt,
+        String checkoutUrl,
+        String qrCode
 ) {
 }

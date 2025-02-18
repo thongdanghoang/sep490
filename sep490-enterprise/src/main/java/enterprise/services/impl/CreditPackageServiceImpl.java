@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +20,7 @@ public class CreditPackageServiceImpl implements CreditPackageService {
     
     @Override
     public List<CreditPackageEntity> findAll() {
-        return creditPackageRepository.findAll();
+        return creditPackageRepository.findAllByOrderByNumberOfCreditsAsc();
     }
     
     @Override

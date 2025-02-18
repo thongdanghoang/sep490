@@ -7,7 +7,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,6 +31,10 @@ public class WalletEntity extends AbstractAuditableEntity {
         wallet.setEnterprise(enterprise);
         wallet.setBalance(0L);
         return wallet;
+    }
+    
+    public void deposit(long amount) {
+        balance += amount;
     }
     
 }
