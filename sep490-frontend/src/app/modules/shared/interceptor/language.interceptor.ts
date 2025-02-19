@@ -8,7 +8,7 @@ import {
 import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class LanguageInterceptor implements HttpInterceptor {
   constructor(private readonly languageService: TranslateService) {}
 
@@ -16,9 +16,7 @@ export class LanguageInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // const language = this.languageService.currentLang;
-    // TODO: set language to current language, current problem is something related to circular dependency
-    const language = 'vi';
+    const language = this.languageService.currentLang ?? 'vi';
     const modifiedReq = req.clone({
       setHeaders: {'Accept-Language': language}
     });
