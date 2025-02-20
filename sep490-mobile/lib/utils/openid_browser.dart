@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:openid_client/openid_client.dart';
 import 'package:openid_client/openid_client_browser.dart' as browser;
 
