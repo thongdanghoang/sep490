@@ -27,6 +27,7 @@
     "minlength": "At least {{requiredLength}} characters are required",
     "pattern": "Invalid value",
     "required": "This field is required",
+    "uploadFile": "File uploaded is invalid, please try again",
     "business": {
       "email": {
         "exist": "Email address already exists"

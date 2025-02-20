@@ -27,6 +27,7 @@
     "minlength": "Cần có ít nhất {{requiredLength}} ký tự",
     "pattern": "Giá trị không hợp lệ",
     "required": "Trường này là bắt buộc",
+    "uploadFile": "Tệp tải lên không hợp lệ, vui lòng thử lại",
     "business": {
       "email": {
         "exist": "Địa chỉ email đã tồn tại"

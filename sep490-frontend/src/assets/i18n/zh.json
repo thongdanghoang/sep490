@@ -27,6 +27,7 @@
     "minlength": "至少需要{{requiredLength}}个字符",
     "pattern": "无效的值",
     "required": "此字段是必填项",
+    "uploadFile": "上传的文件无效，请重试",
     "business": {
       "email": {
         "exist": "电子邮件地址已存在"
