@@ -17,9 +17,9 @@ public class MvcSecurityConfig {
     
     private static void passkeyConfiguration(WebAuthnConfigurer<HttpSecurity> passkeys) {
         passkeys
-                .rpName("SEP490 IDP")
-                .rpId("localhost")
-                .allowedOrigins("http://localhost:8180");
+                .rpName("Green Buildings")
+                .rpId("greenbuildings.cloud")
+                .allowedOrigins("https://greenbuildings.cloud");
     }
     
     @Bean

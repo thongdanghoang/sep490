@@ -81,10 +81,10 @@ public class UserEntity extends AbstractAuditableEntity {
     private String lastName;
     
     @Column(name = "locale", length = 5)
-    private String locale;
+    private String locale = "vi-VN";
     
     @Column(name = "theme", length = 16)
-    private String theme;
+    private String theme = "system";
     
     @Column(name = "deleted")
     private boolean deleted;

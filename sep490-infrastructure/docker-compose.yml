@@ -1,4 +1,54 @@
 services:
+  web:
+    image: thongdh3401/sep490-frontend:0.5.0
+    environment:
+      OIDC_CLIENT_ID: greenbuildings
+      OIDC_AUTHORITY: ${OIDC_AUTHORITY}
+      IDP_API: ${IDP_API}
+      ENTERPRISE_API: ${ENTERPRISE_API}
+    ports:
+      - "127.0.0.1:4200:4200"
+    depends_on:
+      - idp
+      - enterprise
+  enterprise:
+    image: thongdh3401/sep490-enterprise:0.5.0
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      DB_HOST: sep490_databases
+      DB_NAME: sep490_enterprise
+      DB_PORT: 5432
+      ISSUER_URI: ${ISSUER_URI}
+      POSTGRES_USER: ${ENTERPRISE_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${ENTERPRISE_POSTGRES_PASSWORD}
+      EXCHANGERATE_API_KEY: ${EXCHANGERATE_API_KEY}
+      PAYOS_CLIENT_ID: ${PAYOS_CLIENT_ID}
+      PAYOS_API_KEY: ${PAYOS_API_KEY}
+      PAYOS_CHECKSUM_KEY: ${PAYOS_CHECKSUM_KEY}
+    depends_on:
+      - idp
+      - sep490_databases
+      - kafka
+  idp:
+    image: thongdh3401/sep490-idp:0.5.0
+    ports:
+      - "127.0.0.1:8180:8180"
+    environment:
+      DB_HOST: sep490_databases
+      DB_NAME: sep490_idp
+      DB_PORT: 5432
+      OIDC_CLIENT_ID: greenbuildings
+      OIDC_POST_LOGOUT_REDIRECT_URI: ${OIDC_REDIRECT_URI}
+      OIDC_REDIRECT_URI: ${OIDC_POST_LOGOUT_REDIRECT_URI}
+      POSTGRES_USER: ${IDP_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${IDP_POSTGRES_PASSWORD}
+      SMTP_HOST: sep490_mailhog
+      SMTP_PORT: 1025
+    depends_on:
+      - sep490_databases
+      - kafka
+      - sep490_mailhog
   sep490_databases:
     image: postgres:16.4
     container_name: sep490_databases
@@ -54,18 +104,15 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
   kafka:
     image: apache/kafka:3.9.0
-    container_name: sep490_kafka
-    ports:
-      - "9092:9092"
-      - "9093:9093"
+    container_name: kafka
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
       KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1

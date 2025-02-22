@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  oidcAuthority: 'http://localhost:8180',
-  idpApiUrl: 'http://localhost:8180/api',
-  enterpriseUrl: 'http://localhost:8080/api',
-  oidcClientId: 'oidc-client',
+  oidcAuthority: 'https://greenbuildings.cloud/idp',
+  idpApiUrl: 'https://greenbuildings.cloud/idp/api',
+  enterpriseUrl: 'https://greenbuildings.cloud/enterprise/api',
+  oidcClientId: 'greenbuildings',
 };

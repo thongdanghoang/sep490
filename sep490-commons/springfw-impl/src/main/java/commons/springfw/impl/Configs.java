@@ -27,7 +27,7 @@ public class Configs {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        config.addAllowedOrigin("http://localhost:4200");
+        config.addAllowedOrigin("https://greenbuildings.cloud");
         config.setAllowCredentials(true);
         source.registerCorsConfiguration("/**", config);
         return source;

@@ -25,7 +25,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/buildings")
+@RequestMapping("/buildings")
 @RequiredArgsConstructor
 @RolesAllowed({
         UserRole.RoleNameConstant.ENTERPRISE_OWNER,

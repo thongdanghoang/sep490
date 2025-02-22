@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/enterprise")
+@RequestMapping("/enterprise")
 @RequiredArgsConstructor
 @RolesAllowed({
         UserRole.RoleNameConstant.ENTERPRISE_OWNER

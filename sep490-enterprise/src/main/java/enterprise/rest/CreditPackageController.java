@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/credit-package")
+@RequestMapping("/credit-package")
 @RequiredArgsConstructor
 public class CreditPackageController {
     

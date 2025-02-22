@@ -1,3 +1,4 @@
+
 spring:
   security:
     oauth2:
@@ -30,13 +31,12 @@ spring:
       mail.smtp.auth: false
   application:
     name: sep490-idp
-    homepage: http://localhost:4200
+    homepage: https://greenbuildings.cloud
   datasource:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
   flyway:
-    default-schema: ${DB_SCHEMA}
     output-query-results: ${FLYWAY_OUTPUT_QUERIES:false}
     create-schemas: false
   jpa:
@@ -52,12 +52,15 @@ spring:
         query:
           fail_on_pagination_over_collection_fetch: true
   kafka:
+    admin:
+      fail-fast: true
+    bootstrap-servers: kafka:9092
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: kafka:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: kafka:9092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
@@ -82,3 +85,10 @@ logging:
             sql: ${HIBERNATE_SQL_PARAM_LOG_LEVEL:TRACE}
 server:
   port: 8180
+  servlet:
+    context-path: /idp
+  forward-headers-strategy: native
+  tomcat:
+    remoteip:
+      remote-ip-header: x-forwarded-for
+      protocol-header: x-forwarded-proto

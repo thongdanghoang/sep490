@@ -13,6 +13,8 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.utility.DockerImageName;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -21,10 +23,14 @@ import java.util.function.Supplier;
 @Testcontainers
 public abstract class TestcontainersConfigs {
     
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16.4-alpine");
-    static GenericContainer<?> idP = new GenericContainer<>("thongdh3401/keycloak:24.0.5");
+    static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16.4-alpine");
+    static final GenericContainer<?> idP = new GenericContainer<>("thongdh3401/keycloak:24.0.5");
+    static final KafkaContainer kafka = new KafkaContainer(
+            DockerImageName.parse("confluentinc/cp-kafka:7.6.1")
+    );
     
     static {
+        kafka.start();
         postgres.start();
         idP.withExposedPorts(8180)
            .withCommand("start-dev --http-port 8180")
@@ -57,6 +63,8 @@ public abstract class TestcontainersConfigs {
     
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.kafka.producer.bootstrap-servers", kafka::getBootstrapServers);
+        registry.add("spring.kafka.consumer.bootstrap-servers", kafka::getBootstrapServers);
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);

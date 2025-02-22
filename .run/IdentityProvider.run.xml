@@ -4,7 +4,6 @@
       <env name="DB_HOST" value="localhost" />
       <env name="DB_NAME" value="sep490_idp" />
       <env name="DB_PORT" value="5432" />
-      <env name="DB_SCHEMA" value="public" />
       <env name="FLYWAY_OUTPUT_QUERIES" value="true" />
       <env name="HIBERNATE_SQL_LOG_LEVEL" value="DEBUG" />
       <env name="HIBERNATE_SQL_PARAM_LOG_LEVEL" value="DEBUG" />

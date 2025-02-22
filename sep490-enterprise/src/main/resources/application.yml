@@ -10,7 +10,7 @@ spring:
           issuer-uri: ${ISSUER_URI}
   application:
     name: enterprise
-    homepage: http://localhost:4200
+    homepage: https://greenbuildings.cloud
   datasource:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC
     username: ${POSTGRES_USER}
@@ -31,12 +31,15 @@ spring:
         query:
           fail_on_pagination_over_collection_fetch: true
   kafka:
+    admin:
+      fail-fast: true
+    bootstrap-servers: kafka:9092
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: kafka:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: kafka:9092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
@@ -52,6 +55,7 @@ logging:
     root: INFO
     org:
       springframework:
+        test: ${SPRING_TEST_LOG_LEVEL:INFO}
         security: ${SPRING_SECURITY_LOG_LEVEL:INFO}
         web: ${SPRING_WEB_LOG_LEVEL:INFO}
       hibernate:
@@ -67,3 +71,6 @@ payment:
     checksum_key: ${PAYOS_CHECKSUM_KEY:not_a_real_key_to_prevent_null}
     returnPath: /enterprise/payment
     cancelPath: /enterprise/payment
+server:
+  servlet:
+    context-path: /enterprise
