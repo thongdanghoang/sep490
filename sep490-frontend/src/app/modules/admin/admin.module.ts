@@ -5,9 +5,14 @@ import {AdminComponent} from './admin.component';
 import {AdminRoutingModule} from './admin-routing.module';
 import {PackageCreditComponent} from './components/package-credit/package-credit.component';
 import {PackageCreditService} from './services/package-credit.service';
+import {CreateUpdatePackageCreditComponent} from './components/create-update-package-credit/create-update-package-credit.component';
 
 @NgModule({
-  declarations: [AdminComponent, PackageCreditComponent],
+  declarations: [
+    AdminComponent,
+    PackageCreditComponent,
+    CreateUpdatePackageCreditComponent
+  ],
   imports: [SharedModule, AdminRoutingModule],
   providers: [PackageCreditService]
 })
