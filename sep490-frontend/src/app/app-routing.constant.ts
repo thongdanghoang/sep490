@@ -23,6 +23,7 @@ export class AppRoutingConstants {
 
   // Admin Module
   public static readonly PACKAGE_CREDIT_PATH = 'package-credit';
+  public static readonly PACKAGE_CREDIT_DETAILS_PATH = 'package-credit-details';
 
   // App Routing
   public static readonly DASHBOARD_PATH = 'dashboard';

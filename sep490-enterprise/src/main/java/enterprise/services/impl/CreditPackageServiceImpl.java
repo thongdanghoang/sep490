@@ -1,11 +1,17 @@
 package enterprise.services.impl;
 
+import commons.springfw.impl.utils.SecurityUtils;
+import enterprise.dtos.PaymentCriteriaDTO;
 import enterprise.entities.CreditPackageEntity;
+import enterprise.entities.PaymentEntity;
 import enterprise.repositories.CreditPackageRepository;
 import enterprise.services.CreditPackageService;
+import green_buildings.commons.api.dto.SearchCriteriaDTO;
 import green_buildings.commons.api.exceptions.BusinessException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -41,5 +47,10 @@ public class CreditPackageServiceImpl implements CreditPackageService {
         var creditPackageEntityList = creditPackageRepository.findAllById(packageIds);
 
         creditPackageRepository.deleteAll(creditPackageEntityList);
+    }
+
+    @Override
+    public Page<CreditPackageEntity> search(Pageable pageable) {
+        return creditPackageRepository.findAll(pageable);
     }
 }

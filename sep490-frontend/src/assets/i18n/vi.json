@@ -1,7 +1,7 @@
 {
   "common": {
     "noRow": "Không tìm thấy bản ghi nào.",
-    "defaultConfirmMessage": "Bạn có muốn xóa người dùng này không?",
+    "defaultConfirmMessage": "Bạn có muốn xóa hàng này không?",
     "confirmHeader": "Xác nhận",
     "accept": "Đồng ý",
     "reject": "Không",
@@ -209,5 +209,30 @@
       "title": "Quản trị viên",
       "packageCredit": "Gói tín dụng"
     }
+  },
+  "admin": {
+    "packageCredit": {
+      "title": "Gói tín dụng",
+      "table": {
+        "numberCredit": "Số lượng tín dụng",
+        "price": "Giá"
+      },
+      "input": {
+        "enterNumberCredit": "Nhập số tín dụng",
+        "enterPrice": "Nhập giá"
+      },
+      "addPackageCredit": "Thêm gói tín dụng",
+      "message": {
+        "success": {
+          "summary": "Thành công",
+          "detail": "Đã xóa gói tín dụng"
+        },
+        "error": {
+          "summary": "Lỗi",
+          "detail": "Xóa Gói tín dụng không thành công"
+        }
+      }
+    }
+
   }
 }

@@ -1,1 +1,52 @@
-<p>package-credit works!</p>
+<table-template
+    *ngIf="!applicationService.isMobile()"
+    [fetch]="fetchData"
+    [columns]="cols"
+    [captionTemplateRef]="captionTemplateRef"
+    [sort]="sort"
+    [triggerSearch]="triggerSearch"
+    [checkbox]="true"
+    (selectionChange)="onSelectionChange($event)"
+>
+</table-template>
+<ng-template #captionTemplateRef>
+    <div class="flex items-center justify-between">
+        <span class="text-primary font-bold">{{
+            "admin.packageCredit.title" | translate
+        }}</span>
+        <a
+            class="p-button font-bold"
+            [routerLink]="[
+                '/',
+                AppRoutingConstants.ADMIN_PATH,
+                AppRoutingConstants.PACKAGE_CREDIT_DETAILS_PATH,
+            ]"
+        >
+            <i class="pi pi-credit-card"></i>
+            {{ "admin.packageCredit.addPackageCredit" | translate }}
+        </a>
+    </div>
+</ng-template>
+
+<ng-template #priceTemplate let-rowData>
+    <p>{{ rowData.price | number: "1.0-0" }} VND</p>
+</ng-template>
+
+<ng-template #actionsTemplate let-rowData>
+    <div class="flex">
+        <p-button
+            icon="pi pi-pencil"
+            [rounded]="true"
+            [text]="true"
+            severity="info"
+            (onClick)="onEdit(rowData)"
+        />
+        <p-button
+            icon="pi pi-trash"
+            [rounded]="true"
+            [text]="true"
+            severity="danger"
+            (onClick)="onDelete(rowData)"
+        />
+    </div>
+</ng-template>

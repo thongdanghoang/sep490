@@ -1,11 +1,14 @@
 package enterprise.rest;
 
+import commons.springfw.impl.mappers.CommonMapper;
 import commons.springfw.impl.securities.UserContextData;
 import enterprise.dtos.BuildingDTO;
 import enterprise.dtos.CreditPackageDTO;
 import enterprise.entities.CreditPackageEntity;
 import enterprise.mappers.CreditPackageMapper;
 import enterprise.services.CreditPackageService;
+import green_buildings.commons.api.dto.SearchCriteriaDTO;
+import green_buildings.commons.api.dto.SearchResultDTO;
 import green_buildings.commons.api.security.UserRole;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +77,17 @@ public class CreditPackageController {
     public ResponseEntity<Void> deleteCreditPackages(@RequestBody Set<UUID> packageIds) {
         creditPackageService.deletePackages(packageIds);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/search")
+    @RolesAllowed({UserRole.RoleNameConstant.SYSTEM_ADMIN})
+    public ResponseEntity<SearchResultDTO<CreditPackageDTO>> search(@RequestBody SearchCriteriaDTO<Void> searchCriteria ) {
+        var pageable = CommonMapper.toPageable(searchCriteria.page(), searchCriteria.sort());
+        var searchResults = creditPackageService.search(pageable);
+        return ResponseEntity.ok(
+                CommonMapper.toSearchResultDTO(
+                        searchResults,
+                        mapper::entityToDTO));
     }
 
     

@@ -3,7 +3,7 @@
     "noRow": "未找到任何记录",
     "success": "成功",
     "saveSuccess": "保存成功!",
-    "defaultConfirmMessage": "是否删除该用户？",
+    "defaultConfirmMessage": "是否删除此行？",
     "confirmHeader": "确认",
     "accept": "是",
     "reject": "否",
@@ -208,6 +208,30 @@
     "admin": {
       "title": "行政人员",
       "packageCredit": "套餐信用"
+    }
+  },
+  "admin": {
+    "packageCredit": {
+      "title": "信用套餐",
+      "table": {
+        "numberCredit": "信用金额",
+        "price": "价格"
+      },
+      "input": {
+        "enterNumberCredit": "输入积分",
+        "enterPrice": "输入价格"
+      },
+      "addPackageCredit": "添加套餐信用",
+      "message": {
+        "success": {
+          "summary": "成功",
+          "detail": "信用包已删除"
+        },
+        "error": {
+          "summary": "错误",
+          "detail": "信用包删除失败"
+        }
+      }
     }
   }
 }
