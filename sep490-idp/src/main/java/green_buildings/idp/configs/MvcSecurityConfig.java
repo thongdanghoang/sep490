@@ -28,7 +28,7 @@ public class MvcSecurityConfig {
                 .authorizeHttpRequests(
                         c -> c
                                 .requestMatchers("/css/**", "/img/**", "/js/**", "/favicon.ico").permitAll()
-                                .requestMatchers(antMatcher("/signup"), antMatcher("/login")).permitAll()
+                                .requestMatchers(antMatcher("/signup"), antMatcher("/login"), antMatcher("/logout")).permitAll()
                                 .requestMatchers(antMatcher("/passkey/login")).permitAll()
                                 .requestMatchers(antMatcher("/forgot-password")).permitAll()
                                 .requestMatchers(antMatcher("/enter-otp")).permitAll()
@@ -41,6 +41,7 @@ public class MvcSecurityConfig {
                                        .failureHandler(authenticationFailureHandler())
                                        .permitAll())
                 .webAuthn(MvcSecurityConfig::passkeyConfiguration)
+                .logout(logout -> logout.logoutUrl("/logout"))
                 .build();
     }
     
