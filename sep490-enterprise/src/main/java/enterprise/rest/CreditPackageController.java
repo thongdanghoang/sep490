@@ -46,6 +46,7 @@ public class CreditPackageController {
     }
 
     @PostMapping()
+    @RolesAllowed({UserRole.RoleNameConstant.SYSTEM_ADMIN})
     public ResponseEntity<Void> createCreditPackage(@RequestBody CreditPackageDTO creditPackageDTO) {
         if (Objects.isNull(creditPackageDTO.id())) {
             return createNewCreditPackage(creditPackageDTO);
@@ -74,6 +75,7 @@ public class CreditPackageController {
     }
 
     @DeleteMapping
+    @RolesAllowed({UserRole.RoleNameConstant.SYSTEM_ADMIN})
     public ResponseEntity<Void> deleteCreditPackages(@RequestBody Set<UUID> packageIds) {
         creditPackageService.deletePackages(packageIds);
         return ResponseEntity.noContent().build();
