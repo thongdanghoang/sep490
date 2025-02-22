@@ -1,10 +1,11 @@
 import {NgModule, inject} from '@angular/core';
-import {Router, RouterModule, Routes} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {
   AutoLoginPartialRoutesGuard,
+  LoginResponse,
   OidcSecurityService
 } from 'angular-auth-oidc-client';
-import {Observable, map, of, switchMap, tap} from 'rxjs';
+import {Observable, of, switchMap, tap} from 'rxjs';
 import {AppRoutingConstants} from './app-routing.constant';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {ForbiddenComponent} from './components/forbidden/forbidden.component';
@@ -12,12 +13,10 @@ import {HomeComponent} from './components/home/home.component';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
 import {ApplicationService} from './modules/core/services/application.service';
-import {UserRole} from './modules/authorization/enums/role-names';
 
-const authGuard: () => Observable<boolean> = () => {
+const authGuard: () => Observable<LoginResponse> = () => {
   const authService = inject(OidcSecurityService);
   const applicationService = inject(ApplicationService);
-  const router = inject(Router);
 
   return authService.checkAuth().pipe(
     tap(authData => {
@@ -27,60 +26,7 @@ const authGuard: () => Observable<boolean> = () => {
         applicationService.postLogin();
       }
     }),
-    switchMap(authData =>
-      authData.isAuthenticated
-        ? applicationService.UserData.pipe(
-            map(user => {
-              if (
-                user &&
-                applicationService.includeRole(
-                  user.authorities,
-                  UserRole.ENTERPRISE_OWNER
-                )
-              ) {
-                return true;
-              }
-              void router.navigate([AppRoutingConstants.FORBIDDEN]);
-              return false;
-            })
-          )
-        : of(false)
-    )
-  );
-};
-
-const AdminGuard: () => Observable<boolean> = () => {
-  const authService = inject(OidcSecurityService);
-  const applicationService = inject(ApplicationService);
-  const router = inject(Router);
-
-  return authService.checkAuth().pipe(
-    tap(authData => {
-      if (!authData.isAuthenticated) {
-        applicationService.login();
-      } else {
-        applicationService.postLogin();
-      }
-    }),
-    switchMap(authData =>
-      authData.isAuthenticated
-        ? applicationService.UserData.pipe(
-            map(user => {
-              if (
-                user &&
-                applicationService.includeRole(
-                  user.authorities,
-                  UserRole.SYSTEM_ADMIN
-                )
-              ) {
-                return true;
-              }
-              void router.navigate([AppRoutingConstants.FORBIDDEN]);
-              return false;
-            })
-          )
-        : of(false)
-    )
+    switchMap(loggedIn => of(loggedIn))
   );
 };
 
@@ -107,7 +53,7 @@ const routes: Routes = [
     path: AppRoutingConstants.ADMIN_PATH,
     loadChildren: () =>
       import('./modules/admin/admin.module').then(m => m.AdminModule),
-    canActivate: [AutoLoginPartialRoutesGuard, AdminGuard]
+    canActivate: [AutoLoginPartialRoutesGuard, authGuard]
   },
   {
     path: AppRoutingConstants.ENTERPRISE_PATH,
