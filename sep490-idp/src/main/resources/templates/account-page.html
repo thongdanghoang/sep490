@@ -51,10 +51,12 @@
     </div>
     <div>
         <h3 class="text-lg font-semibold text-gray-800 mb-3">Logout</h3>
-        <a href="/logout"
-           class="inline-block bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm px-4 py-2 rounded-md shadow-sm">
-            Logout
-        </a>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit"
+                    class="inline-block bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm px-4 py-2 rounded-md shadow-sm">
+                Logout
+            </button>
+        </form>
     </div>
 </div>
 

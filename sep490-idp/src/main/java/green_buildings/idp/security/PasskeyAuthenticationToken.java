@@ -3,8 +3,10 @@ package green_buildings.idp.security;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 public class PasskeyAuthenticationToken extends AbstractAuthenticationToken implements Serializable {
 
@@ -38,5 +40,10 @@ public class PasskeyAuthenticationToken extends AbstractAuthenticationToken impl
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37).appendSuper(super.hashCode()).append(userContextData).toHashCode();
+    }
+    
+    @Override
+    public Collection<GrantedAuthority> getAuthorities() {
+        return ((MvcUserContextData) getPrincipal()).getAuthorities();
     }
 }
