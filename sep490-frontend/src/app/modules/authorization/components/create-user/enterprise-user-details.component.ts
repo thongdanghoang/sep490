@@ -25,7 +25,7 @@ import {
   BuildingPermission,
   EnterpriseUserDetails
 } from '../../models/enterprise-user';
-import {UserService} from '../../services/user.service';
+import {EnterpriseUserService} from '../../services/enterprise-user.service';
 import {MultiSelectChangeEvent} from 'primeng/multiselect';
 import {SelectChangeEvent} from 'primeng/select';
 
@@ -125,7 +125,7 @@ export class EnterpriseUserDetailsComponent extends AbstractFormComponent<Enterp
     formBuilder: FormBuilder,
     notificationService: MessageService,
     translate: TranslateService,
-    protected userService: UserService,
+    protected userService: EnterpriseUserService,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
   ) {

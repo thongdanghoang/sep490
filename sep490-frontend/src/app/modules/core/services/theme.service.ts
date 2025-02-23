@@ -3,6 +3,8 @@ import {definePreset} from '@primeng/themes';
 import Aura from '@primeng/themes/aura';
 import {PrimeNG, ThemeType} from 'primeng/config';
 import {BehaviorSubject, Observable, of} from 'rxjs';
+import {UserService} from '../../../services/user.service';
+import {Theme} from '../../shared/models/user-configs';
 
 const MyPreset = definePreset(Aura, {
   primitive: {
@@ -41,14 +43,15 @@ const MyPreset = definePreset(Aura, {
 export class ThemeService {
   readonly LOCAL_STORAGE_KEY = 'prefers-color-scheme';
   readonly TOKEN = 'my-app-dark';
-  readonly DARK_MODE = 'dark';
-  readonly LIGHT_MODE = 'light';
   readonly SYSTEM_COLOR_SCHEME_QUERY = '(prefers-color-scheme: dark)';
   systemPreferredColorThemeChanged: BehaviorSubject<boolean>;
   systemPreferredColorTheme: ThemeType;
   userPreferredColorTheme: ThemeType;
 
-  constructor(private readonly config: PrimeNG) {
+  constructor(
+    private readonly config: PrimeNG,
+    private readonly userService: UserService
+  ) {
     const themeOptions = {
       prefix: 'p',
       darkModeSelector: 'system',
@@ -73,7 +76,7 @@ export class ThemeService {
   initTheme(): void {
     if (this.isThemeConfigured()) {
       this.config.theme.set(this.userPreferredColorTheme);
-      if (localStorage.getItem(this.LOCAL_STORAGE_KEY) === this.DARK_MODE) {
+      if (localStorage.getItem(this.LOCAL_STORAGE_KEY) === Theme[Theme.DARK]) {
         document.querySelector('html')?.classList.add(this.TOKEN);
       }
       return;
@@ -87,7 +90,7 @@ export class ThemeService {
   isDarkMode(): Observable<boolean> {
     if (this.isThemeConfigured()) {
       return of(
-        localStorage.getItem(this.LOCAL_STORAGE_KEY) === this.DARK_MODE
+        localStorage.getItem(this.LOCAL_STORAGE_KEY) === Theme[Theme.DARK]
       );
     }
     return this.systemPreferredColorThemeChanged;
@@ -96,11 +99,21 @@ export class ThemeService {
   toggleLightDark(): void {
     this.config.theme.set(this.userPreferredColorTheme);
     if (document.querySelector('html')?.classList.contains(this.TOKEN)) {
-      localStorage.setItem(this.LOCAL_STORAGE_KEY, this.LIGHT_MODE);
+      localStorage.setItem(this.LOCAL_STORAGE_KEY, Theme[Theme.LIGHT]);
+      this.userService.changeTheme(Theme[Theme.LIGHT]).subscribe();
     } else {
-      localStorage.setItem(this.LOCAL_STORAGE_KEY, this.DARK_MODE);
+      localStorage.setItem(this.LOCAL_STORAGE_KEY, Theme[Theme.DARK]);
+      this.userService.changeTheme(Theme[Theme.DARK]).subscribe();
     }
     document.querySelector('html')?.classList.toggle(this.TOKEN);
+  }
+
+  setTheme(theme: keyof typeof Theme): void {
+    if (theme === Theme[Theme.SYSTEM]) {
+      localStorage.removeItem(this.LOCAL_STORAGE_KEY);
+      return;
+    }
+    localStorage.setItem(this.LOCAL_STORAGE_KEY, theme);
   }
 
   private isThemeConfigured(): boolean {

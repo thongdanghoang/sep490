@@ -39,6 +39,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -227,6 +228,16 @@ public class UserServiceImpl extends SagaManager implements UserService {
     @Override
     public UserEntity getEnterpriseUserDetail(UUID id) {
         return userRepo.findByIdWithBuildingPermissions(id).orElseThrow();
+    }
+    
+    @Override
+    public Optional<UserEntity> findByEmail(String email) {
+        return userRepo.findByEmail(email);
+    }
+    
+    @Override
+    public void update(UserEntity user) {
+        userRepo.save(user);
     }
     
 }

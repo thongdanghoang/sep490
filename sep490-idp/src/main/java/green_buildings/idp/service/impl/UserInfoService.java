@@ -1,13 +1,13 @@
 package green_buildings.idp.service.impl;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
-import org.springframework.stereotype.Service;
 import green_buildings.commons.api.dto.auth.BuildingPermissionDTO;
 import green_buildings.idp.entity.UserEnterpriseEntity;
 import green_buildings.idp.entity.UserEntity;
 import green_buildings.idp.repository.BuildingPermissionRepository;
 import green_buildings.idp.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,9 +53,9 @@ public class UserInfoService {
                 ))
                 .toList();
         claims.put("enterpriseId", Optional.ofNullable(user.getEnterprise())
-                                            .map(UserEnterpriseEntity::getEnterprise)
-                                            .map(UUID::toString)
-                                            .orElse(null));
+                                           .map(UserEnterpriseEntity::getEnterprise)
+                                           .map(UUID::toString)
+                                           .orElse(null));
         claims.put("permissions", buildingPermissions);
         return claims;
     }

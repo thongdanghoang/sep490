@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
+import {Subject, filter, takeUntil} from 'rxjs';
 import {ThemeService} from './modules/core/services/theme.service';
+import {UserService} from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -8,22 +10,26 @@ import {ThemeService} from './modules/core/services/theme.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit, OnDestroy {
+  protected readonly destroy$: Subject<void> = new Subject<void>();
   private systemThemeMediaQuery?: MediaQueryList;
 
   constructor(
     private readonly themeService: ThemeService,
-    private readonly translate: TranslateService
-  ) {
-    this.themeService.initTheme();
-
-    // this language will be used as a fallback when a translation isn't found in the current language
-    this.translate.setDefaultLang('vi');
-
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    this.translate.use('vi');
-  }
+    private readonly translate: TranslateService,
+    private readonly userService: UserService
+  ) {}
 
   ngOnInit(): void {
+    this.userService.userConfigs
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(userConfigs => !!userConfigs)
+      )
+      .subscribe(userConfigs => {
+        this.translate.use(userConfigs.language.split('-')[0]);
+        this.themeService.setTheme(userConfigs.theme);
+        this.themeService.initTheme();
+      });
     // Listen for system theme changes
     this.systemThemeMediaQuery = window.matchMedia(
       this.themeService.SYSTEM_COLOR_SCHEME_QUERY
@@ -35,6 +41,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.systemThemeMediaQuery?.removeEventListener(
       'change',
       this.handleThemeChange

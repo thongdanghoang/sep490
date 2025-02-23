@@ -28,7 +28,6 @@ import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
 import {CoreModule} from './modules/core/core.module';
 import {HttpErrorHandlerInterceptor} from './modules/core/services/http-error-handler.interceptor';
-import {LanguageInterceptor} from './modules/shared/interceptor/language.interceptor';
 import {SharedModule} from './modules/shared/shared.module';
 
 enum OidcScopes {
@@ -86,7 +85,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
         autoUserInfo: true,
         renewUserInfoAfterTokenRenew: true,
         logLevel: environment.production ? LogLevel.Warn : LogLevel.Debug,
-        historyCleanupOff: true,
         secureRoutes: [environment.idpApiUrl, environment.enterpriseUrl]
       }
     }),
@@ -110,7 +108,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
       deps: [OidcSecurityService],
       multi: true
     },
-    {provide: HTTP_INTERCEPTORS, useClass: LanguageInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     {
       provide: HTTP_INTERCEPTORS,

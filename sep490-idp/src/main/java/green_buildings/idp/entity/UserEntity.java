@@ -80,6 +80,12 @@ public class UserEntity extends AbstractAuditableEntity {
     @Column(name = "last_name", length = 100)
     private String lastName;
     
+    @Column(name = "locale", length = 5)
+    private String locale;
+    
+    @Column(name = "theme", length = 16)
+    private String theme;
+    
     @Column(name = "deleted")
     private boolean deleted;
     

@@ -15,6 +15,7 @@ public class UserContextData implements UserDetails {
     private final String username;
     private final UUID enterpriseId;
     private final String password;
+    private final String language;
     private final List<GrantedAuthority> authorities;
-    private final List<BuildingPermissionDTO> permissions;
+    private final transient List<BuildingPermissionDTO> permissions;
 }
