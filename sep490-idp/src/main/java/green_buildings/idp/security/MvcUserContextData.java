@@ -19,6 +19,7 @@ public class MvcUserContextData extends UserContextData {
         super(userEntity.getEmail(),
               userEntity.getEnterprise().getId(),
                 userEntity.getPassword(),
+              userEntity.getLocale(),
               List.copyOf(authorities),
               List.copyOf(permissions));
         this.userEntity = userEntity;

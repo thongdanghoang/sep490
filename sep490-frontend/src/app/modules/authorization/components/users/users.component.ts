@@ -21,7 +21,7 @@ import {
 } from '../../../shared/models/models';
 import {ModalProvider} from '../../../shared/services/modal-provider';
 import {EnterpriseUser} from '../../models/enterprise-user';
-import {UserService} from '../../services/user.service';
+import {EnterpriseUserService} from '../../services/enterprise-user.service';
 
 export interface UserCriteria {
   criteria: string;
@@ -52,7 +52,7 @@ export class UsersComponent
 
   constructor(
     protected readonly applicationService: ApplicationService,
-    private readonly userService: UserService,
+    private readonly userService: EnterpriseUserService,
     private readonly messageService: MessageService,
     private readonly modalProvider: ModalProvider,
     private readonly translate: TranslateService

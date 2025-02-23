@@ -5,7 +5,7 @@ import {AuthorizationRoutingModule} from './authorization-routing.module';
 import {AuthorizationComponent} from './authorization.component';
 import {EnterpriseUserDetailsComponent} from './components/create-user/enterprise-user-details.component';
 import {UsersComponent} from './components/users/users.component';
-import {UserService} from './services/user.service';
+import {EnterpriseUserService} from './services/enterprise-user.service';
 
 @NgModule({
   declarations: [
@@ -14,6 +14,6 @@ import {UserService} from './services/user.service';
     UsersComponent
   ],
   imports: [SharedModule, AuthorizationRoutingModule],
-  providers: [UserService]
+  providers: [EnterpriseUserService]
 })
 export class AuthorizationModule {}

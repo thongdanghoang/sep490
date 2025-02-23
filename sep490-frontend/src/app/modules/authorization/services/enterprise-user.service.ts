@@ -8,7 +8,7 @@ import {EnterpriseUser, EnterpriseUserDetails} from '../models/enterprise-user';
 import {UserCriteria} from '../components/users/users.component';
 
 @Injectable()
-export class UserService {
+export class EnterpriseUserService {
   constructor(private readonly httpClient: HttpClient) {}
 
   public getUsers(
