@@ -1,10 +1,6 @@
 import {Component} from '@angular/core';
 import {AbstractFormComponent} from '../../form/abstract-form-component';
-import {
-  Building,
-  BuildingDetails,
-  Subscription
-} from '../../../../enterprise/models/enterprise.dto';
+import {Subscription} from '../../../../enterprise/models/enterprise.dto';
 import {
   AbstractControl,
   FormBuilder,
@@ -15,8 +11,7 @@ import {HttpClient} from '@angular/common/http';
 import {MessageService} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {BuildingService} from '../../../../../services/building.service';
-import {WalletService} from '../../../../enterprise/services/wallet.service';
+import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-building-subcription-dialog',
@@ -24,10 +19,7 @@ import {WalletService} from '../../../../enterprise/services/wallet.service';
   styleUrl: './building-subcription-dialog.component.css'
 })
 export class BuildingSubcriptionDialogComponent extends AbstractFormComponent<Subscription> {
-  selectedBuildingDetails: BuildingDetails | null = null;
-  visible: boolean = false;
-  balance: number = 0;
-  totalCredit: number = 0;
+  data: any;
   checked: boolean = false;
   protected readonly formStructure = {
     id: new FormControl(''),
@@ -46,49 +38,22 @@ export class BuildingSubcriptionDialogComponent extends AbstractFormComponent<Su
     httpClient: HttpClient,
     formBuilder: FormBuilder,
     notificationService: MessageService,
-    private readonly buildingService: BuildingService,
-    private readonly walletService: WalletService,
     translate: TranslateService,
     private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly activatedRoute: ActivatedRoute,
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig
   ) {
     super(httpClient, formBuilder, notificationService, translate);
-  }
-
-  openDialog(building: Building): void {
-    this.getBuildingDetails(building);
-    this.getBalance();
-    this.visible = true;
-  }
-
-  getBuildingDetails(building: Building): void {
-    this.registerSubscription(
-      this.buildingService.getBuildingDetails(building.id).subscribe({
-        next: (details: BuildingDetails) => {
-          this.selectedBuildingDetails = details;
-        },
-        error: () => {
-          this.notificationService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Invalid location'
-          });
-        }
-      })
-    );
-  }
-
-  getBalance(): void {
-    this.registerSubscription(
-      this.walletService.getWalletBalance().subscribe(result => {
-        this.balance = result;
-      })
-    );
+    this.data = config.data;
   }
 
   closeDialog(): void {
-    this.formGroup.reset();
-    this.visible = false;
+    this.ref.close();
+  }
+  buy(): void {
+    // Handle the buy logic here before closing, if necessary.
+    this.ref.close('buy');
   }
   protected initializeData(): void {}
 

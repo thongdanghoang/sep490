@@ -127,7 +127,7 @@
             <p-button
                 class="*:w-24"
                 severity="primary"
-                (click)="showDialog(building)"
+                (click)="openDialog(building)"
                 [label]="
                     'enterprise.buildings.overview.btn.activate' | translate
                 "
@@ -136,6 +136,3 @@
         </div>
     </div>
 </ng-template>
-<app-building-subcription-dialog
-    #subscriptionDialog
-></app-building-subcription-dialog>

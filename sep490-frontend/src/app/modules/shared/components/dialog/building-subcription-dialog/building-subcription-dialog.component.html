@@ -1,37 +1,32 @@
-<p-dialog
-    [(visible)]="visible"
-    [modal]="true"
-    [style]="{ width: '50rem' }"
-    [closable]="false"
->
-    <ng-template #header>
-        <div class="inline-flex items-center justify-center gap-2">
-            <p-avatar
-                image="https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp"
-                class="flex items-center justify-center mr-2"
-                size="large"
-            />
-            <span class="font-bold whitespace-nowrap">{{
-                "dialog.subscription.header.title" | translate
-            }}</span>
-        </div>
-    </ng-template>
+<div class="p-dialog-header">
+    <div class="inline-flex items-center justify-center gap-2">
+        <p-avatar
+            image="https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp"
+            class="flex items-center justify-center mr-2"
+            size="large"
+        />
+        <span class="font-bold whitespace-nowrap">{{
+            "dialog.subscription.header.title" | translate
+        }}</span>
+    </div>
+</div>
+<div class="p-dialog-content">
     <div
         class="flex flex-col lg:flex-row items-center justify-between px-4 border-primary border mb-4"
     >
         <div class="flex flex-col gap-5 p-5 items-center lg:items-start">
             <span class="text-surface-500 dark:text-surface-400 block"
                 >{{ "dialog.subscription.body.name" | translate }}:
-                {{ selectedBuildingDetails?.name }}</span
+                {{ data.selectedBuildingDetails?.name }}</span
             >
             <span class="text-surface-500 dark:text-surface-400 block"
                 >{{ "dialog.subscription.body.numberDevices" | translate }}:
-                {{ selectedBuildingDetails?.numberOfDevices }}</span
+                {{ data.selectedBuildingDetails?.numberOfDevices }}</span
             >
         </div>
         <span class="text-primary block mb-8 lg:0 lg:pr-12"
             >{{ "purchaseCredit.currentBalance" | translate }}:
-            {{ balance }}</span
+            {{ data.balance }}</span
         >
     </div>
 
@@ -99,7 +94,7 @@
     <div class="flex flex-col p-4 gap-8">
         <span class="text-surface-500 dark:text-surface-400 block"
             >{{ "dialog.subscription.body.totalCredit" | translate }}:
-            {{ totalCredit }}</span
+            {{ data.totalCredit }}</span
         >
         <div class="flex flex-row gap-1 items-center">
             <p-checkbox [(ngModel)]="checked" [binary]="true" />
@@ -115,19 +110,19 @@
             }}</label>
         </div>
     </div>
-    <ng-template #footer>
-        <p-button
-            label="{{ 'dialog.subscription.footer.button.cancel' | translate }}"
-            [text]="true"
-            severity="primary"
-            [outlined]="true"
-            (click)="closeDialog()"
-        />
-        <p-button
-            label="{{ 'dialog.subscription.footer.button.buy' | translate }}"
-            severity="primary"
-            [disabled]="!checked"
-            (click)="visible = false"
-        />
-    </ng-template>
-</p-dialog>
+</div>
+<div class="p-dialog-footer">
+    <p-button
+        label="{{ 'dialog.subscription.footer.button.cancel' | translate }}"
+        [text]="true"
+        severity="primary"
+        [outlined]="true"
+        (click)="closeDialog()"
+    />
+    <p-button
+        label="{{ 'dialog.subscription.footer.button.buy' | translate }}"
+        severity="primary"
+        [disabled]="!checked"
+        (click)="buy()"
+    />
+</div>
