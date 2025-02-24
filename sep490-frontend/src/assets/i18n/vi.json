@@ -233,6 +233,26 @@
         }
       }
     }
-
+  },
+  "dialog": {
+    "subscription": {
+      "header": {
+        "title": "Mua gói đăng ký"
+      },
+      "body": {
+        "name": "Tên",
+        "numberDevices": "Số lượng thiết bị hiện tại",
+        "numberMonth": "Số tháng",
+        "numberMaxDevice": "Số lượng thiết bị tối đa",
+        "totalCredit": "Tổng cộng",
+        "confirm": "Xác nhận đăng ký {{numberOfMonths}} tháng và {{numberOfDevices}} thiết bị"
+      },
+      "footer": {
+        "button": {
+          "buy" : "Mua",
+          "cancel": "Hủy"
+        }
+      }
+    }
   }
 }

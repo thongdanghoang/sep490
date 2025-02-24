@@ -43,6 +43,8 @@ export class BuildingService {
               return {
                 ...building,
                 address: 'Avenue Louis-CASAÏ 18, 1209 Genève',
+                // can add field address at BE => use api goong map convert from (lat ,lng) to address => save address db
+                // https://docs.goong.io/rest/geocode/
                 validFromInclusive: new Date(),
                 validToInclusive: new Date(
                   new Date().getTime() + Math.random() * 1e12

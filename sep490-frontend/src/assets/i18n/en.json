@@ -233,5 +233,26 @@
       }
     }
   }
-}
+},
+  "dialog": {
+    "subscription": {
+        "header": {
+          "title": "Buy Subscription"
+        },
+      "body": {
+        "name": "Name",
+        "numberDevices": "Current number of devices",
+        "numberMonth": "Number of months",
+        "numberMaxDevice": "Maximum number of devices",
+        "totalCredit": "Total",
+        "confirm": "Confirm subscription {{numberOfMonths}} months and {{numberOfDevices}} devices"
+      },
+      "footer": {
+        "button": {
+          "buy" : "Buy",
+          "cancel": "Cancel"
+        }
+      }
+    }
+  }
 }

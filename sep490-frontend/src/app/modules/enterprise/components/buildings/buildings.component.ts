@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ComponentRef} from '@angular/core';
+import {AfterViewInit, Component, ComponentRef, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import * as L from 'leaflet';
 import {takeUntil} from 'rxjs';
@@ -9,6 +9,7 @@ import {SubscriptionAwareComponent} from '../../../core/subscription-aware.compo
 import {Building} from '../../models/enterprise.dto';
 import {PopupService} from '../../services/popup.service';
 import {BuildingPopupMarkerComponent} from '../building-popup-marker/building-popup-marker.component';
+import {BuildingSubcriptionDialogComponent} from '../../../shared/components/dialog/building-subcription-dialog/building-subcription-dialog.component';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -44,6 +45,8 @@ export class BuildingsComponent
   extends SubscriptionAwareComponent
   implements AfterViewInit
 {
+  @ViewChild('subscriptionDialog')
+  subscriptionDialog!: BuildingSubcriptionDialogComponent;
   addBuildingLocation: boolean = false;
   buildingLocation: MapLocation | null = null;
   viewMode: ViewMode = ViewMode.MAP;
@@ -85,6 +88,10 @@ export class BuildingsComponent
 
   get listView(): boolean {
     return this.viewMode === ViewMode.LIST;
+  }
+
+  showDialog(building: Building): void {
+    this.subscriptionDialog.openDialog(building);
   }
 
   onViewModeChanged(): void {
