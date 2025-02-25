@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%style{%d{ISO8601}} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{10}}{bright,yellow}: %msg%n%throwable"/>
+        </Console>
+        <SplunkHttp
+                name="splunkhttp"
+                url="${SPLUNK_URL}"
+                token="${IDP_SPLUNK_TOKEN}"
+                host="${SPLUNK_HOST}"
+                index="${IDP_SPLUNK_INDEX}"
+                source="${IDP_SPLUNK_SOURCE}"
+                type="raw"
+                sourcetype="log4j"
+                messageFormat="text"
+                disableCertificateValidation="true">
+            <PatternLayout pattern="%d{ISO8601} %-5p [%t] %c: %m%n"/>
+            <MetaData>
+                <Application>GreenBuildings Identity Provider</Application>
+            </MetaData>
+        </SplunkHttp>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="splunkhttp"/>
+        </Root>
+    </Loggers>
+</Configuration>
