@@ -37,4 +37,11 @@ public class WalletEntity extends AbstractAuditableEntity {
         balance += amount;
     }
     
+    public void withdraw(long amount) {
+        if (amount > balance) {
+            throw new IllegalArgumentException("Insufficient balance");
+        }
+        balance -= amount;
+    }
+    
 }

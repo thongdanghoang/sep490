@@ -23,6 +23,25 @@ export interface CreditPackage extends BaseDTO {
   price: number;
 }
 
+export enum CreditConvertType {
+  MONTH,
+  DEVICE
+}
+
+export interface CreditConvertRatio extends BaseDTO {
+  ratio: number;
+  convertType: keyof typeof CreditConvertType;
+}
+
+export interface SubscribeRequest extends BaseDTO {
+  buildingId: UUID;
+  months: number;
+  numberOfDevices: number;
+  monthRatio: number;
+  deviceRatio: number;
+  type: keyof typeof CreditConvertType;
+}
+
 export interface Subscription extends BaseDTO {
   numberOfMonths: number;
   numberOfDevices: number;

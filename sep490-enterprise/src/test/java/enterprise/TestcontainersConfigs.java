@@ -60,6 +60,7 @@ public abstract class TestcontainersConfigs {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
+        registry.add("logging.level.org.flywaydb", ()-> "DEBUG");
         Supplier<Object> callable = () -> StringSubstitutor.replace(
                 "http://localhost:${mappedPort}/realms/greenbuildings", Map
                         .of("mappedPort", getMappedPort(idP, 8180)));
