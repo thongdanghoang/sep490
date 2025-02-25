@@ -1,6 +1,6 @@
 services:
   web:
-    image: thongdh3401/sep490-frontend:0.5.0
+    image: thongdh3401/sep490-frontend:0.5.5
     environment:
       OIDC_CLIENT_ID: greenbuildings
       OIDC_AUTHORITY: ${OIDC_AUTHORITY}
@@ -12,7 +12,7 @@ services:
       - idp
       - enterprise
   enterprise:
-    image: thongdh3401/sep490-enterprise:0.5.0
+    image: thongdh3401/sep490-enterprise:0.5.5
     ports:
       - "127.0.0.1:8080:8080"
     environment:
@@ -26,12 +26,17 @@ services:
       PAYOS_CLIENT_ID: ${PAYOS_CLIENT_ID}
       PAYOS_API_KEY: ${PAYOS_API_KEY}
       PAYOS_CHECKSUM_KEY: ${PAYOS_CHECKSUM_KEY}
+      SPLUNK_URL: ${SPLUNK_URL}
+      SPLUNK_HOST: ${SPLUNK_HOST}
+      ENTERPRISE_SPLUNK_TOKEN: ${ENTERPRISE_SPLUNK_TOKEN}
+      ENTERPRISE_SPLUNK_INDEX: ${ENTERPRISE_SPLUNK_INDEX}
+      ENTERPRISE_SPLUNK_SOURCE: ${ENTERPRISE_SPLUNK_SOURCE}
     depends_on:
       - idp
       - sep490_databases
       - kafka
   idp:
-    image: thongdh3401/sep490-idp:0.5.0
+    image: thongdh3401/sep490-idp:0.5.5
     ports:
       - "127.0.0.1:8180:8180"
     environment:
@@ -45,6 +50,11 @@ services:
       POSTGRES_PASSWORD: ${IDP_POSTGRES_PASSWORD}
       SMTP_HOST: sep490_mailhog
       SMTP_PORT: 1025
+      SPLUNK_URL: ${SPLUNK_URL}
+      SPLUNK_HOST: ${SPLUNK_HOST}
+      IDP_SPLUNK_TOKEN: ${IDP_SPLUNK_TOKEN}
+      IDP_SPLUNK_INDEX: ${IDP_SPLUNK_INDEX}
+      IDP_SPLUNK_SOURCE: ${IDP_SPLUNK_SOURCE}
     depends_on:
       - sep490_databases
       - kafka
@@ -104,7 +114,7 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
   kafka:
     image: apache/kafka:3.9.0
-    container_name: kafka
+    container_name: sep490_kafka
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
