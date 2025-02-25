@@ -233,5 +233,26 @@
         }
       }
     }
+  },
+  "dialog": {
+    "subscription": {
+      "header": {
+        "title": "购买订阅"
+      },
+      "body": {
+        "name": "姓名",
+        "numberDevices": "当前设备数量",
+        "numberMonth": "月份数",
+        "numberMaxDevice": "最大设备数量",
+        "totalCredit": "全部的",
+        "confirm": "确认订阅 {{numberOfMonths}} 个月 和 {{numberOfDevices}} 设备"
+      },
+      "footer": {
+        "button": {
+          "buy" : "买",
+          "cancel": "取消"
+        }
+      }
+    }
   }
 }

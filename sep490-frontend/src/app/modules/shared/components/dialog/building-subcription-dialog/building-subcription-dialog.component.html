@@ -1,0 +1,128 @@
+<div class="p-dialog-header">
+    <div class="inline-flex items-center justify-center gap-2">
+        <p-avatar
+            image="https://www.gravatar.com/avatar/05dfd4b41340d09cae045235eb0893c3?d=mp"
+            class="flex items-center justify-center mr-2"
+            size="large"
+        />
+        <span class="font-bold whitespace-nowrap">{{
+            "dialog.subscription.header.title" | translate
+        }}</span>
+    </div>
+</div>
+<div class="p-dialog-content">
+    <div
+        class="flex flex-col lg:flex-row items-center justify-between px-4 border-primary border mb-4"
+    >
+        <div class="flex flex-col gap-5 p-5 items-center lg:items-start">
+            <span class="text-surface-500 dark:text-surface-400 block"
+                >{{ "dialog.subscription.body.name" | translate }}:
+                {{ data.selectedBuildingDetails?.name }}</span
+            >
+            <span class="text-surface-500 dark:text-surface-400 block"
+                >{{ "dialog.subscription.body.numberDevices" | translate }}:
+                {{ data.selectedBuildingDetails?.numberOfDevices }}</span
+            >
+        </div>
+        <span class="text-primary block mb-8 lg:0 lg:pr-12"
+            >{{ "purchaseCredit.currentBalance" | translate }}:
+            {{ data.balance }}</span
+        >
+    </div>
+
+    <form
+        [formGroup]="formGroup"
+        class="grid lg:grid-cols-2 px-4 pt-4 gap-4 justify-between mt-2"
+    >
+        <div class="mb-4 block" errorMessages>
+            <div class="flex items-center gap-2 justify-evenly mb-4">
+                <label class="font-semibold w-40">{{
+                    "dialog.subscription.body.numberMonth" | translate
+                }}</label>
+                <p-inputnumber
+                    id="numberOfMonths"
+                    type="number"
+                    formControlName="numberOfMonths"
+                    [showButtons]="true"
+                    [step]="1"
+                    buttonLayout="horizontal"
+                    spinnerMode="horizontal"
+                    inputId="horizontal"
+                    [inputStyle]="{ width: '4rem' }"
+                >
+                    <ng-template #incrementbuttonicon>
+                        <span class="pi pi-plus"></span>
+                    </ng-template>
+                    <ng-template #decrementbuttonicon>
+                        <span class="pi pi-minus"></span>
+                    </ng-template>
+                </p-inputnumber>
+            </div>
+            <div class="items-center justify-center flex">
+                <form-field-error></form-field-error>
+            </div>
+        </div>
+        <div class="mb-2 block" errorMessages>
+            <div class="flex items-center gap-2 justify-evenly mb-4">
+                <label class="font-semibold w-44">{{
+                    "dialog.subscription.body.numberMaxDevice" | translate
+                }}</label>
+                <p-inputnumber
+                    id="numberOfDevices"
+                    type="number"
+                    formControlName="numberOfDevices"
+                    [showButtons]="true"
+                    [step]="100"
+                    buttonLayout="horizontal"
+                    spinnerMode="horizontal"
+                    inputId="horizontal"
+                    [inputStyle]="{ width: '4rem' }"
+                >
+                    <ng-template #incrementbuttonicon>
+                        <span class="pi pi-plus"></span>
+                    </ng-template>
+                    <ng-template #decrementbuttonicon>
+                        <span class="pi pi-minus"></span>
+                    </ng-template>
+                </p-inputnumber>
+            </div>
+            <div class="items-center justify-center flex">
+                <form-field-error></form-field-error>
+            </div>
+        </div>
+    </form>
+    <div class="flex flex-col p-4 gap-8">
+        <span class="text-surface-500 dark:text-surface-400 block"
+            >{{ "dialog.subscription.body.totalCredit" | translate }}:
+            {{ data.totalCredit }}</span
+        >
+        <div class="flex flex-row gap-1 items-center">
+            <p-checkbox [(ngModel)]="checked" [binary]="true" />
+            <label class="ml-2">{{
+                "dialog.subscription.body.confirm"
+                    | translate
+                        : {
+                              numberOfMonths:
+                                  formGroup.get("numberOfMonths")?.value,
+                              numberOfDevices:
+                                  formGroup.get("numberOfDevices")?.value,
+                          }
+            }}</label>
+        </div>
+    </div>
+</div>
+<div class="p-dialog-footer">
+    <p-button
+        label="{{ 'dialog.subscription.footer.button.cancel' | translate }}"
+        [text]="true"
+        severity="primary"
+        [outlined]="true"
+        (click)="closeDialog()"
+    />
+    <p-button
+        label="{{ 'dialog.subscription.footer.button.buy' | translate }}"
+        severity="primary"
+        [disabled]="!checked"
+        (click)="buy()"
+    />
+</div>

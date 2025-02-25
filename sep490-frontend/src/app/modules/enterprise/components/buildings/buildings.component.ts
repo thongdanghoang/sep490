@@ -1,15 +1,19 @@
 import {AfterViewInit, Component, ComponentRef} from '@angular/core';
 import {Router} from '@angular/router';
 import * as L from 'leaflet';
-import {takeUntil} from 'rxjs';
+import {forkJoin, takeUntil} from 'rxjs';
 import {UUID} from '../../../../../types/uuid';
 import {AppRoutingConstants} from '../../../../app-routing.constant';
 import {BuildingService} from '../../../../services/building.service';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
-import {Building} from '../../models/enterprise.dto';
+import {Building, BuildingDetails} from '../../models/enterprise.dto';
 import {PopupService} from '../../services/popup.service';
 import {BuildingPopupMarkerComponent} from '../building-popup-marker/building-popup-marker.component';
-
+import {BuildingSubcriptionDialogComponent} from '../../../shared/components/dialog/building-subcription-dialog/building-subcription-dialog.component';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {WalletService} from '../../services/wallet.service';
+import {MessageService} from 'primeng/api';
+import {TranslateService} from '@ngx-translate/core';
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
@@ -44,6 +48,10 @@ export class BuildingsComponent
   extends SubscriptionAwareComponent
   implements AfterViewInit
 {
+  balance: number = 0;
+  totalCredit: number = 0;
+  selectedBuildingDetails: BuildingDetails | null = null;
+  ref: DynamicDialogRef | undefined;
   addBuildingLocation: boolean = false;
   buildingLocation: MapLocation | null = null;
   viewMode: ViewMode = ViewMode.MAP;
@@ -59,7 +67,11 @@ export class BuildingsComponent
   constructor(
     private readonly router: Router,
     private readonly buildingService: BuildingService,
-    private readonly popupService: PopupService
+    private readonly translate: TranslateService,
+    private readonly popupService: PopupService,
+    public dialogService: DialogService,
+    private readonly walletService: WalletService,
+    private readonly messageService: MessageService
   ) {
     super();
   }
@@ -85,6 +97,40 @@ export class BuildingsComponent
 
   get listView(): boolean {
     return this.viewMode === ViewMode.LIST;
+  }
+
+  openDialog(building: Building): void {
+    forkJoin({
+      details: this.buildingService.getBuildingDetails(building.id),
+      balance: this.walletService.getWalletBalance()
+    }).subscribe(({details, balance}) => {
+      // Update your component properties with the fetched data
+      this.selectedBuildingDetails = details;
+      this.balance = balance;
+      this.ref = this.dialogService.open(BuildingSubcriptionDialogComponent, {
+        width: '50rem',
+        modal: true,
+        data: {
+          selectedBuildingDetails: this.selectedBuildingDetails,
+          balance: this.balance,
+          totalCredit: this.totalCredit
+        }
+      });
+
+      this.ref.onClose.subscribe(result => {
+        if (result === 'buy') {
+          this.messageService.add({
+            severity: 'success',
+            summary: this.translate.instant(
+              'admin.packageCredit.message.success.summary'
+            ),
+            detail: this.translate.instant(
+              'admin.packageCredit.message.success.detail'
+            )
+          });
+        }
+      });
+    });
   }
 
   onViewModeChanged(): void {

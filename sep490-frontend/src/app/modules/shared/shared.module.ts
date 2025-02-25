@@ -43,6 +43,9 @@ import {ErrorMessagesDirective} from './directives/error-messages.directive';
 import {FormFieldErrorDirective} from './directives/form-field-error.directive';
 import {TranslateParamsPipe} from './pipes/translate-params.pipe';
 import {ModalProvider} from './services/modal-provider';
+import {BuildingSubcriptionDialogComponent} from './components/dialog/building-subcription-dialog/building-subcription-dialog.component';
+import {InputNumber} from 'primeng/inputnumber';
+import {Checkbox} from 'primeng/checkbox';
 
 const primeNgModules = [
   AccordionModule,
@@ -96,9 +99,10 @@ const commons = [
     FormFieldErrorDirective,
     FormFieldErrorComponent,
     PaymentStatusComponent,
-    CardTemplateComponent
+    CardTemplateComponent,
+    BuildingSubcriptionDialogComponent
   ],
-  imports: [...commons, ...primeNgModules],
+  imports: [...commons, ...primeNgModules, InputNumber, Checkbox],
   exports: [
     ...commons,
     ...primeNgModules,
@@ -109,7 +113,8 @@ const commons = [
     FormFieldErrorDirective,
     FormFieldErrorComponent,
     PaymentStatusComponent,
-    CardTemplateComponent
+    CardTemplateComponent,
+    BuildingSubcriptionDialogComponent
   ],
   providers: [DatePipe, ModalProvider]
 })
