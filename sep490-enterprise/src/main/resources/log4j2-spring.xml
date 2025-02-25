@@ -7,19 +7,16 @@
         </Console>
         <SplunkHttp
                 name="splunkhttp"
-                url="${SPLUNK_URL}"
-                token="${ENTERPRISE_SPLUNK_TOKEN}"
-                host="${SPLUNK_HOST}"
-                index="${ENTERPRISE_SPLUNK_INDEX}"
-                source="${ENTERPRISE_SPLUNK_SOURCE}"
+                url="${env:SPLUNK_URL}"
+                token="${env:ENTERPRISE_SPLUNK_TOKEN}"
+                host="${env:SPLUNK_HOST}"
+                index="${env:ENTERPRISE_SPLUNK_INDEX}"
+                source="${env:ENTERPRISE_SPLUNK_SOURCE}"
                 type="raw"
                 sourcetype="log4j"
                 messageFormat="text"
                 disableCertificateValidation="true">
             <PatternLayout pattern="%d{ISO8601} %-5p [%t] %c: %m%n"/>
-            <MetaData>
-                <Application>GreenBuildings Enterprise</Application>
-            </MetaData>
         </SplunkHttp>
     </Appenders>
 
