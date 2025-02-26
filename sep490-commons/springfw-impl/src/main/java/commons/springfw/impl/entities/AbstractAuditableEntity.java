@@ -10,7 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import green_buildings.commons.api.AuditableEntity;
+import greenbuildings.commons.api.AuditableEntity;
 
 import java.time.LocalDateTime;
 

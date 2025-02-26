@@ -7,11 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import green_buildings.commons.api.exceptions.BusinessErrorResponse;
-import green_buildings.commons.api.exceptions.BusinessException;
-import green_buildings.commons.api.exceptions.TechnicalErrorResponse;
-import green_buildings.commons.api.exceptions.TechnicalException;
-import green_buildings.commons.api.utils.MDCContext;
+import greenbuildings.commons.api.exceptions.BusinessErrorResponse;
+import greenbuildings.commons.api.exceptions.BusinessException;
+import greenbuildings.commons.api.exceptions.TechnicalErrorResponse;
+import greenbuildings.commons.api.exceptions.TechnicalException;
+import greenbuildings.commons.api.utils.MDCContext;
 
 import java.util.NoSuchElementException;
 

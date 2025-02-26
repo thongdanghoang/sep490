@@ -1,8 +1,8 @@
 package commons.springfw.impl.exceptions;
 
 import org.springframework.http.HttpStatus;
-import green_buildings.commons.api.exceptions.BusinessErrorParam;
-import green_buildings.commons.api.exceptions.BusinessException;
+import greenbuildings.commons.api.exceptions.BusinessErrorParam;
+import greenbuildings.commons.api.exceptions.BusinessException;
 
 import java.util.List;
 

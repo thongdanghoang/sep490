@@ -89,7 +89,7 @@
 
     document.getElementById("sign-in-by-passkey").addEventListener("click", async () => {
         const credentialsResponse = await navigator.credentials.get(credentialsRequestOptions);
-        fetch("/passkey/login",
+        fetch("/idp/passkey/login",
             {
                 method: "POST",
                 body: JSON.stringify(credentialsResponse),

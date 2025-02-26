@@ -7,11 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import green_buildings.commons.api.dto.PageDTO;
-import green_buildings.commons.api.dto.SearchResultDTO;
-import green_buildings.commons.api.dto.SortDTO;
-import green_buildings.commons.api.enums.SortDirection;
-import green_buildings.commons.api.utils.CommonConstant;
+import greenbuildings.commons.api.dto.PageDTO;
+import greenbuildings.commons.api.dto.SearchResultDTO;
+import greenbuildings.commons.api.dto.SortDTO;
+import greenbuildings.commons.api.enums.SortDirection;
+import greenbuildings.commons.api.utils.CommonConstant;
 
 import java.util.Objects;
 import java.util.function.Function;
