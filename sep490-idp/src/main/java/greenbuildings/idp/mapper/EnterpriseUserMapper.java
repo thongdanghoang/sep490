@@ -41,7 +41,6 @@ public interface EnterpriseUserMapper {
     EnterpriseUserDetailsDTO userEntityToEnterpriseUserDetailDTO(UserEntity user);
     
     @Mapping(target = "password", ignore = true)
-    @Mapping(target = "emailVerified", ignore = true)
     @Mapping(target = "phone", ignore = true)
     @Mapping(target = "phoneVerified", ignore = true)
     @Mapping(target = "enterprise.role", source = "role")

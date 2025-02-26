@@ -9,7 +9,6 @@ import {
   UserData
 } from '../../modules/core/services/application.service';
 import {SubscriptionAwareComponent} from '../../modules/core/subscription-aware.component';
-import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -22,12 +21,9 @@ export class SidebarComponent
 {
   items: MenuItem[] | undefined;
 
-  settings: MenuItem[] | undefined;
-
   constructor(
     private readonly applicationService: ApplicationService,
-    private readonly router: Router,
-    private readonly translate: TranslateService
+    private readonly router: Router
   ) {
     super();
   }
@@ -52,9 +48,9 @@ export class SidebarComponent
         }
       }
     );
-    this.settings = [
-      {label: 'Settings', icon: 'pi pi-cog', route: '/settings'}
-    ];
+    // this.settings = [
+    //   {label: 'Settings', icon: 'pi pi-cog', route: '/settings'}
+    // ];
   }
 
   homepage(): void {
@@ -68,37 +64,37 @@ export class SidebarComponent
         label: 'enterprise.title',
         items: [
           {
-            label: 'Dashboard',
+            label: 'sidebar.owner.dashboard',
             icon: 'pi pi-chart-line',
             route: `/${AppRoutingConstants.DASHBOARD_PATH}`
           },
           {
-            label: 'Coefficient center',
+            label: 'sidebar.owner.coefficientCenter',
             icon: 'pi pi-percentage',
             route: `/${AppRoutingConstants.EMISSIONS_PATH}`
           },
           {
-            label: 'Building',
+            label: 'sidebar.owner.building',
             icon: 'pi pi-building',
             route: `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.BUILDING_PATH}`
           }
         ]
       },
       {
-        label: 'Manage',
+        label: 'sidebar.owner.manage',
         items: [
           {
-            label: 'Users',
+            label: 'sidebar.owner.users',
             icon: 'pi pi-users',
             route: `/${AppRoutingConstants.AUTH_PATH}/${AppRoutingConstants.USERS_PATH}`
           },
           {
-            label: 'Subscription',
+            label: 'sidebar.owner.subscription',
             icon: 'pi pi-money-bill',
             route: `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.PLAN_PATH}`
           },
           {
-            label: 'Payment',
+            label: 'sidebar.owner.payment',
             icon: 'pi pi-wallet',
             route: `/${AppRoutingConstants.ENTERPRISE_PATH}/${AppRoutingConstants.PAYMENT_PATH}`
           }
@@ -110,10 +106,10 @@ export class SidebarComponent
   private buildAdminMenu(): MenuItem[] {
     return [
       {
-        label: 'Admin',
+        label: 'sidebar.admin.title',
         items: [
           {
-            label: 'Package Credit',
+            label: 'sidebar.admin.packageCredit',
             icon: 'pi pi-chart-line',
             route: `/${AppRoutingConstants.ADMIN_PATH}/${AppRoutingConstants.PACKAGE_CREDIT_PATH}`
           }

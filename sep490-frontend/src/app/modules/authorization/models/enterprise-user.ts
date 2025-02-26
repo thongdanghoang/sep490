@@ -5,7 +5,9 @@ import {UserRole} from '../enums/role-names';
 import {UserScope} from '../enums/user-scope';
 
 export interface EnterpriseUserDetails extends BaseDTO {
+  createdDate: Date;
   email: string;
+  emailVerified: boolean;
   firstName: string;
   lastName: string;
   role: keyof typeof UserRole;

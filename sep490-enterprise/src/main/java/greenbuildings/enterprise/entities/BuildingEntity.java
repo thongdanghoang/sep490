@@ -31,6 +31,10 @@ public class BuildingEntity extends AbstractAuditableEntity {
     @Column(name = "name", nullable = false)
     private String name;
     
+    @NotBlank
+    @Column(name = "address", nullable = false)
+    private String address;
+    
     @Column(name = "number_of_devices", nullable = false)
     private long numberOfDevices;
     

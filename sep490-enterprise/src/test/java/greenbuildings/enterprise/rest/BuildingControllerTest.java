@@ -1,8 +1,8 @@
 package greenbuildings.enterprise.rest;
 
+import greenbuildings.commons.api.dto.SearchCriteriaDTO;
 import greenbuildings.enterprise.TestcontainersConfigs;
 import greenbuildings.enterprise.dtos.BuildingDTO;
-import greenbuildings.commons.api.dto.SearchCriteriaDTO;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
@@ -38,6 +38,7 @@ class BuildingControllerTest extends TestcontainersConfigs {
         var building = BuildingDTO.builder()
                                   .name("Building 1")
                                   .numberOfDevices(10)
+                                  .address("FPT University - HCMC Campus, Lô E2a-7, Đường D1, Long Thanh My Ward, Thủ Đức, Ho Chi Minh City, 00848, Vietnam")
                                   .build();
         RestAssured.given()
                    .auth().oauth2(getToken("enterprise.owner@greenbuildings.com", "enterprise.owner"))

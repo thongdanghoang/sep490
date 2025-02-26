@@ -1,4 +1,4 @@
-<div class="px-5">
+<div class="sm:px-5">
     @if (isEdit) {
         <h1 class="font-bold text-lg">
             {{ "enterprise.Users.detail" | translate }}
@@ -12,13 +12,41 @@
         {{ "enterprise.Users.description" | translate }}
     </p>
 </div>
-<form [formGroup]="formGroup" class="sm:mt-5 p-5">
+<form [formGroup]="formGroup" class="sm:mt-5 sm:px-5 py-5">
+    @if (isEdit) {
+        <!-- ID -->
+        <div class="grid grid-cols-12 sm:gap-4 gap-2 items-center my-3">
+            <label for="email" class="font-normal sm:col-span-3 col-span-12">{{
+                "enterprise.Users.id" | translate
+            }}</label>
+            <div class="sm:col-span-6 col-span-12 *:w-full">
+                <input type="text" pInputText formControlName="id" />
+            </div>
+        </div>
+
+        <!--   createdDate   -->
+        <div class="grid grid-cols-12 sm:gap-4 gap-2 items-center my-3">
+            <label for="email" class="font-normal sm:col-span-3 col-span-12">{{
+                "enterprise.Users.createdDate" | translate
+            }}</label>
+            <p-fluid class="sm:col-span-6 col-span-12 *:w-full">
+                <p-datepicker
+                    formControlName="createdDate"
+                    [showTime]="true"
+                ></p-datepicker>
+            </p-fluid>
+        </div>
+    }
+
     <!-- Email -->
-    <div class="grid grid-cols-12 gap-4 items-center my-3" errorMessages>
-        <label for="email" class="font-normal md:col-span-3 col-span-12">{{
+    <div
+        class="grid grid-cols-12 sm:gap-4 gap-2 items-center my-3"
+        errorMessages
+    >
+        <label for="email" class="font-normal sm:col-span-3 col-span-12">{{
             "enterprise.Users.email" | translate
         }}</label>
-        <div class="md:col-span-6 col-span-12">
+        <div class="sm:col-span-6 col-span-12">
             <input
                 formControlName="email"
                 class="w-full"
@@ -33,12 +61,27 @@
         </div>
     </div>
 
+    <!-- Email Verified -->
+    <div
+        class="sm:grid sm:grid-cols-12 sm:gap-4 gap-2 flex justify-between items-center my-3 mb-6"
+    >
+        <label for="email" class="font-normal sm:col-span-3">{{
+            "enterprise.Users.emailVerified" | translate
+        }}</label>
+        <div class="sm:col-span-6">
+            <p-toggleswitch formControlName="emailVerified" />
+        </div>
+    </div>
+
     <!-- First Name -->
-    <div class="grid grid-cols-12 gap-4 items-center my-3" errorMessages>
-        <label for="firstName" class="font-normal md:col-span-3 col-span-12">{{
+    <div
+        class="grid grid-cols-12 sm:gap-4 gap-2 items-center my-3"
+        errorMessages
+    >
+        <label for="firstName" class="font-normal sm:col-span-3 col-span-12">{{
             "enterprise.Users.firstName" | translate
         }}</label>
-        <div class="md:col-span-6 col-span-12">
+        <div class="sm:col-span-6 col-span-12">
             <input
                 formControlName="firstName"
                 class="w-full"
@@ -54,11 +97,14 @@
     </div>
 
     <!-- Last Name -->
-    <div class="grid grid-cols-12 gap-4 items-center my-3" errorMessages>
-        <label for="lastName" class="font-normal md:col-span-3 col-span-12">{{
+    <div
+        class="grid grid-cols-12 sm:gap-4 gap-2 items-center my-3"
+        errorMessages
+    >
+        <label for="lastName" class="font-normal sm:col-span-3 col-span-12">{{
             "enterprise.Users.lastName" | translate
         }}</label>
-        <div class="md:col-span-6 col-span-12">
+        <div class="sm:col-span-6 col-span-12">
             <input
                 formControlName="lastName"
                 class="w-full"
@@ -75,14 +121,16 @@
 
     <!-- Scope -->
     @if (roleEmployee) {
-        <h2 class="font-semibold text-xl">
-            {{ "enterprise.Users.scope" | translate }}
-        </h2>
-        <div class="grid grid-cols-12 gap-4 items-center my-3">
-            <label class="md:col-span-3 col-span-12"> </label>
+        <div class="grid grid-cols-12 sm:gap-4 gap-2 items-center my-3">
+            <label
+                for="scope"
+                class="sm:col-span-3 col-span-12 font-semibold text-xl"
+            >
+                {{ "enterprise.Users.scope" | translate }}
+            </label>
             <div
-                class="md:col-span-3 col-span-12"
-                [ngClass]="scopeBuildings ? 'md:col-span-3' : 'md:col-span-6'"
+                class="sm:col-span-3 col-span-12"
+                [ngClass]="scopeBuildings ? 'sm:col-span-3' : 'sm:col-span-6'"
                 errorMessages
             >
                 <p-select
@@ -110,7 +158,7 @@
                 <form-field-error></form-field-error>
             </div>
             @if (scopeBuildings) {
-                <div class="md:col-span-3 col-span-12 *:w-full" errorMessages>
+                <div class="sm:col-span-3 col-span-12 *:w-full" errorMessages>
                     <p-multiselect
                         [options]="selectableBuildings"
                         (onChange)="onBuildingSelect($event)"
@@ -128,13 +176,18 @@
             }
         </div>
         <!-- Role -->
-        <h2 class="font-semibold text-xl">
-            {{ "enterprise.Users.role" | translate }}
-        </h2>
-        <div class="grid grid-cols-12 gap-4 items-center my-3">
-            <label class="md:col-span-3 col-span-12"></label>
+        <div class="grid grid-cols-12 sm:gap-4 gap-2 items-center my-3">
+            @if (enterpriseUserStructure.scope.value !== "") {
+                <div class="sm:col-span-3 col-span-12 h-full">
+                    <label
+                        for="buildingPermissions"
+                        class="font-semibold text-xl"
+                        >{{ "enterprise.Users.role" | translate }}</label
+                    >
+                </div>
+            }
             @if (scopeBuildings) {
-                <div class="md:col-span-6 col-span-12">
+                <div class="sm:col-span-6 col-span-12">
                     @if (
                         enterpriseUserStructure.buildingPermissions.controls
                             .length === 0
@@ -159,9 +212,9 @@
                             >
                                 <div
                                     [formGroupName]="i"
-                                    class="flex justify-between items-center *:w-full gap-4 mb-4"
+                                    class="flex justify-between items-start *:w-full gap-4"
                                 >
-                                    <p>
+                                    <p class="mt-2.5 w-fit">
                                         {{ getBuildingName(permission) }}
                                     </p>
 
@@ -202,7 +255,7 @@
                 </div>
             }
             @if (scopeEnterprise) {
-                <div class="md:col-span-6 col-span-12" errorMessages>
+                <div class="sm:col-span-6 col-span-12" errorMessages>
                     <p-select
                         formControlName="enterprisePermission"
                         id="enterprisePermission"
@@ -233,7 +286,7 @@
         </div>
     }
     <!-- Buttons -->
-    <div class="flex justify-end md:justify-start gap-4 *:min-w-24">
+    <div class="flex justify-end sm:justify-start gap-4 *:min-w-24">
         <!-- Create Button -->
         <p-button
             [label]="(isEdit ? 'common.save' : 'common.create') | translate"

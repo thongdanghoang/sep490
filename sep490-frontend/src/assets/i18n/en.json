@@ -70,18 +70,21 @@
   "enterprise": {
     "title": "Enterprise",
     "Users": {
+      "id": "ID",
+      "createdDate": "Created date",
       "title": "Users",
       "search": "Search",
       "add": "Add user",
       "create": "Create user",
       "delete": "Delete",
       "detail": "Detail",
+      "deleteWithCount": "Delete ({{count}}) users",
       "email": "Email",
+      "emailVerified": "Email verified",
       "firstName": "First Name",
       "lastName": "Last Name",
       "role": "Role",
       "scope": "Scope",
-      "deleteWithCount": "Delete ({{count}}) users",
       "placeholders": {
         "enterEmail": "Enter email",
         "enterFirstName": "Enter first name",
@@ -114,7 +117,8 @@
         "btn": {
           "add": "Add building",
           "activate": "Activate"
-        }
+        },
+        "noRow": "No buildings found."
       },
       "details": {
         "edit": "Edit",

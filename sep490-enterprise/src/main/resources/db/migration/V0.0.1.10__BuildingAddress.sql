@@ -1,0 +1,2 @@
+ALTER TABLE buildings
+    ADD address VARCHAR(255) NOT NULL DEFAULT '';
