@@ -1,22 +1,26 @@
-exchangerate-api:
-  key: ${EXCHANGERATE_API_KEY:secret}
-  url: https://v6.exchangerate-api.com/v6/
+server:
+  servlet:
+    context-path: /enterprise
 
 spring:
   security:
+    cors:
+      allowed:
+        origins: http://localhost:4200
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${ISSUER_URI}
+          issuer-uri: http://localhost:8180/idp
   application:
     name: enterprise
     homepage: http://localhost:4200
+  #    TODO: hard code?
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/sep490_enterprise?serverTimezone=UTC
+    username: postgres
+    password: postgres
   flyway:
-    output-query-results: ${FLYWAY_OUTPUT_QUERIES:false}
+    output-query-results: true
     create-schemas: false
   jpa:
     hibernate:
@@ -31,12 +35,13 @@ spring:
         query:
           fail_on_pagination_over_collection_fetch: true
   kafka:
+    admin:
+      fail-fast: true
+    bootstrap-servers: localhost:9092
     producer:
-      bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
-      bootstrap-servers: localhost:9092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
@@ -52,18 +57,22 @@ logging:
     root: INFO
     org:
       springframework:
-        security: ${SPRING_SECURITY_LOG_LEVEL:INFO}
-        web: ${SPRING_WEB_LOG_LEVEL:INFO}
+        web: DEBUG
+        security: DEBUG
       hibernate:
-        SQL: ${HIBERNATE_SQL_LOG_LEVEL:TRACE}
+        SQL: DEBUG
         type:
           descriptor:
-            sql: ${HIBERNATE_SQL_PARAM_LOG_LEVEL:TRACE}
+            sql: TRACE
 
 payment:
   payos:
-    client_id: ${PAYOS_CLIENT_ID:not_a_real_key_to_prevent_null}
-    api_key: ${PAYOS_API_KEY:not_a_real_key_to_prevent_null}
-    checksum_key: ${PAYOS_CHECKSUM_KEY:not_a_real_key_to_prevent_null}
+    client_id: not_a_real_key_to_prevent_null
+    api_key: not_a_real_key_to_prevent_null
+    checksum_key: not_a_real_key_to_prevent_null
     returnPath: /enterprise/payment
     cancelPath: /enterprise/payment
+
+exchangerate-api:
+  key: secret
+  url: https://v6.exchangerate-api.com/v6/

@@ -1,0 +1,36 @@
+package greenbuildings.enterprise.services.impl;
+
+import greenbuildings.enterprise.entities.BuildingEntity;
+import greenbuildings.enterprise.repositories.BuildingRepository;
+import greenbuildings.enterprise.services.BuildingService;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+@Transactional(rollbackOn = Throwable.class)
+@RequiredArgsConstructor
+public class BuildingServiceImpl implements BuildingService {
+    
+    private final BuildingRepository buildingRepository;
+    
+    @Override
+    public BuildingEntity createBuilding(BuildingEntity building) {
+        return buildingRepository.save(building);
+    }
+    
+    @Override
+    public Optional<BuildingEntity> findById(UUID id) {
+        return buildingRepository.findById(id);
+    }
+    
+    @Override
+    public Page<BuildingEntity> getEnterpriseBuildings(UUID enterpriseId, Pageable page) {
+        return buildingRepository.findByEnterpriseId(enterpriseId, page);
+    }
+}

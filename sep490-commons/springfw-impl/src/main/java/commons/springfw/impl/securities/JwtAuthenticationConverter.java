@@ -1,8 +1,8 @@
 package commons.springfw.impl.securities;
 
 import com.nimbusds.jose.shaded.gson.internal.LinkedTreeMap;
-import green_buildings.commons.api.dto.auth.BuildingPermissionDTO;
-import green_buildings.commons.api.security.BuildingPermissionRole;
+import greenbuildings.commons.api.dto.auth.BuildingPermissionDTO;
+import greenbuildings.commons.api.security.BuildingPermissionRole;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

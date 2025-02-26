@@ -12,7 +12,7 @@ import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.LazyInitializer;
-import green_buildings.commons.api.BaseEntity;
+import greenbuildings.commons.api.BaseEntity;
 
 import java.util.Optional;
 import java.util.UUID;
