@@ -76,3 +76,7 @@ payment:
 exchangerate-api:
   key: secret
   url: https://v6.exchangerate-api.com/v6/
+
+geocoding:
+  key: secret
+  url: https://geocode.maps.co/reverse

@@ -2,13 +2,13 @@ package greenbuildings.enterprise.rest;
 
 import commons.springfw.impl.mappers.CommonMapper;
 import commons.springfw.impl.securities.UserContextData;
+import greenbuildings.commons.api.dto.SearchCriteriaDTO;
+import greenbuildings.commons.api.dto.SearchResultDTO;
+import greenbuildings.commons.api.security.UserRole;
 import greenbuildings.enterprise.dtos.BuildingDTO;
 import greenbuildings.enterprise.mappers.BuildingMapper;
 import greenbuildings.enterprise.services.BuildingService;
 import greenbuildings.enterprise.services.EnterpriseService;
-import greenbuildings.commons.api.dto.SearchCriteriaDTO;
-import greenbuildings.commons.api.dto.SearchResultDTO;
-import greenbuildings.commons.api.security.UserRole;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,7 +45,7 @@ public class BuildingController {
     
     @PostMapping("/search")
     public ResponseEntity<SearchResultDTO<BuildingDTO>> searchEnterpriseBuildings(@RequestBody SearchCriteriaDTO<Void> searchCriteria,
-                                                                               @AuthenticationPrincipal UserContextData userContextData) {
+                                                                                  @AuthenticationPrincipal UserContextData userContextData) {
         var enterpriseIdFromContext = Objects.requireNonNull(userContextData.getEnterpriseId());
         var pageable = CommonMapper.toPageable(searchCriteria.page(), searchCriteria.sort());
         var searchResults = buildingService.getEnterpriseBuildings(enterpriseIdFromContext, pageable);

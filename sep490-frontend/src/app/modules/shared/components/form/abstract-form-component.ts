@@ -191,7 +191,7 @@ export abstract class AbstractFormComponent<T>
   }
 
   protected getSubmitFormData(): any {
-    return this.formGroup.value;
+    return this.formGroup.getRawValue();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

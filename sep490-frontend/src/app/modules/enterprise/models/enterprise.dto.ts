@@ -16,6 +16,7 @@ export interface BuildingDetails extends BaseDTO {
   numberOfDevices: number;
   latitude: number;
   longitude: number;
+  address: string;
 }
 
 export interface CreditPackage extends BaseDTO {

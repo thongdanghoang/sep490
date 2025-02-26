@@ -34,10 +34,13 @@
     />
 
     @if (authenticated | async) {
-        <p-avatar
-            image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-            class="mr-2"
-            shape="circle"
+        <img
+            class="rounded-full"
+            ngSrc="assets/images/avatar.jpeg"
+            alt="Avatar"
+            width="32"
+            height="32"
+            priority
             (click)="logout()"
         />
     } @else {

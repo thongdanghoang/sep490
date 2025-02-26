@@ -70,6 +70,8 @@
   "enterprise": {
     "title": "Doanh nghiệp",
     "Users": {
+      "id": "ID",
+      "createdDate": "Ngày tạo",
       "title": "Người dùng",
       "search": "Tìm kiếm",
       "add": "Thêm người dùng",
@@ -78,6 +80,7 @@
       "detail": "Chi tiết",
       "deleteWithCount": "Xóa ({{count}}) người dùng",
       "email": "Email",
+      "emailVerified": "Đã xác minh email",
       "firstName": "Tên",
       "lastName": "Họ",
       "role": "Vai trò",
@@ -114,7 +117,8 @@
         "btn": {
           "add": "Thêm tòa nhà",
           "activate": "Kích hoạt"
-        }
+        },
+        "noRow": "Không tìm thấy tòa nhà nào."
       },
       "details": {
         "edit": "Chỉnh sửa",

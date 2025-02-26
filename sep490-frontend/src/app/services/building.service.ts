@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable, map} from 'rxjs';
+import {Observable} from 'rxjs';
 import {UUID} from '../../types/uuid';
 import {AppRoutingConstants} from '../app-routing.constant';
 import {
@@ -31,28 +31,9 @@ export class BuildingService {
   searchBuildings(
     searchCriteria: SearchCriteriaDto<void>
   ): Observable<SearchResultDto<Building>> {
-    return this.httpClient
-      .post<
-        SearchResultDto<Building>
-      >(`${AppRoutingConstants.ENTERPRISE_API_URL}/${AppRoutingConstants.BUILDING_PATH}/search`, searchCriteria)
-      .pipe(
-        map(result => {
-          return {
-            totalElements: result.totalElements,
-            results: result.results.map(building => {
-              return {
-                ...building,
-                address: 'Avenue Louis-CASAÏ 18, 1209 Genève',
-                // can add field address at BE => use api goong map convert from (lat ,lng) to address => save address db
-                // https://docs.goong.io/rest/geocode/
-                validFromInclusive: new Date(),
-                validToInclusive: new Date(
-                  new Date().getTime() + Math.random() * 1e12
-                )
-              };
-            })
-          };
-        })
-      );
+    return this.httpClient.post<SearchResultDto<Building>>(
+      `${AppRoutingConstants.ENTERPRISE_API_URL}/${AppRoutingConstants.BUILDING_PATH}/search`,
+      searchCriteria
+    );
   }
 }

@@ -23,7 +23,7 @@
             class="flex items-center p-menu-item-link"
         >
             <span [class]="item.icon"></span>
-            <span class="ml-2">{{ item.label }}</span>
+            <span class="ml-2">{{ item.label | translate }}</span>
             <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
             <span
                 *ngIf="item.shortcut"
@@ -34,5 +34,3 @@
     </ng-template>
     <ng-template #end></ng-template>
 </p-menu>
-
-<p-menu [model]="settings" class="*:border-none" />

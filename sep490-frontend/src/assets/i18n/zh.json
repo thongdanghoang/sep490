@@ -70,6 +70,8 @@
   "enterprise": {
     "title": "企业",
     "Users": {
+      "id": "ID",
+      "createdDate": "创建日期",
       "title": "用户",
       "search": "搜索",
       "add": "添加用户",
@@ -78,6 +80,7 @@
       "detail": "详细信息",
       "deleteWithCount": "删除（{{count}}）用户",
       "email": "电子邮件",
+      "emailVerified": "电子邮件已验证",
       "firstName": "名字",
       "lastName": "姓氏",
       "role": "角色",
@@ -114,7 +117,8 @@
         "btn": {
           "add": "添加建筑物",
           "activate": "激活"
-        }
+        },
+        "noRow": "未找到任何建筑物。"
       },
       "details": {
         "edit": "编辑",

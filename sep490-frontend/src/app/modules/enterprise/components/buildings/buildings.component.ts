@@ -203,11 +203,13 @@ export class BuildingsComponent
           );
           marker.bindPopup(markerPopup);
         });
-        const latLngs = buildings.results.map(building =>
-          L.latLng(building.latitude, building.longitude)
-        );
-        const bounds = L.latLngBounds(latLngs);
-        this.map.fitBounds(bounds);
+        if (this.buildings.length > 0) {
+          const latLngs = buildings.results.map(building =>
+            L.latLng(building.latitude, building.longitude)
+          );
+          const bounds = L.latLngBounds(latLngs);
+          this.map.fitBounds(bounds);
+        }
       });
   }
 
@@ -233,7 +235,7 @@ export class BuildingsComponent
     const tiles = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
-        maxZoom: 16,
+        maxZoom: 18,
         minZoom: 1
       }
     );

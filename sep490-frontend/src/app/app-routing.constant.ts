@@ -29,4 +29,7 @@ export class AppRoutingConstants {
   public static readonly DASHBOARD_PATH = 'dashboard';
   public static readonly FORBIDDEN = 'forbidden';
   public static readonly UNAUTHORIZED = 'unauthorized';
+
+  // Third party
+  public static readonly GEOCODING_PATH = 'geocoding';
 }

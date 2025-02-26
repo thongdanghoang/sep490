@@ -10,13 +10,17 @@ import {AvatarModule} from 'primeng/avatar';
 import {BadgeModule} from 'primeng/badge';
 import {ButtonModule} from 'primeng/button';
 import {CardModule} from 'primeng/card';
+import {CheckboxModule} from 'primeng/checkbox';
+import {DatePickerModule} from 'primeng/datepicker';
 import {DialogModule} from 'primeng/dialog';
 import {DividerModule} from 'primeng/divider';
 import {DrawerModule} from 'primeng/drawer';
 import {DynamicDialog} from 'primeng/dynamicdialog';
 import {FloatLabelModule} from 'primeng/floatlabel';
+import {FluidModule} from 'primeng/fluid';
 import {IconField} from 'primeng/iconfield';
 import {InputIcon} from 'primeng/inputicon';
+import {InputNumberModule} from 'primeng/inputnumber';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {InputTextModule} from 'primeng/inputtext';
 import {MenuModule} from 'primeng/menu';
@@ -35,6 +39,7 @@ import {TagModule} from 'primeng/tag';
 import {ToastModule} from 'primeng/toast';
 import {ToggleSwitch} from 'primeng/toggleswitch';
 import {CardTemplateComponent} from './components/card/card-template/card-template.component';
+import {BuildingSubcriptionDialogComponent} from './components/dialog/building-subcription-dialog/building-subcription-dialog.component';
 import {ConfirmDialogComponent} from './components/dialog/confirm-dialog/confirm-dialog.component';
 import {FormFieldErrorComponent} from './components/form/form-field-error/form-field-error.component';
 import {PaymentStatusComponent} from './components/payment-status/payment-status.component';
@@ -43,9 +48,6 @@ import {ErrorMessagesDirective} from './directives/error-messages.directive';
 import {FormFieldErrorDirective} from './directives/form-field-error.directive';
 import {TranslateParamsPipe} from './pipes/translate-params.pipe';
 import {ModalProvider} from './services/modal-provider';
-import {BuildingSubcriptionDialogComponent} from './components/dialog/building-subcription-dialog/building-subcription-dialog.component';
-import {InputNumber} from 'primeng/inputnumber';
-import {Checkbox} from 'primeng/checkbox';
 
 const primeNgModules = [
   AccordionModule,
@@ -54,11 +56,15 @@ const primeNgModules = [
   BadgeModule,
   ButtonModule,
   CardModule,
+  CheckboxModule,
+  DatePickerModule,
   DialogModule,
   DrawerModule,
   DynamicDialog,
   DividerModule,
   FloatLabelModule,
+  FluidModule,
+  InputNumberModule,
   IconField,
   InputIcon,
   InputTextModule,
@@ -102,7 +108,7 @@ const commons = [
     CardTemplateComponent,
     BuildingSubcriptionDialogComponent
   ],
-  imports: [...commons, ...primeNgModules, InputNumber, Checkbox],
+  imports: [...commons, ...primeNgModules],
   exports: [
     ...commons,
     ...primeNgModules,
