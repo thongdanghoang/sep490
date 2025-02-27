@@ -8,6 +8,11 @@ server:
 
 spring:
   security:
+    keystore:
+      location: ${KEYSTORE_PATH}
+      password: ${KEYSTORE_PASSWORD}
+      alias: ${KEYSTORE_ALIAS}
+      key-id: ${KEYSTORE_KEY_ID}
     cors:
       allowed:
         origins: ${CORS_ALLOWED_ORIGINS}

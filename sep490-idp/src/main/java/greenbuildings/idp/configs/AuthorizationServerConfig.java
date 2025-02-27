@@ -9,10 +9,10 @@ import commons.springfw.impl.filters.MonitoringFilter;
 import commons.springfw.impl.securities.JwtAuthenticationConverter;
 import greenbuildings.idp.service.impl.UserInfoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,7 +21,6 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.encrypt.KeyStoreKeyFactory;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
@@ -40,19 +39,29 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AuthorizationServerConfig {
     
+    @Value("${spring.security.keystore.alias}")
+    private String keystoreAlias;
+    
+    @Value("${spring.security.keystore.key-id}")
+    private String keyId;
+    
     private final JwtAuthenticationConverter converter;
+    private final KeyStoreKeyFactory keyStoreKeyFactory;
     
     @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
             throws Exception {
         // reference: https://docs.spring.io/spring-authorization-server/reference/guides/how-to-userinfo.html
-        // TODO: solve deprecated
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-            .oidc(Customizer.withDefaults());
+        var authorizationServerConfigurer = OAuth2AuthorizationServerConfigurer
+                .authorizationServer()
+                .oidc(Customizer.withDefaults());
         http
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .with(authorizationServerConfigurer, Customizer.withDefaults())
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                // Redirect to the login page when not authenticated from the
+                // authorization endpoint
                 .exceptionHandling(exceptions -> exceptions
                                            .defaultAuthenticationEntryPointFor(
                                                    new LoginUrlAuthenticationEntryPoint("/login"),
@@ -80,13 +89,12 @@ public class AuthorizationServerConfig {
     
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
-        var keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"), "P@ssW0rd".toCharArray());
-        var keyPair = keyStoreKeyFactory.getKeyPair("GreenBuildings");
+        var keyPair = keyStoreKeyFactory.getKeyPair(keystoreAlias);
         var publicKey = (RSAPublicKey) keyPair.getPublic();
         var privateKey = (RSAPrivateKey) keyPair.getPrivate();
         var rsaKey = new RSAKey.Builder(publicKey)
                 .privateKey(privateKey)
-                .keyID("kid")
+                .keyID(keyId)
                 .build();
         var jwkSet = new JWKSet(rsaKey);
         return new ImmutableJWKSet<>(jwkSet);
