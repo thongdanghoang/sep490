@@ -184,7 +184,7 @@ public class UserServiceImpl extends SagaManager implements UserService {
                                         List.of(new BusinessErrorParam("ids", userIds)));
         }
         // Stream approach to check if any user has the ENTERPRISE_OWNER role
-        if (users.stream().anyMatch(user -> user.getEnterprise().getRole() == UserRole.ENTERPRISE_OWNER)) {
+        if (users.stream().anyMatch(user -> user.getRole() == UserRole.ENTERPRISE_OWNER)) {
             throw new BusinessException("userIds", "user.cannot.delete.owner");
         }
         for (UserEntity user : users) {

@@ -27,7 +27,7 @@ public final class IdpSecurityUtils {
     }
     
     public static List<GrantedAuthority> getAuthoritiesFromUserRole(UserEntity user) {
-        return List.of(new SimpleGrantedAuthority(ROLE_PREFIX + user.getEnterprise().getRole().name()));
+        return List.of(new SimpleGrantedAuthority(ROLE_PREFIX + user.getRole().name()));
     }
     
     public static void storeAuthenticationToContext(@NotNull PasskeyAuthenticationToken authenticationToken,

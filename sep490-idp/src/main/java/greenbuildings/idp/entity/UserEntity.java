@@ -7,6 +7,8 @@ import greenbuildings.commons.api.utils.CommonConstant;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
@@ -48,14 +50,18 @@ public class UserEntity extends AbstractAuditableEntity {
     public static final String BELONG_ENTERPRISE_FILTER = "belongEnterpriseFilter";
     public static final String BELONG_ENTERPRISE_PARAM = "enterpriseId";
     
-    @NotNull
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserEnterpriseEntity enterprise;
     
     @OneToMany(mappedBy = "user",
                cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH},
                orphanRemoval = true)
     private Set<BuildingPermissionEntity> buildingPermissions = new LinkedHashSet<>();
+    
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_role")
+    private UserRole role;
     
     @NotNull
     @Pattern(regexp = CommonConstant.EMAIL_PATTERN)
@@ -102,12 +108,13 @@ public class UserEntity extends AbstractAuditableEntity {
         UserEntity user = new UserEntity();
         user.setEmail(email);
         user.setEmailVerified(emailVerified);
+        user.setRole(role);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setPhone(phone);
         user.setPhoneVerified(phoneVerified);
         user.setPassword(password);
-        user.setEnterprise(UserEnterpriseEntity.of(user, role, scope));
+        user.setEnterprise(UserEnterpriseEntity.of(user, scope));
         return user;
     }
     

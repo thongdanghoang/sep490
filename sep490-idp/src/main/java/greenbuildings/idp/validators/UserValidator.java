@@ -19,7 +19,7 @@ public class UserValidator {
     private final UserRepository userRepository;
     
     public void validateEnterpriseOwnerManageEmployees(UserEntity employee) {
-        if (employee.getEnterprise().getRole() != UserRole.ENTERPRISE_EMPLOYEE) {
+        if (employee.getRole() != UserRole.ENTERPRISE_EMPLOYEE) {
             throw new BusinessException("role", "business.role.enterpriseOnlyAddEmployee");
         }
         if (employee.getBuildingPermissions().isEmpty()) {
