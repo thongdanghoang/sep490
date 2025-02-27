@@ -15,7 +15,7 @@
 <form [formGroup]="formGroup" class="sm:mt-5 sm:px-5 py-5">
     @if (isEdit) {
         <!-- ID -->
-        <div class="grid grid-cols-12 sm:gap-4 gap-2 items-center my-3">
+        <div class="grid grid-cols-12 sm:gap-4 gap-2 items-center my-3 mb-8">
             <label for="email" class="font-normal sm:col-span-3 col-span-12">{{
                 "enterprise.Users.id" | translate
             }}</label>
@@ -25,7 +25,7 @@
         </div>
 
         <!--   createdDate   -->
-        <div class="grid grid-cols-12 sm:gap-4 gap-2 items-center my-3">
+        <div class="grid grid-cols-12 sm:gap-4 gap-2 items-center my-3 mb-8">
             <label for="email" class="font-normal sm:col-span-3 col-span-12">{{
                 "enterprise.Users.createdDate" | translate
             }}</label>
@@ -61,17 +61,19 @@
         </div>
     </div>
 
-    <!-- Email Verified -->
-    <div
-        class="sm:grid sm:grid-cols-12 sm:gap-4 gap-2 flex justify-between items-center my-3 mb-6"
-    >
-        <label for="email" class="font-normal sm:col-span-3">{{
-            "enterprise.Users.emailVerified" | translate
-        }}</label>
-        <div class="sm:col-span-6">
-            <p-toggleswitch formControlName="emailVerified" />
+    @if (isEdit) {
+        <!-- Email Verified -->
+        <div
+            class="sm:grid sm:grid-cols-12 sm:gap-4 gap-2 flex justify-between items-center my-3 mb-6"
+        >
+            <label for="email" class="font-normal sm:col-span-3">{{
+                "enterprise.Users.emailVerified" | translate
+            }}</label>
+            <div class="sm:col-span-6">
+                <p-checkbox formControlName="emailVerified" [binary]="true" />
+            </div>
         </div>
-    </div>
+    }
 
     <!-- First Name -->
     <div
@@ -122,10 +124,7 @@
     <!-- Scope -->
     @if (roleEmployee) {
         <div class="grid grid-cols-12 sm:gap-4 gap-2 items-center my-3">
-            <label
-                for="scope"
-                class="sm:col-span-3 col-span-12 font-semibold text-xl"
-            >
+            <label class="sm:col-span-3 col-span-12 font-semibold text-xl">
                 {{ "enterprise.Users.scope" | translate }}
             </label>
             <div
@@ -135,7 +134,6 @@
             >
                 <p-select
                     formControlName="scope"
-                    id="scope"
                     optionLabel="label"
                     (onChange)="onScopeChange()"
                     [options]="scopeOptions"
@@ -179,11 +177,9 @@
         <div class="grid grid-cols-12 sm:gap-4 gap-2 items-center my-3">
             @if (enterpriseUserStructure.scope.value !== "") {
                 <div class="sm:col-span-3 col-span-12 h-full">
-                    <label
-                        for="buildingPermissions"
-                        class="font-semibold text-xl"
-                        >{{ "enterprise.Users.role" | translate }}</label
-                    >
+                    <label class="font-semibold text-xl">{{
+                        "enterprise.Users.role" | translate
+                    }}</label>
                 </div>
             }
             @if (scopeBuildings) {
@@ -220,7 +216,6 @@
 
                                     <div class="*:w-full" errorMessages>
                                         <p-select
-                                            id="buildingPermissions"
                                             [options]="permissionRoleOptions"
                                             formControlName="role"
                                             optionLabel="label"
