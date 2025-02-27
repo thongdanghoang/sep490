@@ -1,7 +1,6 @@
 package greenbuildings.idp.entity;
 
-import commons.springfw.impl.entities.AbstractBaseEntity;
-import greenbuildings.commons.api.security.UserRole;
+import commons.springfw.impl.entities.AbstractAuditableEntity;
 import greenbuildings.commons.api.security.UserScope;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +23,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserEnterpriseEntity extends AbstractBaseEntity {
+public class UserEnterpriseEntity extends AbstractAuditableEntity {
     
     @NotNull
     @OneToOne(optional = false)
@@ -36,18 +35,12 @@ public class UserEnterpriseEntity extends AbstractBaseEntity {
     
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_role")
-    private UserRole role;
-    
-    @NotNull
-    @Enumerated(EnumType.STRING)
     @Column(name = "user_scope")
     private UserScope scope;
     
-    public static UserEnterpriseEntity of(UserEntity user, UserRole role, UserScope scope) {
+    public static UserEnterpriseEntity of(UserEntity user, UserScope scope) {
         UserEnterpriseEntity userEnterpriseEntity = new UserEnterpriseEntity();
         userEnterpriseEntity.setUser(user);
-        userEnterpriseEntity.setRole(role);
         userEnterpriseEntity.setScope(scope);
         return userEnterpriseEntity;
     }

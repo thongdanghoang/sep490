@@ -50,7 +50,7 @@ public interface UserRepository extends AbstractBaseRepository<UserEntity> {
     @Query("""
             SELECT u.id
             FROM UserEntity u
-            WHERE u.enterprise.role <> greenbuildings.commons.api.security.UserRole.ENTERPRISE_OWNER
+            WHERE u.role <> greenbuildings.commons.api.security.UserRole.ENTERPRISE_OWNER
             AND u.enterprise.enterprise = :enterpriseId
             AND (LOWER(u.firstName) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :name, '%')))
             AND u.deleted = false
