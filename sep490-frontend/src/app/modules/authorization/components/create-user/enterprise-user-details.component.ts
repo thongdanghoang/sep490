@@ -43,7 +43,7 @@ export class EnterpriseUserDetailsComponent extends AbstractFormComponent<Enterp
       nonNullable: true,
       validators: [Validators.required, Validators.email]
     }),
-    emailVerified: new FormControl<boolean>(false),
+    emailVerified: new FormControl<boolean>({value: false, disabled: true}),
     firstName: new FormControl<string>('', {
       nonNullable: true,
       validators: [Validators.required]
