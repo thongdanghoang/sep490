@@ -5,6 +5,11 @@ server:
 
 spring:
   security:
+    keystore:
+      location: keystore.jks
+      password: P@ssW0rd
+      alias: GreenBuildings
+      key-id: kid
     cors:
       allowed:
         origins: http://localhost:4200
