@@ -12,6 +12,8 @@ import {
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {MessageService} from 'primeng/api';
+import {MultiSelectChangeEvent} from 'primeng/multiselect';
+import {SelectChangeEvent} from 'primeng/select';
 import {filter, map, switchMap, takeUntil, tap} from 'rxjs';
 import {UUID} from '../../../../../types/uuid';
 import {AppRoutingConstants} from '../../../../app-routing.constant';
@@ -25,8 +27,6 @@ import {
   EnterpriseUserDetails
 } from '../../models/enterprise-user';
 import {EnterpriseUserService} from '../../services/enterprise-user.service';
-import {MultiSelectChangeEvent} from 'primeng/multiselect';
-import {SelectChangeEvent} from 'primeng/select';
 import {BuildingService} from '../../../../services/building.service';
 import {Building} from '../../../enterprise/models/enterprise.dto';
 
@@ -38,15 +38,29 @@ import {Building} from '../../../enterprise/models/enterprise.dto';
 export class EnterpriseUserDetailsComponent extends AbstractFormComponent<EnterpriseUserDetails> {
   buildings: Building[] = [];
   protected readonly enterpriseUserStructure = {
-    id: new FormControl(''),
+    id: new FormControl<UUID | null>({value: null, disabled: true}),
+    createdDate: new FormControl<Date | null>({value: null, disabled: true}),
     version: new FormControl(null),
-    email: new FormControl<string>('', [Validators.required, Validators.email]),
-    firstName: new FormControl<string>('', [Validators.required]),
-    lastName: new FormControl<string>('', [Validators.required]),
+    email: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email]
+    }),
+    emailVerified: new FormControl<boolean>({value: false, disabled: true}),
+    firstName: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required]
+    }),
+    lastName: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required]
+    }),
     role: new FormControl(UserRole[UserRole.ENTERPRISE_EMPLOYEE], {
       nonNullable: true
     }),
-    scope: new FormControl<string>('', [Validators.required]),
+    scope: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required]
+    }),
     buildingPermissions: new FormArray([]),
     selectedBuildingIds: new FormControl<UUID[]>(
       [],
@@ -253,11 +267,15 @@ export class EnterpriseUserDetailsComponent extends AbstractFormComponent<Enterp
         takeUntil(this.destroy$),
         map(params => params.get('id')),
         filter((idParam): idParam is string => !!idParam),
-        tap(id => this.enterpriseUserStructure.id.setValue(id)),
+        tap(id => this.enterpriseUserStructure.id.setValue(id as UUID)),
         switchMap(id => this.userService.getUserById(id))
       )
       .subscribe(user => {
         this.formGroup.patchValue(user);
+        // js didn't parse the date correctly from LocalDateTime to js Date
+        this.enterpriseUserStructure.createdDate.setValue(
+          new Date(user.createdDate)
+        );
         this.initializeBuildingPermissions(user.buildingPermissions);
         this.initializeSelectedBuildingIds();
         this.initializeEnterprisePermission();
