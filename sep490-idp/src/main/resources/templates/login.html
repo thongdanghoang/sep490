@@ -9,7 +9,8 @@
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<div class="flex items-center justify-center min-h-screen py-8 px-4 bg-[url('/img/background.jpg')] bg-no-repeat bg-cover">
+<div th:style="'background-image: url(img/background.jpg)'"
+        class="flex items-center justify-center min-h-screen py-8 px-4 bg-no-repeat bg-cover">
     <div class="flex flex-col justify-items-center items-center w-full max-w-5xl">
         <!-- Login Form Section -->
         <div class="bg-white p-6 lg:bg-opacity-80 rounded-xl w-full lg:w-1/2">
