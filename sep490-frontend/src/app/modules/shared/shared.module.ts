@@ -48,6 +48,7 @@ import {ErrorMessagesDirective} from './directives/error-messages.directive';
 import {FormFieldErrorDirective} from './directives/form-field-error.directive';
 import {TranslateParamsPipe} from './pipes/translate-params.pipe';
 import {ModalProvider} from './services/modal-provider';
+import {SliderModule} from 'primeng/slider';
 
 const primeNgModules = [
   AccordionModule,
@@ -83,7 +84,9 @@ const primeNgModules = [
   RippleModule,
   MultiSelect,
   ToggleSwitch,
-  TagModule
+  TagModule,
+  SliderModule,
+  InputNumberModule
 ];
 
 const commons = [

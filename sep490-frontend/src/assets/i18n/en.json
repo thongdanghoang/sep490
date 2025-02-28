@@ -236,7 +236,19 @@
         "detail": "Package Credit deleted unsuccessfully"
       }
     }
-  }
+  },
+    "ratio": {
+      "title": "RATIO",
+      "type": {
+        "MONTH": "MONTH",
+        "DEVICE": "DEVICE"
+      },
+      "button": {
+        "control": "Control"
+      },
+      "updateRatio": "Update Ratio",
+      "adjustRatio": "Adjust the ratio"
+    }
 },
   "dialog": {
     "subscription": {

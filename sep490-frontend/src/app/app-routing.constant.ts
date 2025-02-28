@@ -24,6 +24,9 @@ export class AppRoutingConstants {
   // Admin Module
   public static readonly PACKAGE_CREDIT_PATH = 'package-credit';
   public static readonly PACKAGE_CREDIT_DETAILS_PATH = 'package-credit-details';
+  public static readonly CREDIT_CONVERT_RATIO = 'credit-convert-ratio';
+  public static readonly CREDIT_CONVERT_RATIO_DETAILS =
+    'credit-convert-ratio-detail';
 
   // App Routing
   public static readonly DASHBOARD_PATH = 'dashboard';
