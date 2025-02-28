@@ -1,6 +1,7 @@
 package greenbuildings.enterprise.services.impl;
 
 import commons.springfw.impl.utils.SecurityUtils;
+import greenbuildings.enterprise.dtos.CreditConvertRatioDTO;
 import greenbuildings.enterprise.dtos.SubscribeRequestDTO;
 import greenbuildings.enterprise.entities.BuildingEntity;
 import greenbuildings.enterprise.entities.CreditConvertRatioEntity;
@@ -126,5 +127,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return (monthRatio.getRatio() * request.months())
                + (noDevicesRatio.getRatio() * request.numberOfDevices());
     }
-    
+
+    @Override
+    public CreditConvertRatioEntity getCreditConvertRatioDetail(UUID id) {
+        return creditConvertRatioRepository.findById(id).orElseThrow();
+    }
+
+    public void updateCreditConvertRatio(CreditConvertRatioDTO creditConvertRatioDTO) {
+           var creditConvertRatioEntity = getCreditConvertRatioDetail(creditConvertRatioDTO.id());
+        creditConvertRatioEntity.setRatio(creditConvertRatioDTO.ratio());
+        creditConvertRatioRepository.save(creditConvertRatioEntity);
+    }
 }

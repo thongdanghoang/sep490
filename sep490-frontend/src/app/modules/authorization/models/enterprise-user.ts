@@ -22,11 +22,6 @@ export interface EnterpriseUser extends BaseDTO {
   scope: UserScope;
 }
 
-export interface Building {
-  id: UUID;
-  name: string;
-}
-
 export interface BuildingPermission {
   buildingId?: UUID;
   role: keyof typeof BuildingPermissionRole;

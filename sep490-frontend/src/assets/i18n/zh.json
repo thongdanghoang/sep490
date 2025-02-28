@@ -236,6 +236,18 @@
           "detail": "信用包删除失败"
         }
       }
+    },
+    "ratio": {
+      "title": "比率",
+      "type": {
+        "MONTH": "月",
+        "DEVICE": "设备"
+      },
+      "button": {
+        "control": "控制"
+      },
+      "updateRatio": "更新比率",
+      "adjustRatio": "调整比例"
     }
   },
   "dialog": {

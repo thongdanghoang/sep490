@@ -12,8 +12,6 @@ import {
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {MessageService} from 'primeng/api';
-import {MultiSelectChangeEvent} from 'primeng/multiselect';
-import {SelectChangeEvent} from 'primeng/select';
 import {filter, map, switchMap, takeUntil, tap} from 'rxjs';
 import {UUID} from '../../../../../types/uuid';
 import {AppRoutingConstants} from '../../../../app-routing.constant';
@@ -23,11 +21,14 @@ import {BuildingPermissionRole} from '../../enums/building-permission-role';
 import {UserRole} from '../../enums/role-names';
 import {UserScope} from '../../enums/user-scope';
 import {
-  Building,
   BuildingPermission,
   EnterpriseUserDetails
 } from '../../models/enterprise-user';
 import {EnterpriseUserService} from '../../services/enterprise-user.service';
+import {MultiSelectChangeEvent} from 'primeng/multiselect';
+import {SelectChangeEvent} from 'primeng/select';
+import {BuildingService} from '../../../../services/building.service';
+import {Building} from '../../../enterprise/models/enterprise.dto';
 
 @Component({
   selector: 'app-create-user',
@@ -35,30 +36,17 @@ import {EnterpriseUserService} from '../../services/enterprise-user.service';
   styleUrl: './enterprise-user-details.component.css'
 })
 export class EnterpriseUserDetailsComponent extends AbstractFormComponent<EnterpriseUserDetails> {
+  buildings: Building[] = [];
   protected readonly enterpriseUserStructure = {
-    id: new FormControl<UUID | null>({value: null, disabled: true}),
-    createdDate: new FormControl<Date | null>({value: null, disabled: true}),
+    id: new FormControl(''),
     version: new FormControl(null),
-    email: new FormControl<string>('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.email]
-    }),
-    emailVerified: new FormControl<boolean>({value: false, disabled: true}),
-    firstName: new FormControl<string>('', {
-      nonNullable: true,
-      validators: [Validators.required]
-    }),
-    lastName: new FormControl<string>('', {
-      nonNullable: true,
-      validators: [Validators.required]
-    }),
+    email: new FormControl<string>('', [Validators.required, Validators.email]),
+    firstName: new FormControl<string>('', [Validators.required]),
+    lastName: new FormControl<string>('', [Validators.required]),
     role: new FormControl(UserRole[UserRole.ENTERPRISE_EMPLOYEE], {
       nonNullable: true
     }),
-    scope: new FormControl<string>('', {
-      nonNullable: true,
-      validators: [Validators.required]
-    }),
+    scope: new FormControl<string>('', [Validators.required]),
     buildingPermissions: new FormArray([]),
     selectedBuildingIds: new FormControl<UUID[]>(
       [],
@@ -120,13 +108,7 @@ export class EnterpriseUserDetailsComponent extends AbstractFormComponent<Enterp
       label: 'enum.scope.BUILDING'
     }
   ];
-  // TODO: [thongdanghoang] integrate with enterprise use case
-  protected mockBuildings: Building[] = [
-    {id: 'c42cfe00-f32b-42cc-8b6c-9b495ad1f726' as UUID, name: 'Building 1'},
-    {id: 'e1a5f984-8fb4-4a4a-847f-e73fcd139829' as UUID, name: 'Building 2'},
-    {id: '901e46c3-ec95-45b5-b124-6945a6f8fe83' as UUID, name: 'Building 3'}
-  ];
-  protected selectableBuildings: SelectableItem<any>[] = this.mockBuildings.map(
+  protected selectableBuildings: SelectableItem<any>[] = this.buildings.map(
     building => ({
       disabled: false,
       value: building.id,
@@ -139,11 +121,35 @@ export class EnterpriseUserDetailsComponent extends AbstractFormComponent<Enterp
     formBuilder: FormBuilder,
     notificationService: MessageService,
     translate: TranslateService,
+    private readonly buildingService: BuildingService,
     protected userService: EnterpriseUserService,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute
   ) {
     super(httpClient, formBuilder, notificationService, translate);
+  }
+
+  fetchBuilding(): void {
+    this.buildingService
+      .searchBuildings({
+        page: {
+          pageNumber: 0,
+          pageSize: 100
+        }
+      })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(buildings => {
+        this.buildings = buildings.results;
+        this.updateSelectableBuildings();
+      });
+  }
+
+  updateSelectableBuildings(): void {
+    this.selectableBuildings = this.buildings.map(building => ({
+      disabled: false,
+      value: building.id,
+      label: building.name
+    }));
   }
 
   onBuildingSelect(event: MultiSelectChangeEvent): void {
@@ -210,7 +216,7 @@ export class EnterpriseUserDetailsComponent extends AbstractFormComponent<Enterp
   }
 
   getBuildingName(control: AbstractControl): string {
-    const building = this.mockBuildings.find(
+    const building = this.buildings.find(
       b => b.id === control.value.buildingId
     );
     return building?.name ?? '';
@@ -241,20 +247,17 @@ export class EnterpriseUserDetailsComponent extends AbstractFormComponent<Enterp
   }
 
   protected initializeData(): void {
+    this.fetchBuilding();
     this.activatedRoute.paramMap
       .pipe(
         takeUntil(this.destroy$),
         map(params => params.get('id')),
         filter((idParam): idParam is string => !!idParam),
-        tap(id => this.enterpriseUserStructure.id.setValue(id as UUID)),
+        tap(id => this.enterpriseUserStructure.id.setValue(id)),
         switchMap(id => this.userService.getUserById(id))
       )
       .subscribe(user => {
         this.formGroup.patchValue(user);
-        // js didn't parse the date correctly from LocalDateTime to js Date
-        this.enterpriseUserStructure.createdDate.setValue(
-          new Date(user.createdDate)
-        );
         this.initializeBuildingPermissions(user.buildingPermissions);
         this.initializeSelectedBuildingIds();
         this.initializeEnterprisePermission();

@@ -236,6 +236,18 @@
           "detail": "Xóa Gói tín dụng không thành công"
         }
       }
+    },
+    "ratio": {
+      "title": "TỶ LỆ",
+      "type": {
+        "MONTH": "THÁNG",
+        "DEVICE": "THIẾT BỊ"
+      },
+      "button": {
+        "control": "Điều chỉnh"
+      },
+      "updateRatio": "Cập nhật tỷ lệ",
+      "adjustRatio": "Điều chỉnh tỷ lệ"
     }
   },
   "dialog": {

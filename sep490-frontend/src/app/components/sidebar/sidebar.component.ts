@@ -112,6 +112,11 @@ export class SidebarComponent
             label: 'sidebar.admin.packageCredit',
             icon: 'pi pi-chart-line',
             route: `/${AppRoutingConstants.ADMIN_PATH}/${AppRoutingConstants.PACKAGE_CREDIT_PATH}`
+          },
+          {
+            label: 'Credit Ratio',
+            icon: 'pi pi-percentage',
+            route: `/${AppRoutingConstants.ADMIN_PATH}/${AppRoutingConstants.CREDIT_CONVERT_RATIO}`
           }
         ]
       }
